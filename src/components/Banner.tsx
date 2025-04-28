@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface BannerProps {
@@ -14,7 +13,7 @@ interface BannerProps {
 const Banner: React.FC<BannerProps> = ({ titulo, descricao, botoes }) => {
   return (
     <div className="rounded-2xl overflow-hidden relative bg-gradient-to-r from-gray-900 to-gray-800 text-white">
-      <div className="absolute inset-0 bg-cover bg-center opacity-20 rounded-2xl" style={{ backgroundImage: "url('/lovable-uploads/d434a7a6-be7f-49d2-a433-b829215b4614.png')" }}></div>
+      <div className="absolute inset-0 bg-cover bg-center opacity-20 rounded-2xl" style={{ backgroundImage: "url('/images/logo-sabara.png')" }}></div>
       <div className="px-8 py-20 relative z-10">
         <div className="max-w-2xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">{titulo}</h1>

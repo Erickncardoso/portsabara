@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Bell, User, X } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -14,11 +13,15 @@ interface Notificacao {
 interface HeaderMedicoProps {
   nome?: string;
   tipo?: string;
+  marginLeft?: string;
+  titulo?: string;
 }
 
 const HeaderMedico: React.FC<HeaderMedicoProps> = ({ 
   nome = 'ROBERT', 
-  tipo = 'MÉDICO' 
+  tipo = 'MÉDICO',
+  marginLeft,
+  titulo = 'HOME'
 }) => {
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
   const [mostrarNotificacoes, setMostrarNotificacoes] = useState(false);
@@ -78,11 +81,11 @@ const HeaderMedico: React.FC<HeaderMedicoProps> = ({
   const notificacoesNaoLidas = notificacoes.filter(n => !n.lida).length;
 
   return (
-    <div className="bg-white">
+    <div className="bg-white" style={marginLeft ? { marginLeft } : undefined}>
       <div className="px-6 py-2">
         <div className="bg-white rounded-2xl shadow-sm border p-2">
           <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold">HOME</h1>
+            <h1 className="text-xl font-bold">{titulo}</h1>
             
             <div className="flex items-center gap-4">
               <div className="relative">

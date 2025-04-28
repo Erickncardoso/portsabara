@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Cabecalho from '../components/Cabecalho';
 import Rodape from '../components/Rodape';
@@ -94,7 +93,7 @@ const Solucao: React.FC = () => {
               </div>
               <div className="flex justify-center">
                 <img 
-                  src="/lovable-uploads/7e8ebbac-9467-4c1c-8a80-49bf7229d0b7.png" 
+                  src="/images/logo-sabara.png" 
                   alt="Interface do Sistema" 
                   className="rounded-lg shadow-lg max-w-full"
                 />

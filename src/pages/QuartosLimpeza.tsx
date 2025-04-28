@@ -37,10 +37,15 @@ export default function QuartosLimpeza() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
       <SidebarLimpeza isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
       <FloatingChat currentUser={currentUser} />
-      <main className={`transition-all duration-300 ease-in-out ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-16'}`}>
+      <main 
+        className={"transition-all duration-300 ease-in-out"}
+        style={{ 
+          marginLeft: isSidebarOpen ? '16rem' : '4rem',
+        }}
+      >
         <HeaderLimpeza />
         <div className="p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

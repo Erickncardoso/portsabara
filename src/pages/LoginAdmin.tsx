@@ -41,7 +41,7 @@ const LoginAdmin: React.FC = () => {
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
             <img 
-              src={logoUrl} 
+              src='/images/logo-sabara.png' 
               alt="Logo Hospital Sabará" 
               className="h-16"
             />

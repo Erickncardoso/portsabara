@@ -1,7 +1,6 @@
-
 import React from 'react';
 import SidebarPaciente from '../components/SidebarPaciente';
-import Header from '@/components/Header';
+import HeaderPaciente from '../components/HeaderPaciente';
 import { toast } from "sonner";
 import {
   Card,
@@ -76,11 +75,7 @@ const PerfilPaciente = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
       />
       
-      <Header 
-        title="PERFIL" 
-        isSidebarOpen={isSidebarOpen}
-        currentUser={currentUser}
-      />
+      <HeaderPaciente nome={currentUser.name} tipo={currentUser.role} marginLeft={isSidebarOpen ? '16rem' : '4rem'} titulo="Perfil" />
 
       <main 
         className="transition-all duration-300 ease-in-out pt-20 px-4"

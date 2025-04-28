@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import SidebarMedico from '@/components/SidebarMedico';
-import Header from '@/components/Header';
+import HeaderMedico from '../components/HeaderMedico';
 import FloatingChat from '@/components/FloatingChat';
 
 export default function ConsultasMedico() {
@@ -21,11 +21,7 @@ export default function ConsultasMedico() {
     <div className="min-h-screen bg-gray-100">
       <SidebarMedico isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
       
-      <Header 
-        title="CONSULTAS" 
-        isSidebarOpen={isSidebarOpen}
-        currentUser={currentUser}
-      />
+      <HeaderMedico nome={currentUser.name} tipo="MÉDICO" marginLeft={isSidebarOpen ? '16rem' : '4rem'} titulo="Consultas" />
 
       <FloatingChat currentUser={currentUser} />
 

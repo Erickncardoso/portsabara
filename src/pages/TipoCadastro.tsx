@@ -146,7 +146,7 @@ const TipoCadastro: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-white/90 p-8 rounded-2xl shadow-lg backdrop-blur-sm border border-gray-100">
             <div className="flex justify-center mb-10">
-              <img src={logoUrl} alt="Logo Hospital Sabará" className="h-20" />
+              <img src='/images/logo-sabara.png' alt="Logo Hospital Sabará" className="h-20" />
             </div>
             
             <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">Escolha o tipo do cadastro</h1>

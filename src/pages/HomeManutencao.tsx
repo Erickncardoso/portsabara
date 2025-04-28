@@ -3,6 +3,7 @@ import SidebarManutencao from '../components/SidebarManutencao';
 import { cn } from '@/lib/utils';
 import { Bell } from 'lucide-react';
 import FloatingChat from '@/components/FloatingChat';
+import HeaderManutencao from '../components/HeaderManutencao';
 
 const HomeManutencao: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -13,32 +14,13 @@ const HomeManutencao: React.FC = () => {
         isOpen={isSidebarOpen} 
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
       />
+      <HeaderManutencao nome="Robert" tipo="Manutenção" marginLeft={isSidebarOpen ? '16rem' : '4rem'} titulo="Home" />
       
       <div className={cn(
         "flex-1 flex flex-col overflow-hidden",
         "transition-all duration-300 ease-in-out",
         isSidebarOpen ? "ml-64" : "ml-16"
       )}>
-        <header className="fixed right-0 top-0 z-30 flex h-16 items-center gap-4 border-b border-gray-200 bg-white px-4 shadow-sm transition-all duration-300 ease-in-out dark:border-gray-800 dark:bg-gray-950/80 dark:backdrop-blur-sm" style={{ width: 'calc(100% - ' + (isSidebarOpen ? '16rem' : '4rem') + ')' }}>
-          <div className="flex flex-1 items-center justify-between">
-            <h1 className="text-2xl font-bold">HOME</h1>
-            <div className="flex items-center gap-4">
-              <Bell className="w-6 h-6 text-gray-600" />
-              <div className="flex items-center gap-2">
-                <img 
-                  src="/images/avatar.png" 
-                  alt="Robert" 
-                  className="w-8 h-8 rounded-full"
-                />
-                <div>
-                  <p className="text-sm font-medium">ROBERT</p>
-                  <p className="text-xs text-red-500">MÉDICO</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
         <main className="flex-1 p-6 mt-16">
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div className="flex items-center gap-4">

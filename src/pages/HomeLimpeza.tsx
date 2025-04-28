@@ -18,7 +18,7 @@ export default function HomeLimpeza() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
       <SidebarLimpeza 
         isOpen={isSidebarOpen} 
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -26,10 +26,14 @@ export default function HomeLimpeza() {
 
       <FloatingChat currentUser={currentUser} />
 
-      <main className={cn(
-        "transition-all duration-300 ease-in-out",
-        isSidebarOpen ? "lg:ml-64" : "lg:ml-16"
-      )}>
+      <main 
+        className={cn(
+          "transition-all duration-300 ease-in-out",
+        )}
+        style={{ 
+          marginLeft: isSidebarOpen ? '16rem' : '4rem',
+        }}
+      >
         <div className="p-8">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-2xl font-bold">HOME</h1>

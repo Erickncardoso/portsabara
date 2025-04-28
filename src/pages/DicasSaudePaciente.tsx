@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Heart, Calendar, FileText, Info } from 'lucide-react';
 import SidebarPaciente from '../components/SidebarPaciente';
-import Header from '@/components/Header';
+import HeaderPaciente from '../components/HeaderPaciente';
 import FloatingChat from '@/components/FloatingChat';
 
 const DicasSaudePaciente: React.FC = () => {
@@ -49,11 +49,7 @@ const DicasSaudePaciente: React.FC = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
       />
       
-      <Header 
-        title="DICAS DE SAÚDE" 
-        isSidebarOpen={isSidebarOpen}
-        currentUser={currentUser}
-      />
+      <HeaderPaciente nome={currentUser.name} tipo={currentUser.role} marginLeft={isSidebarOpen ? '16rem' : '4rem'} titulo="Dicas de Saúde" />
 
       <FloatingChat currentUser={currentUser} />
 

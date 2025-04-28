@@ -70,7 +70,7 @@ const LoginPaciente: React.FC = () => {
               <div className="flex flex-col md:flex-row">
                 <div className="w-full md:w-2/5 bg-sabara-blue text-white p-10 flex flex-col justify-center items-center text-center">
                   <img 
-                    src={logoUrl} 
+                    src='/images/logo-sabara.png' 
                     alt="Logo Hospital Sabará" 
                     className="h-20 mb-10"
                   />

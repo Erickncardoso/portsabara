@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import SidebarPaciente from '../components/SidebarPaciente';
-import Header from '@/components/Header';
+import HeaderPaciente from '../components/HeaderPaciente';
 import { Button } from '@/components/ui/button';
 import { toast } from "sonner";
 import {
@@ -90,11 +89,7 @@ const ExamesPaciente: React.FC = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
       />
       
-      <Header 
-        title="EXAMES" 
-        isSidebarOpen={isSidebarOpen}
-        currentUser={currentUser}
-      />
+      <HeaderPaciente nome={currentUser.name} tipo={currentUser.role} marginLeft={isSidebarOpen ? '16rem' : '4rem'} titulo="Exames" />
 
       <FloatingChat currentUser={currentUser} />
 

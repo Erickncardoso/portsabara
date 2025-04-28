@@ -127,7 +127,7 @@ const CadastroPaciente: React.FC = () => {
                 {/* Lado esquerdo azul com mensagem de boas vindas */}
                 <div className="w-full md:w-2/5 bg-sabara-blue text-white p-8 flex flex-col justify-center items-center text-center">
                   <img 
-                    src={logoUrl} 
+                    src='/images/logo-sabara.png' 
                     alt="Logo Hospital Sabará" 
                     className="h-16 mb-8 filter brightness-0 invert"
                   />

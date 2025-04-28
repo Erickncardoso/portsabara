@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import FloatingChat from '@/components/FloatingChat';
+import HeaderMedico from '../components/HeaderMedico';
 
 const ReceitasMedico: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -75,18 +76,19 @@ const ReceitasMedico: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
       <SidebarMedico 
         isOpen={isSidebarOpen} 
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
       />
-      
-      <div className={cn(
-        "transition-all duration-300 ease-in-out flex-1 p-4 lg:p-6 overflow-y-auto",
-        isSidebarOpen ? "ml-0 lg:ml-64" : "ml-0 lg:ml-16"
-      )}>
-        <FloatingChat currentUser={currentUser} />
-
+      <HeaderMedico nome={currentUser.name} tipo="MÉDICO" marginLeft={isSidebarOpen ? '16rem' : '4rem'} titulo="Receitas" />
+      <FloatingChat currentUser={currentUser} />
+      <main 
+        className="transition-all duration-300 ease-in-out p-4 lg:p-6"
+        style={{ 
+          marginLeft: isSidebarOpen ? '16rem' : '4rem',
+        }}
+      >
         <header className="mb-6 bg-white rounded-lg shadow-sm p-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex items-center gap-2">
@@ -112,68 +114,65 @@ const ReceitasMedico: React.FC = () => {
             </div>
           </div>
         </header>
+        <div className={cn(
+          "grid gap-4 transition-all duration-300",
+          "grid-cols-1 sm:grid-cols-2",
+          isSidebarOpen 
+            ? "lg:grid-cols-3 xl:grid-cols-4" 
+            : "lg:grid-cols-4 xl:grid-cols-5",
+          "auto-rows-fr"
+        )}>
+          <Card 
+            onClick={handleNovaReceita}
+            className="flex flex-col items-center justify-center gap-4 border-2 border-dashed border-blue-200 hover:border-blue-400 bg-white hover:bg-blue-50/50 transition-all cursor-pointer group p-4 min-h-[280px]"
+          >
+            <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+              <Plus className="w-6 h-6 text-blue-600" />
+            </div>
+            <div className="text-center">
+              <h3 className="font-medium text-blue-600 mb-1">Nova Receita</h3>
+              <p className="text-sm text-gray-500">Adicionar nova prescrição</p>
+            </div>
+          </Card>
 
-        <main className="pb-6">
-          <div className={cn(
-            "grid gap-4 transition-all duration-300",
-            "grid-cols-1 sm:grid-cols-2",
-            isSidebarOpen 
-              ? "lg:grid-cols-3 xl:grid-cols-4" 
-              : "lg:grid-cols-4 xl:grid-cols-5",
-            "auto-rows-fr"
-          )}>
-            <Card 
-              onClick={handleNovaReceita}
-              className="flex flex-col items-center justify-center gap-4 border-2 border-dashed border-blue-200 hover:border-blue-400 bg-white hover:bg-blue-50/50 transition-all cursor-pointer group p-4 min-h-[280px]"
-            >
-              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                <Plus className="w-6 h-6 text-blue-600" />
+          {filteredPrescricoes.map((prescricao, index) => (
+            <Card key={index} className="bg-white hover:shadow-lg transition-all p-4">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-medium text-lg shrink-0">
+                  {prescricao.nome.charAt(0)}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-gray-900 mb-1 truncate">{prescricao.nome}</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500 truncate">
+                      {prescricao.idade} anos • {prescricao.sexo}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="text-center">
-                <h3 className="font-medium text-blue-600 mb-1">Nova Receita</h3>
-                <p className="text-sm text-gray-500">Adicionar nova prescrição</p>
+
+              <div className="space-y-3 mb-4">
+                <div className="p-3 bg-blue-50 rounded-lg">
+                  <p className="text-sm font-medium text-blue-800 truncate">{prescricao.medicamento}</p>
+                  <p className="text-xs text-blue-600 mt-1">
+                    {prescricao.dosagem} • {prescricao.duracao}
+                  </p>
+                </div>
+                
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-500">Data da prescrição</span>
+                  <span className="font-medium">{prescricao.data}</span>
+                </div>
               </div>
+
+              <button className="w-full flex items-center justify-center gap-2 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors">
+                <FileText className="w-4 h-4" />
+                <span className="text-sm font-medium">Visualizar Receita</span>
+              </button>
             </Card>
-
-            {filteredPrescricoes.map((prescricao, index) => (
-              <Card key={index} className="bg-white hover:shadow-lg transition-all p-4">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-medium text-lg shrink-0">
-                    {prescricao.nome.charAt(0)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-gray-900 mb-1 truncate">{prescricao.nome}</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-500 truncate">
-                        {prescricao.idade} anos • {prescricao.sexo}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-3 mb-4">
-                  <div className="p-3 bg-blue-50 rounded-lg">
-                    <p className="text-sm font-medium text-blue-800 truncate">{prescricao.medicamento}</p>
-                    <p className="text-xs text-blue-600 mt-1">
-                      {prescricao.dosagem} • {prescricao.duracao}
-                    </p>
-                  </div>
-                  
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">Data da prescrição</span>
-                    <span className="font-medium">{prescricao.data}</span>
-                  </div>
-                </div>
-
-                <button className="w-full flex items-center justify-center gap-2 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors">
-                  <FileText className="w-4 h-4" />
-                  <span className="text-sm font-medium">Visualizar Receita</span>
-                </button>
-              </Card>
-            ))}
-          </div>
-        </main>
-      </div>
+          ))}
+        </div>
+      </main>
     </div>
   );
 };

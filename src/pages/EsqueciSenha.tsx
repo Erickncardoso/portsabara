@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ArrowLeft, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -60,7 +59,7 @@ const EsqueciSenha: React.FC = () => {
                 {/* Lado esquerdo azul com mensagem de boas vindas */}
                 <div className="w-full md:w-2/5 bg-sabara-blue text-white p-10 flex flex-col justify-center items-center text-center">
                   <img 
-                    src="/lovable-uploads/logo-sabara-novo.png" 
+                    src="/images/logo-sabara.png" 
                     alt="Logo Hospital Sabará" 
                     className="h-20 mb-10"
                   />

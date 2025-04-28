@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell } from 'lucide-react';
@@ -6,14 +5,16 @@ import { Bell } from 'lucide-react';
 interface HeaderManutencaoProps {
   nome: string;
   tipo: string;
+  marginLeft?: string;
+  titulo?: string;
 }
 
-export const HeaderManutencao: React.FC<HeaderManutencaoProps> = ({ nome, tipo }) => {
+export const HeaderManutencao: React.FC<HeaderManutencaoProps> = ({ nome, tipo, marginLeft, titulo = 'HOME' }) => {
   return (
-    <header className="bg-white border-b border-gray-100 py-4 px-6">
+    <header className="bg-white border-b border-gray-100 py-4 px-6" style={marginLeft ? { marginLeft } : undefined}>
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">HOME</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{titulo}</h1>
         </div>
         
         <div className="flex items-center gap-4">

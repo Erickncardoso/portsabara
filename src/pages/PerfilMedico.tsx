@@ -6,6 +6,7 @@ import SidebarMedico from '@/components/SidebarMedico';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import FloatingChat from '@/components/FloatingChat';
+import HeaderMedico from '../components/HeaderMedico';
 
 export default function PerfilMedico() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -35,23 +36,23 @@ export default function PerfilMedico() {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
       <SidebarMedico 
         isOpen={isSidebarOpen} 
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
       />
-      
-      <div className={cn(
-        "transition-all duration-300 ease-in-out flex-1 p-4 lg:p-6 overflow-y-auto",
-        isSidebarOpen ? "ml-0 lg:ml-64" : "ml-0 lg:ml-16"
-      )}>
-        <FloatingChat currentUser={currentUser} />
-
+      <HeaderMedico nome={currentUser.name} tipo="MÉDICO" marginLeft={isSidebarOpen ? '16rem' : '4rem'} titulo="Perfil" />
+      <FloatingChat currentUser={currentUser} />
+      <main 
+        className="transition-all duration-300 ease-in-out p-4 lg:p-6"
+        style={{ 
+          marginLeft: isSidebarOpen ? '16rem' : '4rem',
+        }}
+      >
         <header className="mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Meu Perfil</h1>
           <p className="text-gray-600">Gerencie suas informações pessoais e profissionais</p>
         </header>
-
         <div className="grid gap-6">
           <Card>
             <CardContent className="p-6">
@@ -134,7 +135,7 @@ export default function PerfilMedico() {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

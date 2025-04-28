@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Bell, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -6,18 +5,22 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 interface HeaderPacienteProps {
   nome?: string;
   tipo?: string;
+  marginLeft?: string;
+  titulo?: string;
 }
 
 const HeaderPaciente: React.FC<HeaderPacienteProps> = ({ 
   nome = 'ROBERT', 
-  tipo = 'PACIENTE' 
+  tipo = 'PACIENTE',
+  marginLeft,
+  titulo = 'HOME'
 }) => {
   return (
-    <div className="bg-white">
+    <div className="bg-white" style={marginLeft ? { marginLeft } : undefined}>
       <div className="px-6 py-2">
         <div className="bg-white rounded-2xl shadow-sm border p-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold">HOME</h1>
+            <h1 className="text-3xl font-bold">{titulo}</h1>
             
             <div className="flex items-center gap-4">
               <button className="p-2 hover:bg-gray-100 rounded-full">
