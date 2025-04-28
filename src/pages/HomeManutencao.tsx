@@ -3,7 +3,7 @@ import SidebarManutencao from '../components/SidebarManutencao';
 import { cn } from '@/lib/utils';
 import { Bell } from 'lucide-react';
 import FloatingChat from '@/components/FloatingChat';
-import HeaderManutencao from '../components/HeaderManutencao';
+import { HeaderManutencao } from '../components/HeaderManutencao';
 
 const HomeManutencao: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
