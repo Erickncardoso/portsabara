@@ -141,8 +141,8 @@ const TipoCadastro: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-white">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto bg-white/90 p-8 rounded-2xl shadow-lg backdrop-blur-sm border border-gray-100">
-          <div className="flex justify-center mb-10">
-            <img src='/images/logo-sabara.png' alt="Logo Hospital Sabará" className="h-20" />
+          <div className="flex justify-center mb-8">
+            <img src='/images/logo-sabara.png' alt="Logo Hospital Sabará" className="h-10 md:h-14" />
           </div>
           
           <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">Escolha o tipo do cadastro</h1>
