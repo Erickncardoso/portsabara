@@ -4,7 +4,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Cadastro from "./pages/Cadastro";
 import TipoCadastro from "./pages/TipoCadastro";
@@ -54,6 +53,12 @@ import ProtocolosLimpeza from "./pages/ProtocolosLimpeza";
 import PerfilLimpeza from "./pages/PerfilLimpeza";
 import AdminDashboard from "./pages/AdminDashboard";
 import LoginAdmin from "./pages/LoginAdmin";
+import LoginFarmacia from "./pages/LoginFarmacia";
+import CadastroFarmacia from "./pages/CadastroFarmacia";
+import PacientesFarmacia from "./pages/PacientesFarmacia";
+import MedicamentosFarmacia from "./pages/MedicamentosFarmacia";
+import InternacaoFarmacia from "./pages/InternacaoFarmacia";
+import PerfilFarmacia from "./pages/PerfilFarmacia";
 
 const queryClient = new QueryClient();
 
@@ -65,8 +70,7 @@ const App: React.FC = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/tipo-cadastro" element={<TipoCadastro />} />
+            <Route path="/" element={<TipoCadastro />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/login-paciente" element={<LoginPaciente />} />
             <Route path="/cadastro-paciente" element={<CadastroPaciente />} />
@@ -114,6 +118,12 @@ const App: React.FC = () => {
             <Route path="/solicitacoes-limpeza" element={<SolicitacoesLimpeza />} />
             <Route path="/protocolos-limpeza" element={<ProtocolosLimpeza />} />
             <Route path="/perfil-limpeza" element={<PerfilLimpeza />} />
+            <Route path="/login-farmacia" element={<LoginFarmacia />} />
+            <Route path="/cadastro-farmacia" element={<CadastroFarmacia />} />
+            <Route path="/pacientes-farmacia" element={<PacientesFarmacia />} />
+            <Route path="/medicamentos-farmacia" element={<MedicamentosFarmacia />} />
+            <Route path="/internacao-farmacia" element={<InternacaoFarmacia />} />
+            <Route path="/perfil-farmacia" element={<PerfilFarmacia />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

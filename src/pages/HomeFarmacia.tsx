@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import SidebarFarmacia from '../components/SidebarFarmacia';
 import HeaderFarmacia from '../components/HeaderFarmacia';
@@ -7,6 +6,8 @@ import PainelMedicamentos from '../components/PainelMedicamentos';
 import TabelaPacientesInternados from '../components/TabelaPacientesInternados';
 import CardReceita from '../components/CardReceita';
 import { useIsMobile } from '../hooks/use-mobile';
+import FloatingChat from '../components/FloatingChat';
+import { cn } from '../lib/utils';
 
 const HomeFarmacia: React.FC = () => {
   const isMobile = useIsMobile();
@@ -71,38 +72,24 @@ const HomeFarmacia: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
-      {/* Barra lateral */}
+    <div className="min-h-screen flex bg-gray-100">
       <SidebarFarmacia />
-      
-      {/* Conteúdo principal */}
-      <div className="flex-1 flex flex-col overflow-hidden w-full">
-        {/* Cabeçalho */}
+      <div className="flex-1 flex flex-col overflow-hidden">
         <HeaderFarmacia />
-        
-        {/* Conteúdo da página */}
-        <main className="flex-1 overflow-y-auto w-full pb-6">
+        <main className="flex-1 p-6">
           <div className="px-3 sm:px-6 py-3 sm:py-4">
-            {/* Grid para organizar o conteúdo principal */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 mb-4">
-              {/* Validação de Medicamentos */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
               <div>
                 <TabelaValidacaoMedicamentos />
               </div>
-              
-              {/* Painel de Medicamentos */}
               <div>
                 <PainelMedicamentos />
               </div>
             </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
-              {/* Pacientes Internados */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div>
                 <TabelaPacientesInternados />
               </div>
-              
-              {/* Receitas */}
               <div className="space-y-3 sm:space-y-4">
                 <div className="bg-white rounded-lg border shadow-md hover:shadow-lg transition-all p-3 sm:p-4">
                   <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Ver Receitas</h2>
@@ -126,6 +113,13 @@ const HomeFarmacia: React.FC = () => {
           </div>
         </main>
       </div>
+      <FloatingChat
+        currentUser={{
+          id: "farmacia-1",
+          name: "Farmacêutico(a)",
+          role: "Farmácia"
+        }}
+      />
     </div>
   );
 };

@@ -80,29 +80,26 @@ const SidebarFarmacia: React.FC = () => {
             <FileText size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />
             {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Receitas</span>}
           </Link>
-          
           <Link 
-            to="#" 
+            to="/pacientes-farmacia" 
             className="flex items-center px-3 md:px-4 py-2.5 md:py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
           >
             <Users size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />
             {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Pacientes</span>}
           </Link>
-          
           <Link 
-            to="#" 
+            to="/medicamentos-farmacia" 
             className="flex items-center px-3 md:px-4 py-2.5 md:py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
           >
             <Pill size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />
             {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Medicamentos</span>}
           </Link>
-          
           <Link 
-            to="#" 
+            to="/internacao-farmacia" 
             className="flex items-center px-3 md:px-4 py-2.5 md:py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
           >
             <Hospital size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />
-            {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Internações</span>}
+            {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Internação</span>}
           </Link>
         </nav>
         
@@ -113,7 +110,7 @@ const SidebarFarmacia: React.FC = () => {
           )}
           
           <Link 
-            to="#" 
+            to="/perfil-farmacia" 
             className="flex items-center px-3 md:px-4 py-2.5 md:py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
           >
             <User size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />

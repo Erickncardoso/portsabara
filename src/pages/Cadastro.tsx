@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Cabecalho from '../components/Cabecalho';
 import Rodape from '../components/Rodape';
@@ -139,6 +138,7 @@ const Cadastro: React.FC = () => {
                       <SelectContent>
                         <SelectItem value="medico">Médico(a)</SelectItem>
                         <SelectItem value="enfermeiro">Enfermeiro(a)</SelectItem>
+                        <SelectItem value="farmaceutico">Farmacêutico(a)</SelectItem>
                         <SelectItem value="administrativo">Administrativo</SelectItem>
                         <SelectItem value="direcao">Direção</SelectItem>
                         <SelectItem value="outro">Outro</SelectItem>
@@ -171,6 +171,7 @@ const Cadastro: React.FC = () => {
                         <SelectItem value="clinica">Clínica Médica</SelectItem>
                         <SelectItem value="pediatria">Pediatria</SelectItem>
                         <SelectItem value="enfermagem">Enfermagem</SelectItem>
+                        <SelectItem value="farmacia">Farmácia</SelectItem>
                         <SelectItem value="administracao">Administração</SelectItem>
                         <SelectItem value="ti">Tecnologia da Informação</SelectItem>
                         <SelectItem value="outro">Outro</SelectItem>
