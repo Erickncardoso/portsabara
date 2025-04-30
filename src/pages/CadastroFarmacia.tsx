@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, FileText, Lock, User } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
-import Cabecalho from '../components/Cabecalho';
-import Rodape from '../components/Rodape';
 import { getLogoUrl } from '../services/logoService';
 
 const CadastroFarmacia: React.FC = () => {
@@ -48,9 +46,8 @@ const CadastroFarmacia: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Cabecalho />
-      <main className="flex-grow py-12 bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
+      <main className="flex-grow py-12 flex items-center justify-center">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <Card className="shadow-xl border-0 overflow-hidden rounded-3xl">
@@ -58,9 +55,9 @@ const CadastroFarmacia: React.FC = () => {
                 {/* Lado esquerdo azul com mensagem de boas vindas */}
                 <div className="w-full md:w-2/5 bg-sabara-blue text-white p-10 flex flex-col justify-center items-center text-center">
                   <img 
-                    src='/images/logo-sabara.png' 
+                    src='/images/logo-sabara-branca.png' 
                     alt="Logo Hospital Sabará" 
-                    className="h-20 mb-10"
+                    className="h-52 mb-10"
                   />
                   <h2 className="text-4xl font-bold mb-6">Bem-vindo</h2>
                   <p className="text-xl mb-6">Preencha os dados para cadastrar um novo funcionário</p>
@@ -180,7 +177,6 @@ const CadastroFarmacia: React.FC = () => {
           </div>
         </div>
       </main>
-      <Rodape />
     </div>
   );
 };

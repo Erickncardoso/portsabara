@@ -36,14 +36,14 @@ const LoginAdmin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-white">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
             <img 
-              src='/images/logo-sabara.png' 
+              src='/images/logo-sabara-branca.png' 
               alt="Logo Hospital Sabará" 
-              className="h-16"
+              className="h-52"
             />
           </div>
           <CardTitle className="text-2xl font-bold">Login Administrativo</CardTitle>

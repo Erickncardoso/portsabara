@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, User, Lock, Mail, Phone, CreditCard, Home, Hash } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
-import Cabecalho from '../components/Cabecalho';
-import Rodape from '../components/Rodape';
 import { getLogoUrl } from '../services/logoService';
 
 const CadastroPaciente: React.FC = () => {
@@ -116,10 +114,8 @@ const CadastroPaciente: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Cabecalho />
-      
-      <main className="flex-grow py-8 bg-gradient-to-b from-blue-50 to-white flex items-center">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
+      <main className="flex-grow py-12 flex items-center justify-center">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <Card className="shadow-lg border-0 overflow-hidden rounded-2xl">
@@ -127,9 +123,9 @@ const CadastroPaciente: React.FC = () => {
                 {/* Lado esquerdo azul com mensagem de boas vindas */}
                 <div className="w-full md:w-2/5 bg-sabara-blue text-white p-8 flex flex-col justify-center items-center text-center">
                   <img 
-                    src='/images/logo-sabara.png' 
+                    src='/images/logo-sabara-branca.png' 
                     alt="Logo Hospital Sabará" 
-                    className="h-16 mb-8 filter brightness-0 invert"
+                    className="h-52 mb-8"
                   />
                   <h2 className="text-3xl font-bold mb-4">Bem-vindo</h2>
                   <p className="text-lg mb-4">Preencha seus dados para realizar o cadastro no portal.</p>
@@ -376,8 +372,6 @@ const CadastroPaciente: React.FC = () => {
           </div>
         </div>
       </main>
-      
-      <Rodape />
     </div>
   );
 };
