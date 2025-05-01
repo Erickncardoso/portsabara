@@ -1,6 +1,6 @@
 import React from 'react';
-import { Bell, User } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Bell } from 'lucide-react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 interface HeaderPacienteProps {
   nome?: string;
@@ -10,11 +10,14 @@ interface HeaderPacienteProps {
 }
 
 const HeaderPaciente: React.FC<HeaderPacienteProps> = ({ 
-  nome = 'ROBERT', 
-  tipo = 'PACIENTE',
+  nome = 'João Silva', 
+  tipo = 'Paciente',
   marginLeft,
   titulo = 'HOME'
 }) => {
+  // Pega a primeira letra do nome
+  const inicial = nome.split(' ')[0].charAt(0);
+
   return (
     <div className="bg-white" style={marginLeft ? { marginLeft } : undefined}>
       <div className="px-6 py-2">
@@ -29,15 +32,14 @@ const HeaderPaciente: React.FC<HeaderPacienteProps> = ({
               
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10 border border-gray-200">
-                  <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${nome}`} alt={nome} />
-                  <AvatarFallback>
-                    <User className="h-6 w-6" />
+                  <AvatarFallback className="bg-gray-100 text-gray-600">
+                    {inicial}
                   </AvatarFallback>
                 </Avatar>
                 
                 <div className="text-right">
-                  <p className="font-semibold">{nome}</p>
-                  <p className="text-xs text-red-500">{tipo}</p>
+                  <p className="font-medium text-gray-900">{nome}</p>
+                  <p className="text-sm text-red-500">{tipo}</p>
                 </div>
               </div>
             </div>

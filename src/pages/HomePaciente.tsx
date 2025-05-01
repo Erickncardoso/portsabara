@@ -8,6 +8,7 @@ import Banner from '../components/Banner';
 import { Calendar, User, BookOpen, Monitor } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import FloatingChat from '@/components/FloatingChat';
+import { Link } from 'react-router-dom';
 
 const HomePaciente: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -70,12 +71,12 @@ const HomePaciente: React.FC = () => {
               botoes={[
                 {
                   texto: "Agendar Consulta",
-                  link: "#",
+                  link: "/consultas-paciente",
                   variante: "primario"
                 },
                 {
                   texto: "Ver Exames",
-                  link: "#",
+                  link: "/exames-paciente",
                   variante: "secundario"
                 }
               ]}
@@ -100,7 +101,7 @@ const HomePaciente: React.FC = () => {
                     <CardAcao 
                       titulo="Agendar Exame" 
                       icon={<Calendar className="text-red-500" />}
-                      link="#"
+                      link="/exames-paciente"
                     />
                   </div>
                   
@@ -108,7 +109,7 @@ const HomePaciente: React.FC = () => {
                     <CardAcao 
                       titulo="Agendar Consulta" 
                       icon={<User className="text-blue-500" />}
-                      link="#"
+                      link="/consultas-paciente"
                     />
                   </div>
                   
@@ -116,7 +117,7 @@ const HomePaciente: React.FC = () => {
                     <CardAcao 
                       titulo="Dicas de Saúde" 
                       icon={<BookOpen className="text-green-500" />}
-                      link="#"
+                      link="/dicas-saude"
                     />
                   </div>
                   
@@ -124,7 +125,7 @@ const HomePaciente: React.FC = () => {
                     <CardAcao 
                       titulo="Ver Resultado de Exame" 
                       icon={<Monitor className="text-purple-500" />}
-                      link="#"
+                      link="/exames-paciente"
                     />
                   </div>
                 </div>
@@ -132,6 +133,12 @@ const HomePaciente: React.FC = () => {
               
               {/* Tabela de histórico de exames - agora no lado direito */}
               <div className="md:flex-1">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-semibold">Histórico de Exames</h2>
+                  <Link to="/exames-paciente" className="text-blue-600 hover:text-blue-800">
+                    Ver mais
+                  </Link>
+                </div>
                 <TabelaHistoricoExames exames={examesHistorico} />
               </div>
             </div>
