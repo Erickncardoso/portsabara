@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidebarEnfermaria from '../components/SidebarEnfermaria';
 import HeaderEnfermaria from '../components/HeaderEnfermaria';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Bed } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, getMainContentClasses } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 import FloatingChat from '../components/FloatingChat';
 
 const LeitosEnfermaria = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   const leitos = [
     { numero: '101', status: 'Ocupado', paciente: 'João Silva', tipo: 'UTI' },
@@ -24,13 +30,16 @@ const LeitosEnfermaria = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
       />
       
-      <div className={cn(
-        "transition-all duration-300 ease-in-out",
-        isSidebarOpen ? "ml-64" : "ml-16"
-      )}>
-        <HeaderEnfermaria />
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderEnfermaria 
+          titulo="GESTÃO DE LEITOS"
+          className={cn(
+            "sticky top-0 z-30",
+            isMobile && "pt-16"
+          )}
+        />
         
-        <main className="p-6">
+        <main className="p-3 sm:p-6">
           <Card className="shadow-md">
             <CardHeader className="bg-gradient-to-r from-red-500 to-red-600">
               <div className="flex items-center gap-2">
@@ -38,7 +47,7 @@ const LeitosEnfermaria = () => {
                 <CardTitle className="text-xl font-bold text-white">Gestão de Leitos</CardTitle>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>

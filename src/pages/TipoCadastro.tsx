@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { User, UserRound, Hospital, Wrench, LogIn, UserPlus, Pill } from 'lucide-react';
+import { User, UserRound, Hospital, Wrench, LogIn, UserPlus, Pill, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -51,7 +51,7 @@ const TipoModal: React.FC<{
       case 'manutencao':
         return <Wrench className="mr-2" />;
       case 'limpeza':
-        return <Wrench className="mr-2" />;
+        return <Trash2 className="mr-2" />;
       case 'farmacia':
         return <Pill className="mr-2" />;
       default:
@@ -67,16 +67,6 @@ const TipoModal: React.FC<{
     if (tipo === 'limpeza') return '/login-limpeza';
     if (tipo === 'farmacia') return '/login-farmacia';
     return '/login';
-  };
-  
-  const getCadastroUrl = () => {
-    if (tipo === 'paciente') return '/cadastro-paciente';
-    if (tipo === 'medico') return '/cadastro-medico';
-    if (tipo === 'enfermeiro') return '/cadastro-enfermeiro';
-    if (tipo === 'manutencao') return '/cadastro-manutencao';
-    if (tipo === 'limpeza') return '/cadastro-limpeza';
-    if (tipo === 'farmacia') return '/cadastro-farmacia';
-    return `/cadastro?tipo=${tipo}`;
   };
   
   return (
@@ -95,16 +85,6 @@ const TipoModal: React.FC<{
           >
             <Link to={getLoginUrl()}>
               <LogIn /> Fazer Login
-            </Link>
-          </Button>
-          
-          <Button 
-            variant="outline" 
-            className="border-green-500 text-green-500 hover:bg-green-50 h-12 gap-2 text-base rounded-xl shadow-sm hover:shadow-md transition-all"
-            asChild
-          >
-            <Link to={getCadastroUrl()}>
-              <UserPlus /> Cadastrar
             </Link>
           </Button>
         </div>
@@ -185,9 +165,9 @@ const TipoCadastro: React.FC = () => {
             </div>
             <div>
               <TipoCard 
-                icon={<Wrench size={48} />} 
+                icon={<Trash2 size={48} />} 
                 titulo="Limpeza"
-                onClick={() => openModal('limpeza', 'Limpeza', <Wrench size={48} />)}
+                onClick={() => openModal('limpeza', 'Limpeza', <Trash2 size={48} />)}
               />
             </div>
           </div>

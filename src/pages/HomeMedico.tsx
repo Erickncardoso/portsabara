@@ -8,12 +8,14 @@ import HeaderMedico from '../components/HeaderMedico';
 import TabelaConsultas from '../components/TabelaConsultas';
 import CalendarioMedico from '../components/CalendarioMedico';
 import LembreteConsulta from '../components/LembreteConsulta';
-import { cn } from '@/lib/utils';
+import { cn, getMainContentClasses } from '@/lib/utils';
 import FloatingChat from '@/components/FloatingChat';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const HomeMedico: React.FC = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isMobile = useIsMobile();
 
   const currentUser = {
     id: '2',
@@ -81,19 +83,14 @@ const HomeMedico: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <SidebarMedico 
-        className="transition-all duration-300 ease-in-out"
         isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       
-      <HeaderMedico nome={currentUser.name} tipo="MÉDICO" marginLeft={isSidebarOpen ? '16rem' : '4rem'} titulo="Home" />
-      <FloatingChat currentUser={currentUser} />
-      <main 
-        className="transition-all duration-300 ease-in-out"
-        style={{ 
-          marginLeft: isSidebarOpen ? '16rem' : '4rem',
-        }}
-      >
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderMedico nome={currentUser.name} tipo="MÉDICO" titulo="Home" />
+        <FloatingChat currentUser={currentUser} />
+        
         <ScrollArea className="flex-1">
           <div className="p-4 lg:p-6 space-y-4 lg:space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -205,7 +202,7 @@ const HomeMedico: React.FC = () => {
             </div>
           </div>
         </ScrollArea>
-      </main>
+      </div>
     </div>
   );
 };

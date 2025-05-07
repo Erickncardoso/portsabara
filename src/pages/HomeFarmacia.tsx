@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import SidebarFarmacia from '../components/SidebarFarmacia';
 import HeaderFarmacia from '../components/HeaderFarmacia';
 import TabelaValidacaoMedicamentos from '../components/TabelaValidacaoMedicamentos';
@@ -7,10 +7,15 @@ import TabelaPacientesInternados from '../components/TabelaPacientesInternados';
 import CardReceita from '../components/CardReceita';
 import { useIsMobile } from '../hooks/use-mobile';
 import FloatingChat from '../components/FloatingChat';
-import { cn } from '../lib/utils';
+import { cn, getMainContentClasses } from '../lib/utils';
 
 const HomeFarmacia: React.FC = () => {
   const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   // Efeito para inicializar localStorage se necessário
   useEffect(() => {
@@ -72,12 +77,21 @@ const HomeFarmacia: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      <SidebarFarmacia />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <HeaderFarmacia />
-        <main className="flex-1 p-6">
-          <div className="px-3 sm:px-6 py-3 sm:py-4">
+    <div className="min-h-screen bg-gray-100">
+      <SidebarFarmacia 
+        isOpen={isSidebarOpen}
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderFarmacia 
+          titulo="INÍCIO"
+          className={cn(
+            "sticky top-0 z-30",
+            isMobile && "pt-16"
+          )}
+        />
+        <main className="flex-1 p-3 sm:p-6">
+          <div className="px-0 sm:px-6 py-3 sm:py-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
               <div>
                 <TabelaValidacaoMedicamentos />

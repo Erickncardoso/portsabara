@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidebarManutencao from '../components/SidebarManutencao';
-import { cn } from '@/lib/utils';
-import { Bell } from 'lucide-react';
+import { cn, getMainContentClasses } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 import FloatingChat from '@/components/FloatingChat';
 import { HeaderManutencao } from '../components/HeaderManutencao';
 
 const HomeManutencao: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -14,14 +19,17 @@ const HomeManutencao: React.FC = () => {
         isOpen={isSidebarOpen} 
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
       />
-      <HeaderManutencao nome="Robert" tipo="Manutenção" marginLeft={isSidebarOpen ? '16rem' : '4rem'} titulo="Home" />
-      
-      <div className={cn(
-        "flex-1 flex flex-col overflow-hidden",
-        "transition-all duration-300 ease-in-out",
-        isSidebarOpen ? "ml-64" : "ml-16"
-      )}>
-        <main className="flex-1 p-6 mt-16">
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderManutencao 
+          nome="Robert" 
+          tipo="Manutenção" 
+          titulo="HOME"
+          className={cn(
+            "sticky top-0 z-30",
+            isMobile && "pt-16"
+          )}
+        />
+        <main className="flex-1 p-3 sm:p-6 mt-0">
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div className="flex items-center gap-4">
               <div className="bg-green-100 p-2 rounded-lg">
@@ -158,7 +166,6 @@ const HomeManutencao: React.FC = () => {
           </div>
         </main>
       </div>
-
       <FloatingChat
         currentUser={{
           id: "manutencao-1",

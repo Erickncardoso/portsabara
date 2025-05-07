@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Users, 
@@ -10,10 +10,13 @@ import {
   LogOut, 
   Phone,
   ChevronFirst,
-  ChevronLast
+  ChevronLast,
+  Menu
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 interface SidebarEnfermariaProps {
   className?: string;
@@ -22,6 +25,152 @@ interface SidebarEnfermariaProps {
 }
 
 const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen, onToggle }) => {
+  const isMobile = useIsMobile();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  // Conteúdo do menu para ser reutilizado
+  const MenuItems = () => (
+    <>
+      <nav className="flex-1 py-6 px-2 space-y-2">
+        <Link 
+          to="/home-enfermaria" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && setIsSheetOpen(false)}
+        >
+          <Users size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Pacientes</span>
+        </Link>
+        
+        <Link 
+          to="/leitos-enfermaria" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && setIsSheetOpen(false)}
+        >
+          <Bed size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Leitos</span>
+        </Link>
+        
+        <Link 
+          to="/prescricoes-enfermaria" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && setIsSheetOpen(false)}
+        >
+          <ClipboardList size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Prescrições</span>
+        </Link>
+        
+        <Link 
+          to="/procedimentos-enfermaria" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && setIsSheetOpen(false)}
+        >
+          <Stethoscope size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Procedimentos</span>
+        </Link>
+
+        <Link 
+          to="/agenda-enfermaria" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && setIsSheetOpen(false)}
+        >
+          <Calendar size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Agenda</span>
+        </Link>
+      </nav>
+      
+      <div className="px-2 py-4">
+        <p className={cn(
+          "text-xs font-semibold text-gray-500 mb-4 px-3",
+          isMobile ? "block" : isOpen ? "block" : "hidden"
+        )}>CONTA</p>
+        
+        <Link 
+          to="/perfil-enfermeiro" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && setIsSheetOpen(false)}
+        >
+          <User size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Perfil</span>
+        </Link>
+        
+        <Link 
+          to="/" 
+          className="flex items-center px-3 py-3 text-blue-600 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && setIsSheetOpen(false)}
+        >
+          <LogOut size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Sair</span>
+        </Link>
+      </div>
+      
+      <div className={cn(
+        "px-6 py-4 border-t",
+        isMobile ? "block" : isOpen ? "block" : "hidden"
+      )}>
+        <div className="flex items-center text-blue-600 text-sm">
+          <Phone size={18} className="mr-2" />
+          <div>
+            <p className="font-semibold">Número de emergência:</p>
+            <p>+55 (11) xxxx - xxxx</p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+
+  // Versão mobile com Sheet
+  if (isMobile) {
+    return (
+      <>
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="fixed top-4 left-4 z-50 rounded-full w-10 h-10 bg-white shadow-md hover:bg-gray-100"
+            >
+              <Menu size={20} className="text-gray-700" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="p-0 w-[280px]">
+            <div className="h-full flex flex-col">
+              <div className="bg-white p-4 flex items-center justify-center">
+                <img 
+                  src="/images/logo-sabara.png" 
+                  alt="Logo Hospital Sabará" 
+                  className="h-12 object-contain" 
+                />
+              </div>
+              <MenuItems />
+            </div>
+          </SheetContent>
+        </Sheet>
+      </>
+    );
+  }
+
+  // Versão desktop
   return (
     <>
       <Button
@@ -66,104 +215,7 @@ const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen
             />
           </div>
           
-          <nav className="flex-1 py-6 px-2 space-y-2">
-            <Link 
-              to="/home-enfermaria" 
-              className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-            >
-              <Users size={20} className="min-w-[20px]" />
-              <span className={cn(
-                "ml-3 transition-all duration-300",
-                isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-              )}>Pacientes</span>
-            </Link>
-            
-            <Link 
-              to="/leitos-enfermaria" 
-              className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-            >
-              <Bed size={20} className="min-w-[20px]" />
-              <span className={cn(
-                "ml-3 transition-all duration-300",
-                isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-              )}>Leitos</span>
-            </Link>
-            
-            <Link 
-              to="/prescricoes-enfermaria" 
-              className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-            >
-              <ClipboardList size={20} className="min-w-[20px]" />
-              <span className={cn(
-                "ml-3 transition-all duration-300",
-                isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-              )}>Prescrições</span>
-            </Link>
-            
-            <Link 
-              to="/procedimentos-enfermaria" 
-              className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-            >
-              <Stethoscope size={20} className="min-w-[20px]" />
-              <span className={cn(
-                "ml-3 transition-all duration-300",
-                isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-              )}>Procedimentos</span>
-            </Link>
-
-            <Link 
-              to="/agenda-enfermaria" 
-              className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-            >
-              <Calendar size={20} className="min-w-[20px]" />
-              <span className={cn(
-                "ml-3 transition-all duration-300",
-                isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-              )}>Agenda</span>
-            </Link>
-          </nav>
-          
-          <div className="px-2 py-4">
-            <p className={cn(
-              "text-xs font-semibold text-gray-500 mb-4 px-3",
-              isOpen ? "block" : "hidden"
-            )}>CONTA</p>
-            
-            <Link 
-              to="/perfil-enfermeiro" 
-              className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-            >
-              <User size={20} className="min-w-[20px]" />
-              <span className={cn(
-                "ml-3 transition-all duration-300",
-                isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-              )}>Perfil</span>
-            </Link>
-            
-            <Link 
-              to="/" 
-              className="flex items-center px-3 py-3 text-blue-600 hover:bg-gray-100 rounded-md"
-            >
-              <LogOut size={20} className="min-w-[20px]" />
-              <span className={cn(
-                "ml-3 transition-all duration-300",
-                isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-              )}>Sair</span>
-            </Link>
-          </div>
-          
-          <div className={cn(
-            "px-6 py-4 border-t",
-            isOpen ? "block" : "hidden"
-          )}>
-            <div className="flex items-center text-blue-600 text-sm">
-              <Phone size={18} className="mr-2" />
-              <div>
-                <p className="font-semibold">Número de emergência:</p>
-                <p>+55 (11) xxxx - xxxx</p>
-              </div>
-            </div>
-          </div>
+          <MenuItems />
         </div>
       </div>
     </>

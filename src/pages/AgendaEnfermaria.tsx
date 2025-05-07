@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidebarEnfermaria from '../components/SidebarEnfermaria';
 import HeaderEnfermaria from '../components/HeaderEnfermaria';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import { Calendar as CalendarIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, getMainContentClasses } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 import FloatingChat from '../components/FloatingChat';
 
 const AgendaEnfermaria = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
   const [date, setDate] = useState<Date | undefined>(new Date());
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -18,13 +24,16 @@ const AgendaEnfermaria = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
       />
       
-      <div className={cn(
-        "transition-all duration-300 ease-in-out",
-        isSidebarOpen ? "ml-64" : "ml-16"
-      )}>
-        <HeaderEnfermaria />
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderEnfermaria 
+          titulo="AGENDA"
+          className={cn(
+            "sticky top-0 z-30",
+            isMobile && "pt-16"
+          )}
+        />
         
-        <main className="p-6">
+        <main className="p-3 sm:p-6">
           <Card className="shadow-md">
             <CardHeader className="bg-gradient-to-r from-red-500 to-red-600">
               <div className="flex items-center gap-2">

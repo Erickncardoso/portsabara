@@ -5,12 +5,12 @@ import TabelaPacientesInternadosSimples from '../components/TabelaPacientesInter
 import GraficoOcupacao from '../components/GraficoOcupacao';
 import TabelaValidacaoMedicamentosSimples from '../components/TabelaValidacaoMedicamentosSimples';
 import { useIsMobile } from '../hooks/use-mobile';
-import { cn } from '@/lib/utils';
+import { cn, getMainContentClasses } from '@/lib/utils';
 import FloatingChat from '../components/FloatingChat';
 
 const HomeEnfermaria: React.FC = () => {
   const isMobile = useIsMobile();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
 
   useEffect(() => {
     if (!localStorage.getItem('pacientesEnfermaria')) {
@@ -68,6 +68,11 @@ const HomeEnfermaria: React.FC = () => {
     }
   }, []);
 
+  // Atualiza o estado da sidebar quando o tamanho da tela muda
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
+
   return (
     <div className="min-h-screen bg-gray-100">
       <SidebarEnfermaria 
@@ -75,33 +80,33 @@ const HomeEnfermaria: React.FC = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
       />
       
-      <div className={cn(
-        "flex-1 flex flex-col overflow-hidden",
-        "transition-all duration-300 ease-in-out",
-        isSidebarOpen ? "ml-64" : "ml-16"
-      )}>
-        <HeaderEnfermaria />
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderEnfermaria
+          titulo="HOME"
+          className={cn(
+            "sticky top-0 z-30",
+            isMobile && "pt-16"
+          )}
+        />
         
-        <main className="flex-1 p-6">
-          <div className="px-3 sm:px-6 py-3 sm:py-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-              <div>
-                <TabelaPacientesInternadosSimples />
-              </div>
-              
-              <div>
-                <GraficoOcupacao />
-              </div>
+        <main className="flex-1 p-3 sm:p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+            <div>
+              <TabelaPacientesInternadosSimples />
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div>
-                <TabelaValidacaoMedicamentosSimples />
-              </div>
-              
-              <div className="hidden lg:block">
-                {/* Conteúdo futuro aqui */}
-              </div>
+            <div>
+              <GraficoOcupacao />
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div>
+              <TabelaValidacaoMedicamentosSimples />
+            </div>
+            
+            <div className="hidden lg:block">
+              {/* Conteúdo futuro aqui */}
             </div>
           </div>
         </main>

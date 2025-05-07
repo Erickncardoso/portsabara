@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Bell, User, X } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { toast } from '@/components/ui/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 interface Notificacao {
   id: string;
@@ -13,18 +15,19 @@ interface Notificacao {
 interface HeaderMedicoProps {
   nome?: string;
   tipo?: string;
-  marginLeft?: string;
   titulo?: string;
+  className?: string;
 }
 
 const HeaderMedico: React.FC<HeaderMedicoProps> = ({ 
   nome = 'ROBERT', 
   tipo = 'MÉDICO',
-  marginLeft,
-  titulo = 'HOME'
+  titulo = 'HOME',
+  className
 }) => {
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
   const [mostrarNotificacoes, setMostrarNotificacoes] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Carrega notificações do localStorage
@@ -81,19 +84,22 @@ const HeaderMedico: React.FC<HeaderMedicoProps> = ({
   const notificacoesNaoLidas = notificacoes.filter(n => !n.lida).length;
 
   return (
-    <div className="bg-white" style={marginLeft ? { marginLeft } : undefined}>
-      <div className="px-6 py-2">
-        <div className="bg-white rounded-2xl shadow-sm border p-2">
+    <div className={cn("bg-white w-full", className)}>
+      <div className="px-2 sm:px-6 py-2">
+        <div className="bg-white rounded-2xl shadow-sm border p-3 sm:p-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold">{titulo}</h1>
+            <h1 className={cn(
+              "font-bold",
+              isMobile ? "text-xl" : "text-3xl"
+            )}>{titulo}</h1>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <div className="relative">
                 <button 
                   className="p-2 hover:bg-gray-100 rounded-full relative"
                   onClick={() => setMostrarNotificacoes(!mostrarNotificacoes)}
                 >
-                  <Bell size={18} />
+                  <Bell size={isMobile ? 18 : 20} />
                   {notificacoesNaoLidas > 0 && (
                     <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
                       {notificacoesNaoLidas}
@@ -102,7 +108,10 @@ const HeaderMedico: React.FC<HeaderMedicoProps> = ({
                 </button>
                 
                 {mostrarNotificacoes && (
-                  <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg border shadow-lg z-10 p-2 max-h-80 overflow-y-auto">
+                  <div className={cn(
+                    "absolute right-0 mt-2 bg-white rounded-lg border shadow-lg z-10 p-2 max-h-80 overflow-y-auto",
+                    isMobile ? "w-64" : "w-72"
+                  )}>
                     <h3 className="font-semibold text-sm p-2 border-b">Notificações</h3>
                     
                     {notificacoes.length === 0 ? (
@@ -137,8 +146,8 @@ const HeaderMedico: React.FC<HeaderMedicoProps> = ({
                 )}
               </div>
               
-              <div className="flex items-center gap-2">
-                <Avatar className="h-8 w-8 border border-gray-200">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border border-gray-200">
                   <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${nome}`} alt={nome} />
                   <AvatarFallback>
                     <User className="h-5 w-5" />
@@ -146,8 +155,8 @@ const HeaderMedico: React.FC<HeaderMedicoProps> = ({
                 </Avatar>
                 
                 <div className="text-right">
-                  <p className="font-semibold text-sm">{nome}</p>
-                  <p className="text-xs text-red-500">{tipo}</p>
+                  <p className="font-medium text-gray-900 text-sm sm:text-base">{nome}</p>
+                  <p className="text-xs sm:text-sm text-red-500">{tipo}</p>
                 </div>
               </div>
             </div>

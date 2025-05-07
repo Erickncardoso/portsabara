@@ -6,12 +6,14 @@ import CardAcao from '../components/CardAcao';
 import TabelaHistoricoExames from '../components/TabelaHistoricoExames';
 import Banner from '../components/Banner';
 import { Calendar, User, BookOpen, Monitor } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, getMainContentClasses } from '@/lib/utils';
 import FloatingChat from '@/components/FloatingChat';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const HomePaciente: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isMobile = useIsMobile();
 
   const currentUser = {
     id: '1',
@@ -50,11 +52,7 @@ const HomePaciente: React.FC = () => {
       />
       
       {/* Conteúdo principal */}
-      <div className={cn(
-        "flex-1 flex flex-col overflow-hidden",
-        "transition-all duration-300 ease-in-out",
-        isSidebarOpen ? "ml-64" : "ml-16"
-      )}>
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
         {/* Cabeçalho */}
         <HeaderPaciente />
         
@@ -62,8 +60,8 @@ const HomePaciente: React.FC = () => {
         <FloatingChat currentUser={currentUser} />
         
         {/* Conteúdo da página */}
-        <main className="flex-1 p-6">
-          <div className="px-6 py-6">
+        <main className="flex-1 p-4 md:p-6">
+          <div className="px-2 md:px-6 py-4 md:py-6">
             {/* Banner com espaçamento lateral */}
             <Banner 
               titulo="Bem-vindo ao Hospital Sabará" 
@@ -95,7 +93,7 @@ const HomePaciente: React.FC = () => {
             {/* Conteúdo principal - reorganizado para 2 colunas com cards à esquerda */}
             <div className="flex flex-col md:flex-row gap-6">
               {/* Grid de cards de ação - agora com largura ajustada */}
-              <div className="md:w-96 flex flex-col">
+              <div className="md:w-96 flex flex-col w-full">
                 <div className="grid grid-cols-2 gap-4 h-full">
                   <div className="flex flex-col w-full">
                     <CardAcao 
@@ -132,7 +130,7 @@ const HomePaciente: React.FC = () => {
               </div>
               
               {/* Tabela de histórico de exames - agora no lado direito */}
-              <div className="md:flex-1">
+              <div className="md:flex-1 mt-6 md:mt-0">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-semibold">Histórico de Exames</h2>
                   <Link to="/exames-paciente" className="text-blue-600 hover:text-blue-800">
