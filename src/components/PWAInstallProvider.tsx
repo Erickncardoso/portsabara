@@ -23,6 +23,26 @@ export const PWAInstallProvider: React.FC<PWAInstallProviderProps> = ({ children
     if (pathname === '/') return 'home';
     if (pathname.includes('/login')) return 'login';
     if (pathname.includes('/cadastro')) return 'cadastro';
+    if (pathname.includes('/home-')) return 'home-area';
+    if (pathname.includes('/perfil-')) return 'perfil';
+    if (pathname.includes('/exames-')) return 'exames';
+    if (pathname.includes('/consultas-')) return 'consultas';
+    if (pathname.includes('/receitas-')) return 'receitas';
+    if (pathname.includes('/internacao-')) return 'internacao';
+    if (pathname.includes('/leitos-')) return 'leitos';
+    if (pathname.includes('/prescricoes-')) return 'prescricoes';
+    if (pathname.includes('/procedimentos-')) return 'procedimentos';
+    if (pathname.includes('/agenda-')) return 'agenda';
+    if (pathname.includes('/tarefas-')) return 'tarefas';
+    if (pathname.includes('/historico-')) return 'historico';
+    if (pathname.includes('/inventario-')) return 'inventario';
+    if (pathname.includes('/protocolos-')) return 'protocolos';
+    if (pathname.includes('/quartos-')) return 'quartos';
+    if (pathname.includes('/solicitacoes-')) return 'solicitacoes';
+    if (pathname.includes('/medicamentos-')) return 'medicamentos';
+    if (pathname.includes('/pacientes-')) return 'pacientes';
+    if (pathname.includes('/admin-')) return 'admin';
+    if (pathname.includes('/dicas-')) return 'dicas';
     return 'other';
   };
 
@@ -30,12 +50,19 @@ export const PWAInstallProvider: React.FC<PWAInstallProviderProps> = ({ children
   useEffect(() => {
     const pageName = getPageName(location.pathname);
     
-    // Aguardar um pouco para a página carregar
+    // Timing específico para cada página
+    let delay = 2000; // 2 segundos para todas as páginas
+    
+    // Timing especial para página principal
+    if (pageName === 'tipo-cadastro') {
+      delay = 2000; // 2 segundos para página tipo-cadastro
+    }
+    
     const timer = setTimeout(() => {
       if (shouldShowOnPage(pageName)) {
         openModal();
       }
-    }, 1500);
+    }, delay);
 
     return () => clearTimeout(timer);
   }, [location.pathname, shouldShowOnPage, openModal]);

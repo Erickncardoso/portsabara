@@ -16,7 +16,6 @@ export const usePWAInstallModal = (): UsePWAInstallModalReturn => {
   // Chaves do localStorage
   const DONT_SHOW_KEY = 'pwa-install-dont-show';
   const LAST_SHOWN_KEY = 'pwa-install-last-shown';
-  const VISIT_COUNT_KEY = 'pwa-install-visit-count';
 
   // Verificar se deve mostrar o modal
   const shouldShow = (): boolean => {
@@ -27,6 +26,7 @@ export const usePWAInstallModal = (): UsePWAInstallModalReturn => {
     const dontShow = localStorage.getItem(DONT_SHOW_KEY);
     if (dontShow === 'true') return false;
 
+    // SEMPRE MOSTRAR se não está instalado e usuário não escolheu "não mostrar mais"
     return true;
   };
 
@@ -34,67 +34,35 @@ export const usePWAInstallModal = (): UsePWAInstallModalReturn => {
   const shouldShowOnPage = (pageName: string): boolean => {
     if (!shouldShow()) return false;
 
-    // Sempre mostrar na página de tipo de cadastro (se não foi mostrado nos últimos 5 minutos)
-    if (pageName === 'tipo-cadastro') {
-      const lastShown = localStorage.getItem(LAST_SHOWN_KEY);
-      const now = Date.now();
-      
-      if (lastShown) {
-        const lastShownTime = parseInt(lastShown);
-        const fiveMinutes = 5 * 60 * 1000; // 5 minutos em ms
-        
-        // Se foi mostrado há menos de 5 minutos, não mostrar
-        if (now - lastShownTime < fiveMinutes) {
-          return false;
-        }
-      }
-      
-      return true;
-    }
+    // REMOVER verificação de intervalo de 5 minutos
+    // O modal deve aparecer sempre ao recarregar, independente do tempo
 
-    // Para outras páginas, verificar se é uma nova visita e se passou tempo suficiente
-    const lastShown = localStorage.getItem(LAST_SHOWN_KEY);
-    const now = Date.now();
-    
-    if (lastShown) {
-      const lastShownTime = parseInt(lastShown);
-      const fiveMinutes = 5 * 60 * 1000; // 5 minutos em ms
-      
-      // Se foi mostrado há menos de 5 minutos, não mostrar
-      if (now - lastShownTime < fiveMinutes) {
-        return false;
-      }
-    }
-
-    // Para outras páginas, verificar contador de visitas
-    const visitCount = localStorage.getItem(VISIT_COUNT_KEY);
-    const currentCount = visitCount ? parseInt(visitCount) : 0;
-    
-    // Incrementar contador de visitas
-    localStorage.setItem(VISIT_COUNT_KEY, (currentCount + 1).toString());
-    
-    // Mostrar a cada 3 visitas (se não foi mostrado recentemente)
-    return currentCount > 0 && currentCount % 3 === 0;
+    // MOSTRAR EM TODAS AS PÁGINAS sempre que recarregar
+    // Apenas respeitando se usuário escolheu "não mostrar mais"
+    return true;
   };
 
   // Abrir modal
   const openModal = (): void => {
     if (shouldShow()) {
       setShowModal(true);
-      // Registrar quando foi mostrado
+      // Registrar quando foi mostrado (para analytics, se necessário)
       localStorage.setItem(LAST_SHOWN_KEY, Date.now().toString());
+      console.log('📱 Modal PWA aberto - aparece sempre ao recarregar');
     }
   };
 
-  // Fechar modal
+  // Fechar modal (NÃO impede de aparecer novamente)
   const closeModal = (): void => {
     setShowModal(false);
+    console.log('❌ Modal PWA fechado - aparecerá novamente ao recarregar');
   };
 
-  // Não mostrar mais
+  // Não mostrar mais (ÚNICA forma de impedir o modal)
   const dontShowAgain = (): void => {
     localStorage.setItem(DONT_SHOW_KEY, 'true');
     setShowModal(false);
+    console.log('🚫 Modal PWA: "Não mostrar mais" - não aparecerá mais');
   };
 
   // Limpar configurações se o app for desinstalado
@@ -113,12 +81,14 @@ export const usePWAInstallModal = (): UsePWAInstallModalReturn => {
           // Se passou mais de 1 dia, permitir mostrar novamente
           if (Date.now() - lastShownTime > oneDay) {
             localStorage.removeItem(DONT_SHOW_KEY);
+            console.log('🔄 PWA: Resetando "não mostrar mais" após 1 dia sem instalação');
           }
         }
       }
     } else {
       // Se está instalado, não mostrar o modal
       setShowModal(false);
+      console.log('✅ PWA instalada - Modal de instalação desabilitado');
     }
   }, [isInstalled]);
 
@@ -129,6 +99,7 @@ export const usePWAInstallModal = (): UsePWAInstallModalReturn => {
       const timer = setTimeout(() => {
         if (shouldShow()) {
           console.log('🔧 DEV MODE: Modal de instalação PWA disponível para teste');
+          console.log('🔄 NOVO COMPORTAMENTO: Modal aparece sempre ao recarregar (exceto "não mostrar mais")');
         }
       }, 3000);
 
