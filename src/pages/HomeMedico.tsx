@@ -6,7 +6,8 @@ import { Activity, Users, Calendar as CalendarIcon, Bell } from 'lucide-react';
 import SidebarMedico from '../components/SidebarMedico';
 import HeaderMedico from '../components/HeaderMedico';
 import TabelaConsultas from '../components/TabelaConsultas';
-import CalendarioMedico from '../components/CalendarioMedico';
+import CalendarioSimples from '../components/CalendarioSimples';
+import InfoCalendario from '../components/InfoCalendario';
 import LembreteConsulta from '../components/LembreteConsulta';
 import { cn, getMainContentClasses } from '@/lib/utils';
 import FloatingChat from '@/components/FloatingChat';
@@ -204,15 +205,20 @@ const HomeMedico: React.FC = () => {
                     />
                   </CardContent>
                 </Card>
+
+                <div className="w-full">
+                  <h3 className="text-lg font-semibold mb-4">Calendário</h3>
+                  <CalendarioSimples />
+                </div>
               </div>
               
               <div className="lg:col-span-2">
                 <Card className="w-full">
                   <CardHeader className="p-4 lg:p-6">
-                    <CardTitle>Calendário</CardTitle>
+                    <CardTitle>Informações do Calendário</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CalendarioMedico />
+                    <InfoCalendario />
                   </CardContent>
                 </Card>
               </div>
