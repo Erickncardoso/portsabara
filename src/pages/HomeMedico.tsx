@@ -14,14 +14,26 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 const HomeMedico: React.FC = () => {
   const navigate = useNavigate();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const isMobile = useIsMobile();
-
-  const currentUser = {
-    id: '2',
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [currentUser] = useState({
+    id: 'medico-1',
     name: 'Dr. João Silva',
     role: 'Médico',
-    avatar: '/images/avatar-doctor.png'
+    avatar: '/images/avatar.png'
+  });
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
   };
 
   useEffect(() => {
@@ -85,10 +97,17 @@ const HomeMedico: React.FC = () => {
       <SidebarMedico 
         isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
       />
       
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderMedico nome={currentUser.name} tipo="MÉDICO" titulo="Home" />
+        <HeaderMedico 
+          nome={currentUser.name} 
+          tipo="MÉDICO" 
+          titulo="Home" 
+          onMenuClick={handleMenuClick}
+        />
         <FloatingChat currentUser={currentUser} />
         
         <ScrollArea className="flex-1">
@@ -171,7 +190,6 @@ const HomeMedico: React.FC = () => {
                   <CardContent>
                     <TabelaConsultas 
                       tipo="proximas"
-                      titulo="Próximas Consultas"
                     />
                   </CardContent>
                 </Card>
@@ -183,7 +201,6 @@ const HomeMedico: React.FC = () => {
                   <CardContent>
                     <TabelaConsultas 
                       tipo="internados"
-                      titulo="Pacientes Internados"
                     />
                   </CardContent>
                 </Card>

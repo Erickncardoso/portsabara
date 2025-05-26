@@ -3,6 +3,8 @@ import SidebarFarmacia from '../components/SidebarFarmacia';
 import HeaderFarmacia from '../components/HeaderFarmacia';
 import { Camera, X } from 'lucide-react';
 import { toast } from 'sonner';
+import { useIsMobile } from '../hooks/use-mobile';
+import { cn, getMainContentClasses } from '../lib/utils';
 
 interface PerfilData {
   nome: string;
@@ -15,7 +17,7 @@ interface PerfilData {
 }
 
 const perfilInicial: PerfilData = {
-  nome: 'Farmacêutico(a) Responsável',
+  nome: 'Dr. Maria Santos',
   registro: 'CRF-123456',
   email: 'farmacia@sabara.com',
   telefone: '(11) 99999-8888',
@@ -24,9 +26,21 @@ const perfilInicial: PerfilData = {
 };
 
 const PerfilFarmacia: React.FC = () => {
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [perfil, setPerfil] = useState<PerfilData>(perfilInicial);
   const [formData, setFormData] = useState<PerfilData>(perfilInicial);
+  const [currentUser] = useState({
+    id: 'farmacia-1',
+    name: 'Dr. Maria Santos',
+    role: 'Farmacêutico(a)',
+  });
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   useEffect(() => {
     const savedPerfil = localStorage.getItem('perfilFarmacia');
@@ -35,6 +49,22 @@ const PerfilFarmacia: React.FC = () => {
       setFormData(JSON.parse(savedPerfil));
     }
   }, []);
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
+
+  const handleNotificacoesClick = () => {
+    toast.info('Funcionalidade de notificações em desenvolvimento');
+  };
+
+  const handlePerfilClick = () => {
+    toast.info('Funcionalidade de perfil em desenvolvimento');
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -79,11 +109,21 @@ const PerfilFarmacia: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      <SidebarFarmacia />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <HeaderFarmacia nome={perfil.nome} />
-        <main className="flex-1 p-6">
+    <div className="min-h-screen bg-gray-50">
+      <SidebarFarmacia 
+        isOpen={isSidebarOpen}
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
+      />
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderFarmacia 
+          titulo="PERFIL"
+          nome="MARIA SANTOS"
+          tipo="FARMACÊUTICO"
+          onMenuClick={handleMenuClick}
+        />
+        <main className="flex-1 p-3 sm:p-6">
           <div className="px-3 sm:px-6 py-3 sm:py-4 flex justify-center items-start">
             <div className="bg-white rounded-xl shadow p-8 w-full max-w-lg">
               <h1 className="text-xl sm:text-2xl font-bold mb-6 text-sabara-blue">Perfil</h1>

@@ -1,9 +1,11 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SidebarPaciente from '../components/SidebarPaciente';
-import Header from '@/components/Header';
+import HeaderPaciente from '../components/HeaderPaciente';
 import FloatingChat from '@/components/FloatingChat';
 import { ptBR } from "date-fns/locale";
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn, getMainContentClasses } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -13,13 +15,29 @@ import {
 } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/components/ui/use-toast";
 
 const ConsultasPaciente: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(new Date());
   
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
+
   const currentUser = {
     id: '1',
     name: 'João Silva',
@@ -46,26 +64,40 @@ const ConsultasPaciente: React.FC = () => {
     }
   ];
 
+  const handleNotificacoesClick = () => {
+    toast({
+      title: "Notificações",
+      description: "Funcionalidade em desenvolvimento",
+    });
+  };
+
+  const handlePerfilClick = () => {
+    navigate('/perfil-paciente');
+  };
+
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <SidebarPaciente 
         isOpen={isSidebarOpen} 
-        onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
       />
       
-      <div className={cn(
-        "flex-1 flex flex-col transition-all duration-300",
-        isSidebarOpen ? "lg:ml-64" : "lg:ml-16"
-      )}>
-        <Header 
-          title="CONSULTAS" 
-          isSidebarOpen={isSidebarOpen}
-          currentUser={currentUser}
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderPaciente 
+          titulo="CONSULTAS"
+          nome={currentUser.name}
+          tipo={currentUser.role}
+          notificacoes={2}
+          onNotificacoesClick={handleNotificacoesClick}
+          onPerfilClick={handlePerfilClick}
+          onMenuClick={handleMenuClick}
         />
 
         <FloatingChat currentUser={currentUser} />
 
-        <main className="flex-1 pt-20 px-4 pb-6">
+        <main className="flex-1 pt-8 px-4 pb-6">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
             <Card className="lg:col-span-1 w-full bg-white shadow-sm">
               <CardHeader className="pb-0">
@@ -111,8 +143,15 @@ const ConsultasPaciente: React.FC = () => {
             <div className="lg:col-span-2 space-y-6">
               <Card className="bg-white shadow-sm">
                 <CardHeader className="pb-0">
-                  <CardTitle className="text-lg font-semibold">Próximas Consultas</CardTitle>
-                  <CardDescription>Consultas agendadas para os próximos dias</CardDescription>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle className="text-lg font-semibold">Próximas Consultas</CardTitle>
+                      <CardDescription>Consultas agendadas para os próximos dias</CardDescription>
+                    </div>
+                    <Button variant="outline" onClick={() => navigate('/agendar-consulta')}>
+                      Agendar Nova
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 pt-2">
@@ -132,7 +171,7 @@ const ConsultasPaciente: React.FC = () => {
                             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 px-2">
                               {consulta.status}
                             </Badge>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => navigate(`/consulta/${consulta.id}`)}>
                               Ver detalhes
                             </Button>
                           </div>

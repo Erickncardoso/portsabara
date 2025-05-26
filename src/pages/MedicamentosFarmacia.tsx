@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { getMainContentClasses } from '@/lib/utils';
 
 // Schema de validação do formulário
 const medicamentoSchema = z.object({
@@ -24,14 +26,26 @@ type MedicamentoFormData = z.infer<typeof medicamentoSchema>;
 const categorias = ['Antibiótico', 'Analgésico', 'Anti-inflamatório', 'Antialérgico', 'Outros'];
 
 const MedicamentosFarmacia: React.FC = () => {
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategoria, setSelectedCategoria] = useState('Todos');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [medicamentos, setMedicamentos] = useState<Array<any>>([]);
+  const [currentUser] = useState({
+    id: 'farmacia-1',
+    name: 'Dr. Maria Santos',
+    role: 'Farmacêutico(a)',
+  });
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<MedicamentoFormData>({
     resolver: zodResolver(medicamentoSchema)
   });
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   // Carregar medicamentos do localStorage ao montar o componente
   useEffect(() => {
@@ -79,6 +93,22 @@ const MedicamentosFarmacia: React.FC = () => {
     }
   };
 
+  const handleNotificacoesClick = () => {
+    toast.info('Funcionalidade de notificações em desenvolvimento');
+  };
+
+  const handlePerfilClick = () => {
+    toast.info('Funcionalidade de perfil em desenvolvimento');
+  };
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
+
   const filteredMedicamentos = medicamentos.filter(med => {
     const matchesSearch = med.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          med.fornecedor.toLowerCase().includes(searchTerm.toLowerCase());
@@ -87,10 +117,20 @@ const MedicamentosFarmacia: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      <SidebarFarmacia />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <HeaderFarmacia />
+    <div className="min-h-screen bg-gray-50">
+      <SidebarFarmacia 
+        isOpen={isSidebarOpen} 
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
+      />
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderFarmacia 
+          titulo="MEDICAMENTOS"
+          nome="MARIA SANTOS"
+          tipo="FARMACÊUTICO"
+          onMenuClick={handleMenuClick}
+        />
         <main className="flex-1 p-6">
           <div className="px-3 sm:px-6 py-3 sm:py-4">
             {/* Cards de Estatísticas */}

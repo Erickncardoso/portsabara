@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Check, X } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -16,10 +15,9 @@ interface Consulta {
 interface TabelaConsultasProps {
   consultas?: Consulta[];
   tipo: 'proximas' | 'internados';
-  titulo: string;
 }
 
-const TabelaConsultas: React.FC<TabelaConsultasProps> = ({ consultas: consultasIniciais, tipo, titulo }) => {
+const TabelaConsultas: React.FC<TabelaConsultasProps> = ({ consultas: consultasIniciais, tipo }) => {
   const [consultas, setConsultas] = useState<Consulta[]>([]);
   
   const chaveLocalStorage = tipo === 'proximas' ? 'consultasProximas' : 'pacientesInternados';
@@ -117,8 +115,6 @@ const TabelaConsultas: React.FC<TabelaConsultasProps> = ({ consultas: consultasI
   
   return (
     <div className="bg-white rounded-lg border p-3 shadow-md hover:shadow-lg transition-all h-auto">
-      <h2 className="text-md font-semibold mb-1 text-gray-800">{titulo}</h2>
-      
       <Table>
         <TableHeader>
           <TableRow>

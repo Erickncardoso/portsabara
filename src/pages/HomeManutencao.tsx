@@ -8,28 +8,44 @@ import { HeaderManutencao } from '../components/HeaderManutencao';
 const HomeManutencao: React.FC = () => {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [currentUser] = useState({
+    id: 'manutencao-1',
+    name: 'Robert Silva',
+    role: 'Manutenção',
+  });
 
   useEffect(() => {
     setIsSidebarOpen(!isMobile);
   }, [isMobile]);
 
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <SidebarManutencao 
         isOpen={isSidebarOpen} 
-        onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
       />
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
         <HeaderManutencao 
-          nome="Robert" 
-          tipo="Manutenção" 
-          titulo="HOME"
+          titulo="INÍCIO"
+          nome="ROBERT SILVA"
+          tipo="MANUTENÇÃO"
+          onMenuClick={handleMenuClick}
           className={cn(
-            "sticky top-0 z-30",
-            isMobile && "pt-16"
+            "sticky top-0 z-30"
           )}
         />
-        <main className="flex-1 p-3 sm:p-6 mt-0">
+        <main className="flex-1 p-3 sm:p-6 mt-0 bg-gray-50">
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div className="flex items-center gap-4">
               <div className="bg-green-100 p-2 rounded-lg">
@@ -93,7 +109,9 @@ const HomeManutencao: React.FC = () => {
                 <tbody>
                   <tr className="border-b border-gray-100">
                     <td className="py-3 px-4">
-                      <img src="/images/avatar.png" alt="Shyam Khanna" className="w-8 h-8 rounded-full" />
+                      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
+                        SK
+                      </div>
                     </td>
                     <td className="py-3 px-4 text-sm">Shyam Khanna</td>
                     <td className="py-3 px-4 text-sm">Heart Disease</td>
@@ -115,7 +133,9 @@ const HomeManutencao: React.FC = () => {
                   </tr>
                   <tr className="border-b border-gray-100">
                     <td className="py-3 px-4">
-                      <img src="/images/avatar.png" alt="Jean Lee Un" className="w-8 h-8 rounded-full" />
+                      <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-bold text-sm">
+                        JL
+                      </div>
                     </td>
                     <td className="py-3 px-4 text-sm">Jean Lee Un</td>
                     <td className="py-3 px-4 text-sm">Heart Disease</td>
@@ -137,7 +157,9 @@ const HomeManutencao: React.FC = () => {
                   </tr>
                   <tr className="border-b border-gray-100">
                     <td className="py-3 px-4">
-                      <img src="/images/avatar.png" alt="Clara Brook" className="w-8 h-8 rounded-full" />
+                      <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-sm">
+                        CB
+                      </div>
                     </td>
                     <td className="py-3 px-4 text-sm">Clara Brook</td>
                     <td className="py-3 px-4 text-sm">Heart Disease</td>
@@ -168,9 +190,9 @@ const HomeManutencao: React.FC = () => {
       </div>
       <FloatingChat
         currentUser={{
-          id: "manutencao-1",
-          name: "Robert",
-          role: "Manutenção"
+          id: currentUser.id,
+          name: currentUser.name,
+          role: currentUser.role
         }}
       />
     </div>

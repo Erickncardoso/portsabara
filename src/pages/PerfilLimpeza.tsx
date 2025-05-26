@@ -1,84 +1,159 @@
 import React, { useState, useEffect } from 'react';
 import { SidebarLimpeza } from '@/components/SidebarLimpeza';
+import { HeaderLimpeza } from '@/components/HeaderLimpeza';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { User, Mail, Phone, Award, Calendar } from 'lucide-react';
 import { cn, getMainContentClasses } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { User, Bell } from 'lucide-react';
 import FloatingChat from '@/components/FloatingChat';
 
 export default function PerfilLimpeza() {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [currentUser] = useState({
+    id: 'limpeza-1',
+    name: 'Maria Silva',
+    role: 'Limpeza',
+  });
 
   useEffect(() => {
     setIsSidebarOpen(!isMobile);
   }, [isMobile]);
 
-  const currentUser = {
-    id: '5',
-    name: 'Maria Silva',
-    role: 'Limpeza',
-    avatar: '/images/avatar-limpeza.png'
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
+
+  const funcionario = {
+    nome: "Maria Silva",
+    email: "maria.silva@hospital.com",
+    telefone: "(11) 98765-4321",
+    registro: "LMP-123456",
+    experiencia: "5 anos",
+    especialidade: "Limpeza Hospitalar",
+    turno: "Manhã",
+    setor: "Limpeza Geral"
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 overflow-hidden">
-      <SidebarLimpeza isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
+    <div className="min-h-screen bg-gray-100">
+      <SidebarLimpeza 
+        isOpen={isSidebarOpen} 
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
+      />
+      
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <div className={cn(
-          'flex justify-between items-center',
-          'sticky top-0 z-30 bg-white border-b border-gray-100 py-3 px-2 sm:px-6 mb-8'
-        )}>
-          <h1 className={cn(
-            'font-bold',
-            isMobile ? 'text-xl' : 'text-2xl'
-          )}>PERFIL</h1>
-          <div className="flex items-center gap-2 sm:gap-4">
-            <button className="p-2 hover:bg-gray-100 rounded-full relative">
-              <Bell size={isMobile ? 18 : 20} className="text-gray-600" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            <div className="flex items-center gap-2 sm:gap-3">
-              <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border-2 border-gray-200">
-                <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=MariaSilva" />
-                <AvatarFallback>MS</AvatarFallback>
-              </Avatar>
-              <div className="text-right">
-                <p className="font-semibold text-gray-900 text-sm sm:text-base">MARIA SILVA</p>
-                <p className="text-xs sm:text-sm text-red-600">LIMPEZA</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="p-3 sm:p-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex flex-col items-center">
-                <Avatar className="h-24 w-24 mb-4">
-                  <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=MariaSilva" />
-                  <AvatarFallback><User className="h-12 w-12" /></AvatarFallback>
-                </Avatar>
-                <h2 className="text-2xl font-bold mb-2">Maria Silva</h2>
-                <p className="text-gray-600 mb-4">Equipe de Limpeza</p>
-                <div className="w-full max-w-md space-y-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="font-semibold mb-2">Informações Pessoais</h3>
-                    <div className="space-y-2">
-                      <p><span className="font-medium">ID:</span> #12345</p>
-                      <p><span className="font-medium">Email:</span> maria.silva@hospital.com</p>
-                      <p><span className="font-medium">Telefone:</span> (11) 98765-4321</p>
+        <HeaderLimpeza 
+          titulo="PERFIL"
+          nome="MARIA SILVA"
+          tipo="LIMPEZA"
+          onMenuClick={handleMenuClick}
+          className={cn(
+            "sticky top-0 z-30"
+          )}
+        />
+        
+        <main className="flex-1 p-3 sm:p-6 bg-gray-50">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="shadow-md">
+              <CardHeader className="bg-gradient-to-r from-blue-500 to-blue-600">
+                <div className="flex items-center gap-2">
+                  <User className="h-6 w-6 text-white" />
+                  <CardTitle className="text-xl font-bold text-white">Informações Pessoais</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6 space-y-4">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <User className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <p className="font-medium">Nome</p>
+                      <p className="text-gray-600">{funcionario.nome}</p>
                     </div>
                   </div>
-                  <Button className="w-full">Editar Perfil</Button>
+                  <div className="flex items-center gap-3">
+                    <Mail className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <p className="font-medium">E-mail</p>
+                      <p className="text-gray-600">{funcionario.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Phone className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <p className="font-medium">Telefone</p>
+                      <p className="text-gray-600">{funcionario.telefone}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-md">
+              <CardHeader className="bg-gradient-to-r from-blue-500 to-blue-600">
+                <div className="flex items-center gap-2">
+                  <Award className="h-6 w-6 text-white" />
+                  <CardTitle className="text-xl font-bold text-white">Informações Profissionais</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6 space-y-4">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <Award className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <p className="font-medium">Registro</p>
+                      <p className="text-gray-600">{funcionario.registro}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Calendar className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <p className="font-medium">Experiência</p>
+                      <p className="text-gray-600">{funcionario.experiencia}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Award className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <p className="font-medium">Especialidade</p>
+                      <p className="text-gray-600">{funcionario.especialidade}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Calendar className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <p className="font-medium">Turno</p>
+                      <p className="text-gray-600">{funcionario.turno}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Award className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <p className="font-medium">Setor</p>
+                      <p className="text-gray-600">{funcionario.setor}</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </main>
       </div>
-      <FloatingChat currentUser={currentUser} />
+
+      <FloatingChat
+        currentUser={{
+          id: currentUser.id,
+          name: currentUser.name,
+          role: currentUser.role
+        }}
+      />
     </div>
   );
 }

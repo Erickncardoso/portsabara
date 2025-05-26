@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { getMainContentClasses } from '@/lib/utils';
 
 // Schema de validação do formulário
 const internacaoSchema = z.object({
@@ -27,14 +29,26 @@ const quartos = ['101', '102', '103', '201', '202', '203', '301', '302', '303'];
 const leitos = ['A', 'B', 'C', 'D'];
 
 const InternacaoFarmacia: React.FC = () => {
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedQuarto, setSelectedQuarto] = useState('Todos');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [internacoes, setInternacoes] = useState<Array<any>>([]);
+  const [currentUser] = useState({
+    id: 'farmacia-1',
+    name: 'Dr. Maria Santos',
+    role: 'Farmacêutico(a)',
+  });
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<InternacaoFormData>({
     resolver: zodResolver(internacaoSchema)
   });
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   // Carregar internações do localStorage ao montar o componente
   useEffect(() => {
@@ -101,11 +115,37 @@ const InternacaoFarmacia: React.FC = () => {
     return matchesSearch && matchesQuarto;
   });
 
+  const handleNotificacoesClick = () => {
+    toast.info('Funcionalidade de notificações em desenvolvimento');
+  };
+
+  const handlePerfilClick = () => {
+    toast.info('Funcionalidade de perfil em desenvolvimento');
+  };
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      <SidebarFarmacia />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <HeaderFarmacia />
+    <div className="min-h-screen bg-gray-50">
+      <SidebarFarmacia 
+        isOpen={isSidebarOpen} 
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
+      />
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderFarmacia 
+          titulo="INTERNAÇÕES"
+          nome="MARIA SANTOS"
+          tipo="FARMACÊUTICO"
+          onMenuClick={handleMenuClick}
+        />
         <main className="flex-1 p-6">
           <div className="px-3 sm:px-6 py-3 sm:py-4">
             {/* Cards de Estatísticas */}

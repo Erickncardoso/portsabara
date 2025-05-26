@@ -1,154 +1,213 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, User, LogOut, Phone, Users, Pill, Hospital, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useIsMobile } from '../hooks/use-mobile';
-import { toast } from 'sonner';
+import { Home, FileText, Pill, Users, Hospital, User, LogOut, Phone, ChevronFirst, ChevronLast, Menu, LayoutDashboard } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-const SidebarFarmacia: React.FC = () => {
+interface SidebarFarmaciaProps {
+  className?: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  isSheetOpen?: boolean;
+  onSheetOpenChange?: (open: boolean) => void;
+}
+
+const SidebarFarmacia: React.FC<SidebarFarmaciaProps> = ({ 
+  className, 
+  isOpen, 
+  onToggle, 
+  isSheetOpen = false, 
+  onSheetOpenChange 
+}) => {
   const isMobile = useIsMobile();
-  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
 
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-    toast.info(isCollapsed ? 'Sidebar expandida' : 'Sidebar minimizada', {
-      position: 'bottom-right',
-      duration: 2000
-    });
-  };
-  
-  return (
+  // Conteúdo do menu para ser reutilizado
+  const MenuItems = () => (
     <>
-      {/* Botão de menu para dispositivos móveis */}
-      {isMobile && (
-        <button 
-          onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-50 p-2 bg-white rounded-full shadow-lg"
+      <nav className="flex-1 py-6 px-2 space-y-2">
+        <a 
+          href="https://6809855340a654000a294d2e.us-e1.tago.run/dashboards/info/68123217ed779e000ae66e2e?anonymousToken=00000000-6809-8553-40a6-54000a294d2e"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
-          {sidebarOpen ? <X size={24} className="text-red-500" /> : <Menu size={24} className="text-blue-500" />}
-        </button>
-      )}
+          <LayoutDashboard size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Dashboard</span>
+        </a>
+        
+        <Link 
+          to="/receitas-farmacia" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
+        >
+          <FileText size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Receitas</span>
+        </Link>
+        
+        <Link 
+          to="/medicamentos-farmacia" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
+        >
+          <Pill size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Medicamentos</span>
+        </Link>
+        
+        <Link 
+          to="/pacientes-farmacia" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
+        >
+          <Users size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Pacientes</span>
+        </Link>
+        
+        <Link 
+          to="/internacao-farmacia" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
+        >
+          <Hospital size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Internação</span>
+        </Link>
+      </nav>
       
-      {/* Sidebar */}
-      <div 
-        className={`
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-          fixed md:static top-0 left-0 z-40 h-screen 
-          ${isCollapsed && !isMobile ? 'w-20' : 'w-64'} 
-          bg-gradient-to-b from-white to-gray-50 shadow-xl transition-all duration-300 ease-in-out
-          border-r border-gray-100
-        `}
-      >
-        {/* Logo */}
-        <div className="bg-white p-6 flex items-center justify-center relative">
-          <img 
-            src="/images/logo-sabara.png" 
-            alt="Logo Hospital Sabará" 
-            className={`transition-all duration-300 ${isCollapsed && !isMobile ? 'h-8 w-8' : 'h-10 md:h-12'} object-contain`}
-          />
-          
-          {/* Botão de minimizar/maximizar - Apenas para desktop */}
-          {!isMobile && (
-            <button 
-              onClick={toggleCollapse}
-              className="absolute -right-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md border border-gray-200 group hover:bg-blue-50 transition-colors"
-              title={isCollapsed ? "Expandir menu" : "Minimizar menu"}
-            >
-              {isCollapsed ? (
-                <ChevronRight size={16} className="text-blue-600 group-hover:text-blue-800" />
-              ) : (
-                <ChevronLeft size={16} className="text-blue-600 group-hover:text-blue-800" />
-              )}
-            </button>
-          )}
-        </div>
+      <div className="px-2 py-4">
+        <p className={cn(
+          "text-xs font-semibold text-gray-500 mb-4 px-3",
+          isMobile ? "block" : isOpen ? "block" : "hidden"
+        )}>CONTA</p>
         
-        {/* Menu de navegação */}
-        <nav className="flex-1 py-4 md:py-6 px-4 space-y-1 md:space-y-1.5 overflow-y-auto">
-          <Link 
-            to="/home-farmacia" 
-            className={`
-              flex items-center px-3 md:px-4 py-2.5 md:py-3 text-gray-700 
-              hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200
-              ${location.pathname === '/home-farmacia' ? 'bg-blue-100 text-blue-700 font-medium' : ''}
-            `}
-          >
-            <FileText size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />
-            {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Receitas</span>}
-          </Link>
-          <Link 
-            to="/pacientes-farmacia" 
-            className="flex items-center px-3 md:px-4 py-2.5 md:py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
-          >
-            <Users size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />
-            {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Pacientes</span>}
-          </Link>
-          <Link 
-            to="/medicamentos-farmacia" 
-            className="flex items-center px-3 md:px-4 py-2.5 md:py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
-          >
-            <Pill size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />
-            {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Medicamentos</span>}
-          </Link>
-          <Link 
-            to="/internacao-farmacia" 
-            className="flex items-center px-3 md:px-4 py-2.5 md:py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
-          >
-            <Hospital size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />
-            {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Internação</span>}
-          </Link>
-        </nav>
+        <Link 
+          to="/perfil-farmacia" 
+          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
+        >
+          <User size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Perfil</span>
+        </Link>
         
-        {/* Seção ACCOUNT */}
-        <div className="px-6 py-3 md:py-4 border-t border-gray-100">
-          {(!isCollapsed || isMobile) && (
-            <p className="text-xs font-semibold text-gray-400 mb-3 md:mb-4 tracking-wider">CONTA</p>
-          )}
-          
-          <Link 
-            to="/perfil-farmacia" 
-            className="flex items-center px-3 md:px-4 py-2.5 md:py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
-          >
-            <User size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />
-            {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Perfil</span>}
-          </Link>
-          
-          <Link 
-            to="/" 
-            className="flex items-center px-3 md:px-4 py-2.5 md:py-3 text-blue-600 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all duration-200"
-          >
-            <LogOut size={isMobile ? 18 : 20} className={`${isCollapsed && !isMobile ? 'mx-auto' : 'mr-3'}`} />
-            {(!isCollapsed || isMobile) && <span className="text-sm md:text-base">Sair</span>}
-          </Link>
-        </div>
-        
-        {/* Número de emergência */}
-        {(!isCollapsed || isMobile) && (
-          <div className="px-4 md:px-6 py-3 md:py-4 border-t border-gray-100 bg-gradient-to-r from-blue-50 to-white">
-            <div className="flex items-center text-blue-600 text-xs md:text-sm">
-              <div className="bg-blue-100 p-2 rounded-full mr-3">
-                <Phone size={isMobile ? 16 : 18} className="text-blue-500" />
-              </div>
-              <div>
-                <p className="font-semibold">Número de emergência:</p>
-                <p>+55 (11) xxxx - xxxx</p>
-              </div>
-            </div>
-          </div>
-        )}
+        <Link 
+          to="/" 
+          className="flex items-center px-3 py-3 text-blue-600 hover:bg-gray-100 rounded-md"
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
+        >
+          <LogOut size={20} className="min-w-[20px]" />
+          <span className={cn(
+            "ml-3",
+            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
+          )}>Sair</span>
+        </Link>
       </div>
       
-      {/* Overlay para fechar o menu em dispositivos móveis */}
-      {isMobile && sidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-30"
-          onClick={toggleSidebar}
-        />
-      )}
+      <div className={cn(
+        "px-6 py-4 border-t",
+        isMobile ? "block" : isOpen ? "block" : "hidden"
+      )}>
+        <div className="flex items-center text-blue-600 text-sm">
+          <Phone size={18} className="mr-2" />
+          <div>
+            <p className="font-semibold">Número de emergência:</p>
+            <p>+55 (11) xxxx - xxxx</p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+
+  // Versão mobile com Sheet
+  if (isMobile) {
+    return (
+      <Sheet open={isSheetOpen} onOpenChange={onSheetOpenChange}>
+        <SheetContent side="left" className="p-0 w-[280px]">
+          <div className="h-full flex flex-col">
+            <div className="bg-white p-4 flex items-center justify-center">
+              <Link to="/home-farmacia" onClick={() => onSheetOpenChange?.(false)}>
+                <img 
+                  src="/images/logo-sabara.png" 
+                  alt="Logo Hospital Sabará" 
+                  className="h-12 object-contain cursor-pointer hover:opacity-80 transition-opacity" 
+                />
+              </Link>
+            </div>
+            <MenuItems />
+          </div>
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
+  // Versão desktop
+  return (
+    <>
+      <Button
+        variant="outline"
+        size="icon"
+        className={cn(
+          "fixed z-50 rounded-full w-8 h-8 bg-white",
+          "hover:bg-gray-100 hover:text-gray-900",
+          "border-gray-200 shadow-md",
+          "transition-all duration-300 ease-in-out",
+          "lg:left-[240px] lg:top-6",
+          "left-4 top-4",
+          isOpen && "lg:left-[240px]",
+          !isOpen && "lg:left-[60px]"
+        )}
+        onClick={onToggle}
+      >
+        <div className="transition-transform duration-300 ease-in-out">
+          {isOpen ? (
+            <ChevronFirst size={18} className="text-gray-600" />
+          ) : (
+            <ChevronLast size={18} className="text-gray-600" />
+          )}
+        </div>
+      </Button>
+
+      <div className={cn(
+        "fixed top-0 left-0 h-full z-40 bg-white shadow-lg transition-all duration-300 ease-in-out",
+        isOpen ? "w-64" : "w-16",
+        className
+      )}>
+        <div className="h-full flex flex-col">
+          <div className="bg-white p-4 flex items-center justify-center">
+            <Link to="/home-farmacia">
+              <img 
+                src="/images/logo-sabara.png" 
+                alt="Logo Hospital Sabará" 
+                className={cn(
+                  "transition-all duration-300 cursor-pointer hover:opacity-80",
+                  isOpen ? "h-12" : "h-8",
+                  "object-contain"
+                )} 
+              />
+            </Link>
+          </div>
+          
+          <MenuItems />
+        </div>
+      </div>
     </>
   );
 };

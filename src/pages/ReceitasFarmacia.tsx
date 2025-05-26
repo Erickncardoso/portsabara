@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import SidebarFarmacia from '../components/SidebarFarmacia';
 import HeaderFarmacia from '../components/HeaderFarmacia';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { getMainContentClasses } from '@/lib/utils';
 
 // Schema de validação do formulário
 const receitaSchema = z.object({
@@ -30,6 +32,9 @@ interface Receita extends ReceitaFormData {
 }
 
 const ReceitasFarmacia: React.FC = () => {
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('Todos');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,6 +45,18 @@ const ReceitasFarmacia: React.FC = () => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ReceitaFormData>({
     resolver: zodResolver(receitaSchema)
   });
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
 
   // Carregar receitas do localStorage ao montar o componente
   useEffect(() => {
@@ -114,10 +131,20 @@ const ReceitasFarmacia: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      <SidebarFarmacia />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <HeaderFarmacia nome="Farmacêutico(a)" />
+    <div className="min-h-screen bg-gray-50">
+      <SidebarFarmacia 
+        isOpen={isSidebarOpen} 
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
+      />
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderFarmacia 
+          titulo="RECEITAS"
+          nome="MARIA SANTOS"
+          tipo="FARMACÊUTICO"
+          onMenuClick={handleMenuClick}
+        />
         <main className="flex-1 p-6">
           <div className="px-3 sm:px-6 py-3 sm:py-4">
             <div className="bg-white rounded-xl shadow p-6 overflow-x-auto">

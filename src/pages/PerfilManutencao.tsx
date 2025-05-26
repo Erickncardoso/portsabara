@@ -1,14 +1,33 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidebarManutencao from '../components/SidebarManutencao';
 import { HeaderManutencao } from '../components/HeaderManutencao';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { User, Mail, Phone, Award, Calendar } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, getMainContentClasses } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 import FloatingChat from '../components/FloatingChat';
 
 const PerfilManutencao = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [currentUser] = useState({
+    id: 'manutencao-1',
+    name: 'Robert Silva',
+    role: 'Manutenção',
+  });
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
 
   const tecnico = {
     nome: "Robert Silva",
@@ -25,16 +44,23 @@ const PerfilManutencao = () => {
     <div className="min-h-screen bg-gray-100">
       <SidebarManutencao 
         isOpen={isSidebarOpen} 
-        onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
       />
       
-      <div className={cn(
-        "transition-all duration-300 ease-in-out",
-        isSidebarOpen ? "ml-64" : "ml-16"
-      )}>
-        <HeaderManutencao nome="ROBERT" tipo="MANUTENÇÃO" />
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderManutencao 
+          titulo="PERFIL"
+          nome="ROBERT SILVA"
+          tipo="MANUTENÇÃO"
+          onMenuClick={handleMenuClick}
+          className={cn(
+            "sticky top-0 z-30"
+          )}
+        />
         
-        <main className="p-6">
+        <main className="flex-1 p-3 sm:p-6 bg-gray-50">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="shadow-md">
               <CardHeader className="bg-gradient-to-r from-orange-500 to-orange-600">
@@ -123,9 +149,9 @@ const PerfilManutencao = () => {
 
       <FloatingChat
         currentUser={{
-          id: "manutencao-1",
-          name: "Robert",
-          role: "Manutenção"
+          id: currentUser.id,
+          name: currentUser.name,
+          role: currentUser.role
         }}
       />
     </div>

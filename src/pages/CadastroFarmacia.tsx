@@ -54,11 +54,13 @@ const CadastroFarmacia: React.FC = () => {
               <div className="flex flex-col md:flex-row">
                 {/* Lado esquerdo azul com mensagem de boas vindas */}
                 <div className="w-full md:w-2/5 bg-sabara-blue text-white p-10 flex flex-col justify-center items-center text-center">
-                  <img 
-                    src='/images/logo-sabara-branca.png' 
-                    alt="Logo Hospital Sabará" 
-                    className="h-52 mb-10"
-                  />
+                  <Link to="/">
+                    <img 
+                      src='/images/logo-sabara-branca.png' 
+                      alt="Logo Hospital Sabará" 
+                      className="h-52 mb-10 cursor-pointer hover:opacity-80 transition-opacity"
+                    />
+                  </Link>
                   <h2 className="text-4xl font-bold mb-6">Bem-vindo</h2>
                   <p className="text-xl mb-6">Preencha os dados para cadastrar um novo funcionário</p>
                 </div>

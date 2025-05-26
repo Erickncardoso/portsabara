@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { getMainContentClasses } from '@/lib/utils';
 
 // Schema de validação do formulário
 const pacienteSchema = z.object({
@@ -25,14 +27,26 @@ type PacienteFormData = z.infer<typeof pacienteSchema>;
 const tiposSanguineos = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
 const PacientesFarmacia: React.FC = () => {
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTipoSanguineo, setSelectedTipoSanguineo] = useState('Todos');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pacientes, setPacientes] = useState<Array<any>>([]);
+  const [currentUser] = useState({
+    id: '1',
+    name: 'Dr. Maria Santos',
+    role: 'Farmacêutico(a)',
+  });
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<PacienteFormData>({
     resolver: zodResolver(pacienteSchema)
   });
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   // Carregar pacientes do localStorage ao montar o componente
   useEffect(() => {
@@ -96,11 +110,37 @@ const PacientesFarmacia: React.FC = () => {
     return matchesSearch && matchesTipoSanguineo;
   });
 
+  const handleNotificacoesClick = () => {
+    toast.info('Funcionalidade de notificações em desenvolvimento');
+  };
+
+  const handlePerfilClick = () => {
+    toast.info('Funcionalidade de perfil em desenvolvimento');
+  };
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      <SidebarFarmacia />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <HeaderFarmacia />
+    <div className="min-h-screen bg-gray-50">
+      <SidebarFarmacia 
+        isOpen={isSidebarOpen} 
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
+      />
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderFarmacia 
+          titulo="PACIENTES"
+          nome="MARIA SANTOS"
+          tipo="FARMACÊUTICO"
+          onMenuClick={handleMenuClick}
+        />
         <main className="flex-1 p-6">
           <div className="px-3 sm:px-6 py-3 sm:py-4">
             {/* Cards de Estatísticas */}

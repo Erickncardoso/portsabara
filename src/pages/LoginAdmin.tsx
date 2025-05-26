@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -40,11 +40,13 @@ const LoginAdmin: React.FC = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
-            <img 
-              src='/images/logo-sabara-branca.png' 
-              alt="Logo Hospital Sabará" 
-              className="h-52"
-            />
+            <Link to="/">
+              <img 
+                src='/images/logo-sabara-branca.png' 
+                alt="Logo Hospital Sabará" 
+                className="h-52 cursor-pointer hover:opacity-80 transition-opacity"
+              />
+            </Link>
           </div>
           <CardTitle className="text-2xl font-bold">Login Administrativo</CardTitle>
         </CardHeader>

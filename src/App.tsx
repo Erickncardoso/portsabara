@@ -4,6 +4,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
+import OfflineIndicator from "@/components/OfflineIndicator";
+import PWADebugPanel from "@/components/PWADebugPanel";
 import NotFound from "./pages/NotFound";
 import Cadastro from "./pages/Cadastro";
 import TipoCadastro from "./pages/TipoCadastro";
@@ -59,6 +62,7 @@ import PacientesFarmacia from "./pages/PacientesFarmacia";
 import MedicamentosFarmacia from "./pages/MedicamentosFarmacia";
 import InternacaoFarmacia from "./pages/InternacaoFarmacia";
 import PerfilFarmacia from "./pages/PerfilFarmacia";
+import ReceitasFarmacia from "./pages/ReceitasFarmacia";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +72,9 @@ const App: React.FC = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <OfflineIndicator />
+        <PWAInstallPrompt />
+        <PWADebugPanel />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<TipoCadastro />} />
@@ -120,6 +127,7 @@ const App: React.FC = () => {
             <Route path="/perfil-limpeza" element={<PerfilLimpeza />} />
             <Route path="/login-farmacia" element={<LoginFarmacia />} />
             <Route path="/cadastro-farmacia" element={<CadastroFarmacia />} />
+            <Route path="/receitas-farmacia" element={<ReceitasFarmacia />} />
             <Route path="/pacientes-farmacia" element={<PacientesFarmacia />} />
             <Route path="/medicamentos-farmacia" element={<MedicamentosFarmacia />} />
             <Route path="/internacao-farmacia" element={<InternacaoFarmacia />} />

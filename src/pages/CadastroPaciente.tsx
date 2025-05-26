@@ -122,11 +122,13 @@ const CadastroPaciente: React.FC = () => {
               <div className="flex flex-col md:flex-row">
                 {/* Lado esquerdo azul com mensagem de boas vindas */}
                 <div className="w-full md:w-2/5 bg-sabara-blue text-white p-8 flex flex-col justify-center items-center text-center">
-                  <img 
-                    src='/images/logo-sabara-branca.png' 
-                    alt="Logo Hospital Sabará" 
-                    className="h-52 mb-8"
-                  />
+                  <Link to="/">
+                    <img 
+                      src='/images/logo-sabara-branca.png' 
+                      alt="Logo Hospital Sabará" 
+                      className="h-52 mb-8 cursor-pointer hover:opacity-80 transition-opacity"
+                    />
+                  </Link>
                   <h2 className="text-3xl font-bold mb-4">Bem-vindo</h2>
                   <p className="text-lg mb-4">Preencha seus dados para realizar o cadastro no portal.</p>
                 </div>

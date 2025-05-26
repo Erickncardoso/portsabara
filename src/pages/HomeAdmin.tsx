@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import SidebarAdmin from '@/components/SidebarAdmin';
 import HeaderAdmin from '@/components/HeaderAdmin';
@@ -18,6 +17,7 @@ interface Registro {
 const HomeAdmin: React.FC = () => {
   const [medicosCadastrados, setMedicosCadastrados] = useState<Registro[]>([]);
   const [pacientesCadastrados, setPacientesCadastrados] = useState<Registro[]>([]);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   // Inicializar dados de exemplo
   useEffect(() => {
@@ -79,12 +79,19 @@ const HomeAdmin: React.FC = () => {
     setPacientesCadastrados(dadosExemploPacientes);
   }, []);
 
+  const handleMenuClick = () => {
+    setIsSheetOpen(true);
+  };
+
   return (
     <div className="flex h-screen bg-gray-50">
-      <SidebarAdmin />
+      <SidebarAdmin 
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
+      />
       
       <div className="flex-1 flex flex-col overflow-hidden">
-        <HeaderAdmin />
+        <HeaderAdmin onMenuClick={handleMenuClick} />
         
         <main className="flex-1 overflow-y-auto p-4">
           <div className="container mx-auto">

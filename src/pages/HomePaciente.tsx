@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidebarPaciente from '../components/SidebarPaciente';
 import HeaderPaciente from '../components/HeaderPaciente';
 import LembreteConsulta from '../components/LembreteConsulta';
@@ -13,6 +13,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 const HomePaciente: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const isMobile = useIsMobile();
 
   const currentUser = {
@@ -20,6 +21,18 @@ const HomePaciente: React.FC = () => {
     name: 'João Silva',
     role: 'Paciente',
     avatar: '/images/avatar.png'
+  };
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
   };
 
   // Dados simulados para os exames
@@ -49,12 +62,14 @@ const HomePaciente: React.FC = () => {
       <SidebarPaciente 
         isOpen={isSidebarOpen} 
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
       />
       
       {/* Conteúdo principal */}
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
         {/* Cabeçalho */}
-        <HeaderPaciente />
+        <HeaderPaciente onMenuClick={handleMenuClick} />
         
         {/* Chat flutuante */}
         <FloatingChat currentUser={currentUser} />
@@ -71,11 +86,6 @@ const HomePaciente: React.FC = () => {
                   texto: "Agendar Consulta",
                   link: "/consultas-paciente",
                   variante: "primario"
-                },
-                {
-                  texto: "Ver Exames",
-                  link: "/exames-paciente",
-                  variante: "secundario"
                 }
               ]}
             />
@@ -115,7 +125,7 @@ const HomePaciente: React.FC = () => {
                     <CardAcao 
                       titulo="Dicas de Saúde" 
                       icon={<BookOpen className="text-green-500" />}
-                      link="/dicas-saude"
+                      link="/dicas-saude-paciente"
                     />
                   </div>
                   

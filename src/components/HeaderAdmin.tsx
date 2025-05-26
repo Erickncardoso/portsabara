@@ -1,13 +1,42 @@
-
 import React from 'react';
-import { Bell } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Bell, Menu } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
-export const HeaderAdmin: React.FC = () => {
+// Função para extrair as iniciais do nome
+const getInitials = (name: string): string => {
+  return name
+    .split(' ')
+    .map(word => word.charAt(0))
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+};
+
+interface HeaderAdminProps {
+  onMenuClick?: () => void;
+}
+
+export const HeaderAdmin: React.FC<HeaderAdminProps> = ({ onMenuClick }) => {
+  const nome = 'ROBERTO';
+  const isMobile = useIsMobile();
+  
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-      <div className="flex items-center justify-between px-4 h-16">
-        <h1 className="text-xl font-bold">INÍCIO</h1>
+      <div className={cn(
+        "flex items-center justify-between px-4 h-16"
+      )}>
+        <div className="flex items-center gap-3">
+          {isMobile && onMenuClick && (
+            <button 
+              onClick={onMenuClick}
+              className="p-2 hover:bg-gray-100 rounded-full"
+            >
+              <Menu size={20} className="text-gray-700" />
+            </button>
+          )}
+          <h1 className="text-xl font-bold">INÍCIO</h1>
+        </div>
         
         <div className="flex items-center gap-4">
           <button className="relative p-1 rounded-full hover:bg-gray-100 transition-colors">
@@ -19,13 +48,12 @@ export const HeaderAdmin: React.FC = () => {
           
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-medium text-gray-900">ROBERTO</p>
+              <p className="text-sm font-medium text-gray-900">{nome}</p>
               <p className="text-xs text-gray-500">ADMIN</p>
             </div>
-            <Avatar>
-              <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Robert" />
-              <AvatarFallback>RA</AvatarFallback>
-            </Avatar>
+            <div className="h-10 w-10 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold text-sm">
+              {getInitials(nome)}
+            </div>
           </div>
         </div>
       </div>

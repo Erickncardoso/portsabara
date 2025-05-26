@@ -1,76 +1,188 @@
-import React, { useEffect, useState } from 'react';
-import { Bell } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useIsMobile } from '../hooks/use-mobile';
+import React, { useState, useEffect } from 'react';
+import { Bell, User, X, Menu } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
+
+interface Notificacao {
+  id: string;
+  mensagem: string;
+  lida: boolean;
+  data: string;
+}
 
 interface HeaderFarmaciaProps {
   nome?: string;
+  tipo?: string;
+  titulo?: string;
+  className?: string;
+  onMenuClick?: () => void;
 }
 
-interface PerfilData {
-  nome: string;
-  foto?: string;
-}
+// Função para extrair as iniciais do nome
+const getInitials = (name: string): string => {
+  return name
+    .split(' ')
+    .map(word => word.charAt(0))
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+};
 
 const HeaderFarmacia: React.FC<HeaderFarmaciaProps> = ({ 
-  nome = 'Farmacêutico(a) Responsável'
+  nome = 'MARIA SANTOS', 
+  tipo = 'FARMACÊUTICO',
+  titulo = 'HOME',
+  className,
+  onMenuClick
 }) => {
+  const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
+  const [mostrarNotificacoes, setMostrarNotificacoes] = useState(false);
   const isMobile = useIsMobile();
-  const [perfilData, setPerfilData] = useState<PerfilData>({ nome });
 
   useEffect(() => {
-    const savedPerfil = localStorage.getItem('perfilFarmacia');
-    if (savedPerfil) {
-      const data = JSON.parse(savedPerfil);
-      setPerfilData({
-        nome: data.nome,
-        foto: data.foto
-      });
+    // Carrega notificações do localStorage
+    const notificacoesArmazenadas = localStorage.getItem('notificacoesFarmacia');
+    
+    if (notificacoesArmazenadas) {
+      setNotificacoes(JSON.parse(notificacoesArmazenadas));
+    } else {
+      // Cria notificações de exemplo se não existirem
+      const notificacoesIniciais: Notificacao[] = [
+        {
+          id: '1',
+          mensagem: 'Estoque baixo: Paracetamol 500mg (5 unidades restantes)',
+          lida: false,
+          data: new Date().toISOString()
+        },
+        {
+          id: '2',
+          mensagem: 'Nova receita médica aguardando dispensação',
+          lida: false,
+          data: new Date().toISOString()
+        },
+        {
+          id: '3',
+          mensagem: 'Medicamento vencendo: Ibuprofeno 600mg (vence em 3 dias)',
+          lida: false,
+          data: new Date().toISOString()
+        }
+      ];
+      
+      setNotificacoes(notificacoesIniciais);
+      localStorage.setItem('notificacoesFarmacia', JSON.stringify(notificacoesIniciais));
     }
-
-    // Listener para atualizações no localStorage
-    const handleStorageChange = () => {
-      const updatedPerfil = localStorage.getItem('perfilFarmacia');
-      if (updatedPerfil) {
-        const data = JSON.parse(updatedPerfil);
-        setPerfilData({
-          nome: data.nome,
-          foto: data.foto
-        });
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
-  
+
+  const salvarNotificacoes = (novasNotificacoes: Notificacao[]) => {
+    setNotificacoes(novasNotificacoes);
+    localStorage.setItem('notificacoesFarmacia', JSON.stringify(novasNotificacoes));
+  };
+
+  const marcarComoLida = (id: string) => {
+    const atualizadas = notificacoes.map(notif => 
+      notif.id === id ? { ...notif, lida: true } : notif
+    );
+    
+    salvarNotificacoes(atualizadas);
+    toast({
+      description: "Notificação marcada como lida",
+    });
+  };
+
+  const removerNotificacao = (id: string) => {
+    const atualizadas = notificacoes.filter(notif => notif.id !== id);
+    salvarNotificacoes(atualizadas);
+    toast({
+      description: "Notificação removida",
+    });
+  };
+
+  const notificacoesNaoLidas = notificacoes.filter(n => !n.lida).length;
+
   return (
-    <div className="bg-gradient-to-r from-white to-blue-50 w-full">
-      <div className="px-3 sm:px-6 py-3">
-        <div className="bg-white rounded-xl shadow-lg p-4">
+    <div className={cn("bg-white w-full", className)}>
+      <div className={cn(
+        "px-2 sm:px-6 py-2"
+      )}>
+        <div className="bg-white rounded-2xl shadow-sm border p-3 sm:p-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">INÍCIO</h1>
+            <div className="flex items-center gap-3">
+              {isMobile && onMenuClick && (
+                <button 
+                  onClick={onMenuClick}
+                  className="p-2 hover:bg-gray-100 rounded-full"
+                >
+                  <Menu size={20} className="text-gray-700" />
+                </button>
+              )}
+              <h1 className={cn(
+                "font-bold",
+                isMobile ? "text-xl" : "text-3xl"
+              )}>{titulo}</h1>
+            </div>
             
-            <div className="flex items-center gap-3 sm:gap-6">
-              <button className="relative p-2 hover:bg-blue-50 rounded-full transition-all duration-200">
-                <Bell size={isMobile ? 18 : 22} className="text-blue-500" />
-                <span className="absolute top-0 right-0 bg-red-500 h-2 w-2 rounded-full"></span>
-              </button>
-              
-              <div className="flex items-center gap-3">
-                <Avatar className="h-9 w-9 sm:h-11 sm:w-11 border-2 border-blue-200 shadow-sm">
-                  {perfilData.foto ? (
-                    <AvatarImage src={perfilData.foto} alt={perfilData.nome} />
-                  ) : (
-                    <AvatarFallback className="bg-blue-50 text-blue-500">
-                      {perfilData.nome.charAt(0)}
-                    </AvatarFallback>
+            <div className="flex items-center gap-2 sm:gap-4">
+              <div className="relative">
+                <button 
+                  className="p-2 hover:bg-gray-100 rounded-full relative"
+                  onClick={() => setMostrarNotificacoes(!mostrarNotificacoes)}
+                >
+                  <Bell size={isMobile ? 18 : 20} />
+                  {notificacoesNaoLidas > 0 && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                      {notificacoesNaoLidas}
+                    </span>
                   )}
-                </Avatar>
+                </button>
+                
+                {mostrarNotificacoes && (
+                  <div className={cn(
+                    "absolute right-0 mt-2 bg-white rounded-lg border shadow-lg z-10 p-2 max-h-80 overflow-y-auto",
+                    isMobile ? "w-64" : "w-72"
+                  )}>
+                    <h3 className="font-semibold text-sm p-2 border-b">Notificações</h3>
+                    
+                    {notificacoes.length === 0 ? (
+                      <p className="text-sm text-gray-500 p-4 text-center">Nenhuma notificação</p>
+                    ) : (
+                      notificacoes.map(notificacao => (
+                        <div 
+                          key={notificacao.id}
+                          className={`p-2 border-b last:border-b-0 flex items-start justify-between hover:bg-gray-50 ${notificacao.lida ? 'opacity-70' : ''}`}
+                        >
+                          <div className="flex-1 pr-2">
+                            <p className="text-xs">{notificacao.mensagem}</p>
+                            <div className="flex gap-2 mt-1">
+                              <button 
+                                className="text-xs text-blue-500" 
+                                onClick={() => marcarComoLida(notificacao.id)}
+                              >
+                                {notificacao.lida ? 'Lida' : 'Marcar como lida'}
+                              </button>
+                            </div>
+                          </div>
+                          <button 
+                            className="text-gray-500 hover:text-red-500"
+                            onClick={() => removerNotificacao(notificacao.id)}
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm border border-gray-200">
+                  {getInitials(nome)}
+                </div>
                 
                 <div className="text-right">
-                  <p className="font-bold text-sm sm:text-base text-gray-800">{perfilData.nome}</p>
-                  <p className="text-xs font-medium text-red-500 bg-red-50 px-2 py-0.5 rounded-full inline-block">FARMÁCIA</p>
+                  <p className="font-medium text-gray-900 text-sm sm:text-base">{nome}</p>
+                  <p className="text-xs sm:text-sm text-red-500">{tipo}</p>
                 </div>
               </div>
             </div>

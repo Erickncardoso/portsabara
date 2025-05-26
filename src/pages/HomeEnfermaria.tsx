@@ -11,6 +11,7 @@ import FloatingChat from '../components/FloatingChat';
 const HomeEnfermaria: React.FC = () => {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem('pacientesEnfermaria')) {
@@ -37,55 +38,59 @@ const HomeEnfermaria: React.FC = () => {
       localStorage.setItem('pacientesEnfermaria', JSON.stringify(pacientesIniciais));
     }
 
-    if (!localStorage.getItem('medicamentosValidacaoEnfermaria')) {
+    if (!localStorage.getItem('medicamentosEnfermaria')) {
       const medicamentosIniciais = [
         {
           id: '1',
+          medicamento: "Dipirona 500mg",
           paciente: "João Silva",
-          doenca: "Doença Cardíaca",
-          data: "27/12",
-          aprovada: true,
-          avatar: "JoaoSilva"
+          horario: "08:00",
+          status: "pendente"
         },
         {
           id: '2',
+          medicamento: "Paracetamol 750mg",
           paciente: "Maria Santos",
-          doenca: "Pneumonia",
-          data: "28/12",
-          aprovada: true,
-          avatar: "MariaSantos"
+          horario: "12:00",
+          status: "administrado"
         },
         {
           id: '3',
+          medicamento: "Ibuprofeno 600mg",
           paciente: "Pedro Oliveira",
-          doenca: "Diabetes",
-          data: "29/12",
-          aprovada: true, 
-          avatar: "PedroOliveira"
+          horario: "16:00",
+          status: "pendente"
         }
       ];
-      localStorage.setItem('medicamentosValidacaoEnfermaria', JSON.stringify(medicamentosIniciais));
+      localStorage.setItem('medicamentosEnfermaria', JSON.stringify(medicamentosIniciais));
     }
-  }, []);
 
-  // Atualiza o estado da sidebar quando o tamanho da tela muda
-  useEffect(() => {
     setIsSidebarOpen(!isMobile);
   }, [isMobile]);
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
       <SidebarEnfermaria 
         isOpen={isSidebarOpen} 
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
       />
       
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
         <HeaderEnfermaria
           titulo="HOME"
+          onMenuClick={handleMenuClick}
           className={cn(
-            "sticky top-0 z-30",
-            isMobile && "pt-16"
+            "sticky top-0 z-30"
           )}
         />
         

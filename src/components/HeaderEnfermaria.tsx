@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, User, X } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Bell, User, X, Menu } from 'lucide-react';
 import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
@@ -17,13 +16,25 @@ interface HeaderEnfermariaProps {
   tipo?: string;
   titulo?: string;
   className?: string;
+  onMenuClick?: () => void;
 }
+
+// Função para extrair as iniciais do nome
+const getInitials = (name: string): string => {
+  return name
+    .split(' ')
+    .map(word => word.charAt(0))
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+};
 
 const HeaderEnfermaria: React.FC<HeaderEnfermariaProps> = ({ 
   nome = 'ANA', 
   tipo = 'ENFERMEIRA',
   titulo = 'HOME',
-  className
+  className,
+  onMenuClick
 }) => {
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
   const [mostrarNotificacoes, setMostrarNotificacoes] = useState(false);
@@ -91,13 +102,25 @@ const HeaderEnfermaria: React.FC<HeaderEnfermariaProps> = ({
 
   return (
     <div className={cn("bg-white w-full", className)}>
-      <div className="px-2 sm:px-6 py-2">
+      <div className={cn(
+        "px-2 sm:px-6 py-2"
+      )}>
         <div className="bg-white rounded-2xl shadow-sm border p-3 sm:p-4">
           <div className="flex justify-between items-center">
-            <h1 className={cn(
-              "font-bold",
-              isMobile ? "text-xl" : "text-3xl"
-            )}>{titulo}</h1>
+            <div className="flex items-center gap-3">
+              {isMobile && onMenuClick && (
+                <button 
+                  onClick={onMenuClick}
+                  className="p-2 hover:bg-gray-100 rounded-full"
+                >
+                  <Menu size={20} className="text-gray-700" />
+                </button>
+              )}
+              <h1 className={cn(
+                "font-bold",
+                isMobile ? "text-xl" : "text-3xl"
+              )}>{titulo}</h1>
+            </div>
             
             <div className="flex items-center gap-2 sm:gap-4">
               <div className="relative">
@@ -153,12 +176,9 @@ const HeaderEnfermaria: React.FC<HeaderEnfermariaProps> = ({
               </div>
               
               <div className="flex items-center gap-2 sm:gap-3">
-                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border border-gray-200">
-                  <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${nome}`} alt={nome} />
-                  <AvatarFallback>
-                    <User className="h-5 w-5" />
-                  </AvatarFallback>
-                </Avatar>
+                <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-red-500 flex items-center justify-center text-white font-bold text-sm border border-gray-200">
+                  {getInitials(nome)}
+                </div>
                 
                 <div className="text-right">
                   <p className="font-medium text-gray-900 text-sm sm:text-base">{nome}</p>

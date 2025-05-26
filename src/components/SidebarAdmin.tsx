@@ -1,12 +1,20 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, UserCircle, LogOut, Bell, User, Stethoscope, Pill, Wrench, Sparkles, Settings, Shield, FileText } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
-export const SidebarAdmin: React.FC = () => {
+interface SidebarAdminProps {
+  isSheetOpen?: boolean;
+  onSheetOpenChange?: (open: boolean) => void;
+}
+
+export const SidebarAdmin: React.FC<SidebarAdminProps> = ({ 
+  isSheetOpen = false, 
+  onSheetOpenChange 
+}) => {
   const location = useLocation();
   
   const menuItems = [
@@ -32,7 +40,11 @@ export const SidebarAdmin: React.FC = () => {
     const active = location.pathname === link;
     
     return (
-      <Link to={link} className="w-full">
+      <Link 
+        to={link} 
+        className="w-full"
+        onClick={() => onSheetOpenChange?.(false)}
+      >
         <div className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors 
           ${active 
             ? 'bg-red-100 text-red-600' 
@@ -48,12 +60,12 @@ export const SidebarAdmin: React.FC = () => {
   const DesktopSidebar = () => (
     <div className="hidden md:flex md:w-64 bg-white border-r border-gray-200 h-screen flex-col">
       <div className="p-4">
-        <Link to="/" className="flex items-center justify-center mb-6 mt-2">
+        <Link to="/home-admin" className="flex items-center justify-center mb-6 mt-2">
           <div className="bg-white p-4 flex items-center justify-center">
             <img 
               src="/images/logo-sabara.png" 
               alt="Logo Hospital Sabará" 
-              className="h-12 object-contain"
+              className="h-12 object-contain cursor-pointer hover:opacity-80 transition-opacity"
             />
           </div>
         </Link>
@@ -105,24 +117,18 @@ export const SidebarAdmin: React.FC = () => {
 
   // Versão para mobile
   const MobileSidebar = () => (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden">
-          <LayoutDashboard size={20} />
-          <span className="sr-only">Abrir Menu</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left" className="w-64 p-0">
-        <div className="p-4">
-          <Link to="/" className="flex items-center justify-center mb-6 mt-2">
-            <div className="bg-white p-4 flex items-center justify-center">
+    <Sheet open={isSheetOpen} onOpenChange={onSheetOpenChange}>
+      <SheetContent side="left" className="p-0 w-[280px]">
+        <div className="h-full flex flex-col">
+          <div className="bg-white p-4 flex items-center justify-center">
+            <Link to="/home-admin" onClick={() => onSheetOpenChange?.(false)}>
               <img 
                 src="/images/logo-sabara.png" 
                 alt="Logo Hospital Sabará" 
-                className="h-12 object-contain"
+                className="h-12 object-contain cursor-pointer hover:opacity-80 transition-opacity" 
               />
-            </div>
-          </Link>
+            </Link>
+          </div>
           
           <nav className="space-y-1">
             {menuItems.map((item, index) => (

@@ -59,6 +59,13 @@ const TipoModal: React.FC<{
     }
   };
   
+  const getArtigo = () => {
+    if (tipo === 'farmacia' || tipo === 'manutencao' || tipo === 'limpeza') {
+      return 'da';
+    }
+    return 'do';
+  };
+  
   const getLoginUrl = () => {
     if (tipo === 'paciente') return '/login-paciente';
     if (tipo === 'medico') return '/login-medico';
@@ -74,7 +81,7 @@ const TipoModal: React.FC<{
       <DialogContent className="sm:max-w-md rounded-xl border-none shadow-lg">
         <DialogHeader className="flex items-center">
           <DialogTitle className="flex items-center justify-center text-xl font-semibold">
-            {getTipoIcon()} Área do {titulo}
+            {getTipoIcon()} Área {getArtigo()} {titulo}
           </DialogTitle>
         </DialogHeader>
         
@@ -122,7 +129,9 @@ const TipoCadastro: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto bg-white/90 p-8 rounded-2xl shadow-lg backdrop-blur-sm border border-gray-100">
           <div className="flex justify-center mb-8">
-            <img src='/images/logo-sabara.png' alt="Logo Hospital Sabará" className="h-10 md:h-14" />
+            <Link to="/">
+              <img src='/images/logo-sabara.png' alt="Logo Hospital Sabará" className="h-10 md:h-14 cursor-pointer hover:opacity-80 transition-opacity" />
+            </Link>
           </div>
           
           <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">Escolha o tipo do login</h1>

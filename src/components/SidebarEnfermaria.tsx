@@ -22,11 +22,18 @@ interface SidebarEnfermariaProps {
   className?: string;
   isOpen: boolean;
   onToggle: () => void;
+  isSheetOpen?: boolean;
+  onSheetOpenChange?: (open: boolean) => void;
 }
 
-const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen, onToggle }) => {
+const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ 
+  className, 
+  isOpen, 
+  onToggle, 
+  isSheetOpen = false, 
+  onSheetOpenChange 
+}) => {
   const isMobile = useIsMobile();
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   // Conteúdo do menu para ser reutilizado
   const MenuItems = () => (
@@ -35,7 +42,7 @@ const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen
         <Link 
           to="/home-enfermaria" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <Users size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -47,7 +54,7 @@ const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen
         <Link 
           to="/leitos-enfermaria" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <Bed size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -59,7 +66,7 @@ const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen
         <Link 
           to="/prescricoes-enfermaria" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <ClipboardList size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -71,7 +78,7 @@ const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen
         <Link 
           to="/procedimentos-enfermaria" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <Stethoscope size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -83,7 +90,7 @@ const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen
         <Link 
           to="/agenda-enfermaria" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <Calendar size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -102,7 +109,7 @@ const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen
         <Link 
           to="/perfil-enfermeiro" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <User size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -114,7 +121,7 @@ const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen
         <Link 
           to="/" 
           className="flex items-center px-3 py-3 text-blue-600 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <LogOut size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -142,31 +149,22 @@ const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen
   // Versão mobile com Sheet
   if (isMobile) {
     return (
-      <>
-        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="fixed top-4 left-4 z-50 rounded-full w-10 h-10 bg-white shadow-md hover:bg-gray-100"
-            >
-              <Menu size={20} className="text-gray-700" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="p-0 w-[280px]">
-            <div className="h-full flex flex-col">
-              <div className="bg-white p-4 flex items-center justify-center">
+      <Sheet open={isSheetOpen} onOpenChange={onSheetOpenChange}>
+        <SheetContent side="left" className="p-0 w-[280px]">
+          <div className="h-full flex flex-col">
+            <div className="bg-white p-4 flex items-center justify-center">
+              <Link to="/home-enfermeiro" onClick={() => onSheetOpenChange?.(false)}>
                 <img 
                   src="/images/logo-sabara.png" 
                   alt="Logo Hospital Sabará" 
-                  className="h-12 object-contain" 
+                  className="h-12 object-contain cursor-pointer hover:opacity-80 transition-opacity" 
                 />
-              </div>
-              <MenuItems />
+              </Link>
             </div>
-          </SheetContent>
-        </Sheet>
-      </>
+            <MenuItems />
+          </div>
+        </SheetContent>
+      </Sheet>
     );
   }
 
@@ -204,15 +202,17 @@ const SidebarEnfermaria: React.FC<SidebarEnfermariaProps> = ({ className, isOpen
       )}>
         <div className="h-full flex flex-col">
           <div className="bg-white p-4 flex items-center justify-center">
-            <img 
-              src="/images/logo-sabara.png" 
-              alt="Logo Hospital Sabará" 
-              className={cn(
-                "transition-all duration-300",
-                isOpen ? "h-12" : "h-8",
-                "object-contain"
-              )} 
-            />
+            <Link to="/home-enfermeiro">
+              <img 
+                src="/images/logo-sabara.png" 
+                alt="Logo Hospital Sabará" 
+                className={cn(
+                  "transition-all duration-300 cursor-pointer hover:opacity-80",
+                  isOpen ? "h-12" : "h-8",
+                  "object-contain"
+                )} 
+              />
+            </Link>
           </div>
           
           <MenuItems />

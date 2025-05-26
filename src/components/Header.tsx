@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Printer } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -14,6 +13,16 @@ interface HeaderProps {
   };
 }
 
+// Função para extrair as iniciais do nome
+const getInitials = (name: string): string => {
+  return name
+    .split(' ')
+    .map(word => word.charAt(0))
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+};
+
 const Header: React.FC<HeaderProps> = ({ title, isSidebarOpen, currentUser }) => {
   return (
     <header 
@@ -27,11 +36,9 @@ const Header: React.FC<HeaderProps> = ({ title, isSidebarOpen, currentUser }) =>
         <div className="flex items-center gap-2 md:gap-4">
           <Printer className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
           <div className="flex items-center gap-2">
-            <img 
-              src={currentUser.avatar || "/images/avatar-doctor.png"}
-              alt={currentUser.name}
-              className="w-7 h-7 md:w-8 md:h-8 rounded-full"
-            />
+            <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs">
+              {getInitials(currentUser.name)}
+            </div>
             <div className="hidden sm:block">
               <p className="text-sm font-medium">{currentUser.name}</p>
               <p className="text-xs text-red-500">{currentUser.role.toUpperCase()}</p>

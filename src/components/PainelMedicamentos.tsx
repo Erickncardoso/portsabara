@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { useIsMobile } from '../hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const data = [
   { nome: 'Hipertensão', quantidade: 80, cor: '#FF6384' },

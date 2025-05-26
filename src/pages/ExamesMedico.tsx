@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Search, Plus, Calendar } from 'lucide-react';
 import SidebarMedico from '@/components/SidebarMedico';
+import HeaderMedico from '@/components/HeaderMedico';
 import { cn, getMainContentClasses } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import FloatingChat from '@/components/FloatingChat';
-import HeaderMedico from '../components/HeaderMedico';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function ExamesMedico() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const currentUser = {
     id: '2',
@@ -51,6 +54,14 @@ export default function ExamesMedico() {
     }
   ];
 
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
+
   const handleNovoExame = () => {
     toast({
       title: "Novo Exame",
@@ -58,19 +69,38 @@ export default function ExamesMedico() {
     });
   };
 
+  const handleNotificacoesClick = () => {
+    toast({
+      title: "Notificações",
+      description: "Funcionalidade em desenvolvimento",
+    });
+  };
+
+  const handlePerfilClick = () => {
+    navigate('/perfil-medico');
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 overflow-hidden">
+    <div className="min-h-screen bg-gray-50">
       <SidebarMedico 
         isOpen={isSidebarOpen} 
-        onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
       />
-      
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderMedico nome={currentUser.name} tipo="MÉDICO" titulo="Exames" />
-        <FloatingChat currentUser={currentUser} />
-        
-        <main className="p-3 md:p-4 lg:p-6">
-          <header className="mb-4 md:mb-6 bg-white rounded-lg shadow-sm p-3 md:p-4">
+        <HeaderMedico 
+          titulo="EXAMES"
+          nome={currentUser.name}
+          tipo={currentUser.role}
+          notificacoes={2}
+          onNotificacoesClick={handleNotificacoesClick}
+          onPerfilClick={handlePerfilClick}
+          onMenuClick={handleMenuClick}
+        />
+
+        <div className="p-3 sm:p-8">
+          <header className="mb-6 bg-white rounded-lg shadow-sm p-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex items-center gap-2">
                 <h1 className="text-xl md:text-2xl font-bold text-gray-800">Exames</h1>
@@ -94,10 +124,10 @@ export default function ExamesMedico() {
           </header>
           <div className={cn(
             "grid gap-4 transition-all duration-300",
-            isMobile ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2",
-            !isMobile && (isSidebarOpen 
+            "grid-cols-1 sm:grid-cols-2",
+            isSidebarOpen 
               ? "lg:grid-cols-3 xl:grid-cols-4" 
-              : "lg:grid-cols-4 xl:grid-cols-5")
+              : "lg:grid-cols-4 xl:grid-cols-5"
           )}>
             <Card 
               onClick={handleNovoExame}
@@ -161,7 +191,8 @@ export default function ExamesMedico() {
               </Card>
             ))}
           </div>
-        </main>
+        </div>
+        <FloatingChat currentUser={currentUser} />
       </div>
     </div>
   );

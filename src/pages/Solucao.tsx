@@ -4,6 +4,7 @@ import Rodape from '../components/Rodape';
 import Banner from '../components/Banner';
 import CartaoSolucao from '../components/CartaoSolucao';
 import SecaoCTA from '../components/SecaoCTA';
+import { Link } from 'react-router-dom';
 
 const Solucao: React.FC = () => {
   return (
@@ -92,11 +93,13 @@ const Solucao: React.FC = () => {
                 </ul>
               </div>
               <div className="flex justify-center">
-                <img 
-                  src="/images/logo-sabara.png" 
-                  alt="Interface do Sistema" 
-                  className="rounded-lg shadow-lg max-w-full"
-                />
+                <Link to="/">
+                  <img 
+                    src="/images/logo-sabara.png" 
+                    alt="Interface do Sistema" 
+                    className="rounded-lg shadow-lg max-w-full cursor-pointer hover:opacity-80 transition-opacity"
+                  />
+                </Link>
               </div>
             </div>
           </div>

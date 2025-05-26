@@ -1,0 +1,23 @@
+<svg width="256" height="256" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="64" fill="#3b82f6"/>
+  
+  <!-- Hospital Cross -->
+  <rect x="206" y="128" width="100" height="256" rx="8" fill="white"/>
+  <rect x="128" y="206" width="256" height="100" rx="8" fill="white"/>
+  
+  <!-- Heart Symbol -->
+  <path d="M256 180c-20-40-80-40-80 0c0 40 80 80 80 80s80-40 80-80c0-40-60-40-80 0z" fill="#ef4444"/>
+  
+  <!-- Hospital Building -->
+  <rect x="180" y="320" width="152" height="120" rx="4" fill="#1e40af"/>
+  <rect x="200" y="340" width="20" height="20" rx="2" fill="white"/>
+  <rect x="240" y="340" width="20" height="20" rx="2" fill="white"/>
+  <rect x="280" y="340" width="20" height="20" rx="2" fill="white"/>
+  <rect x="200" y="380" width="20" height="20" rx="2" fill="white"/>
+  <rect x="240" y="380" width="20" height="20" rx="2" fill="white"/>
+  <rect x="280" y="380" width="20" height="20" rx="2" fill="white"/>
+  
+  <!-- Door -->
+  <rect x="240" y="400" width="32" height="40" rx="4" fill="white"/>
+</svg>

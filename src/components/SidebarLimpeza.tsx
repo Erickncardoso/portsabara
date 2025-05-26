@@ -21,11 +21,18 @@ interface SidebarLimpezaProps {
   className?: string;
   isOpen: boolean;
   onToggle: () => void;
+  isSheetOpen?: boolean;
+  onSheetOpenChange?: (open: boolean) => void;
 }
 
-export function SidebarLimpeza({ className, isOpen, onToggle }: SidebarLimpezaProps) {
+export function SidebarLimpeza({ 
+  className, 
+  isOpen, 
+  onToggle, 
+  isSheetOpen = false, 
+  onSheetOpenChange 
+}: SidebarLimpezaProps) {
   const isMobile = useIsMobile();
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   // Conteúdo do menu para ser reutilizado
   const MenuItems = () => (
@@ -34,7 +41,7 @@ export function SidebarLimpeza({ className, isOpen, onToggle }: SidebarLimpezaPr
         <Link 
           to="/home-limpeza" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <Bed size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -46,7 +53,7 @@ export function SidebarLimpeza({ className, isOpen, onToggle }: SidebarLimpezaPr
         <Link 
           to="/quartos-limpeza" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <Bed size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -58,7 +65,7 @@ export function SidebarLimpeza({ className, isOpen, onToggle }: SidebarLimpezaPr
         <Link 
           to="/historico-limpeza" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <History size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -70,7 +77,7 @@ export function SidebarLimpeza({ className, isOpen, onToggle }: SidebarLimpezaPr
         <Link 
           to="/solicitacoes-limpeza" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <ListTodo size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -82,7 +89,7 @@ export function SidebarLimpeza({ className, isOpen, onToggle }: SidebarLimpezaPr
         <Link 
           to="/protocolos-limpeza" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <FileText size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -96,12 +103,12 @@ export function SidebarLimpeza({ className, isOpen, onToggle }: SidebarLimpezaPr
         <p className={cn(
           "text-xs font-semibold text-gray-500 mb-4 px-3",
           isMobile ? "block" : isOpen ? "block" : "hidden"
-        )}>ACCOUNT</p>
+        )}>CONTA</p>
         
         <Link 
           to="/perfil-limpeza" 
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <User size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -113,7 +120,7 @@ export function SidebarLimpeza({ className, isOpen, onToggle }: SidebarLimpezaPr
         <Link 
           to="/" 
           className="flex items-center px-3 py-3 text-blue-600 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && setIsSheetOpen(false)}
+          onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <LogOut size={20} className="min-w-[20px]" />
           <span className={cn(
@@ -141,31 +148,22 @@ export function SidebarLimpeza({ className, isOpen, onToggle }: SidebarLimpezaPr
   // Versão mobile com Sheet
   if (isMobile) {
     return (
-      <>
-        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="fixed top-4 left-4 z-50 rounded-full w-10 h-10 bg-white shadow-md hover:bg-gray-100"
-            >
-              <Menu size={20} className="text-gray-700" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="p-0 w-[280px]">
-            <div className="h-full flex flex-col">
-              <div className="bg-white p-4 flex items-center justify-center">
+      <Sheet open={isSheetOpen} onOpenChange={onSheetOpenChange}>
+        <SheetContent side="left" className="p-0 w-[280px]">
+          <div className="h-full flex flex-col">
+            <div className="bg-white p-4 flex items-center justify-center">
+              <Link to="/home-limpeza" onClick={() => onSheetOpenChange?.(false)}>
                 <img 
                   src="/images/logo-sabara.png" 
                   alt="Logo Hospital Sabará" 
-                  className="h-12 object-contain" 
+                  className="h-12 object-contain cursor-pointer hover:opacity-80 transition-opacity" 
                 />
-              </div>
-              <MenuItems />
+              </Link>
             </div>
-          </SheetContent>
-        </Sheet>
-      </>
+            <MenuItems />
+          </div>
+        </SheetContent>
+      </Sheet>
     );
   }
 
@@ -203,15 +201,17 @@ export function SidebarLimpeza({ className, isOpen, onToggle }: SidebarLimpezaPr
       )}>
         <div className="h-full flex flex-col">
           <div className="bg-white p-4 flex items-center justify-center">
-            <img 
-              src="/images/logo-sabara.png" 
-              alt="Logo Hospital Sabará" 
-              className={cn(
-                "transition-all duration-300",
-                isOpen ? "h-12" : "h-8",
-                "object-contain"
-              )} 
-            />
+            <Link to="/home-limpeza">
+              <img 
+                src="/images/logo-sabara.png" 
+                alt="Logo Hospital Sabará" 
+                className={cn(
+                  "transition-all duration-300 cursor-pointer hover:opacity-80",
+                  isOpen ? "h-12" : "h-8",
+                  "object-contain"
+                )} 
+              />
+            </Link>
           </div>
           
           <MenuItems />
