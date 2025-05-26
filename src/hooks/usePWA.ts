@@ -56,12 +56,12 @@ export const usePWA = (): UsePWAReturn => {
         if (import.meta.env.DEV) {
           console.log('PWA install prompt ready (development mode - not showing automatically)');
         } else {
-          // Em produção, mostrar após 30 segundos
+          // Em produção, mostrar após 5 segundos
           setTimeout(() => {
             if (!isInstalled) {
               setShowInstallPrompt(true);
             }
-          }, 30000);
+          }, 5000);
         }
       }
     };
@@ -95,6 +95,24 @@ export const usePWA = (): UsePWAReturn => {
           }
         }
       }, 3000);
+    } else {
+      // Em produção, verificar critérios mesmo sem o evento beforeinstallprompt
+      setTimeout(async () => {
+        if (!deferredPrompt && !isInstalled) {
+          const canInstall = await checkInstallCriteria();
+          if (canInstall) {
+            console.log('🌐 PROD MODE: PWA instalável detectada');
+            setIsInstallable(true);
+            
+            // Mostrar prompt após mais tempo em produção se não houve evento nativo
+            setTimeout(() => {
+              if (!isInstalled && !deferredPrompt) {
+                setShowInstallPrompt(true);
+              }
+            }, 10000);
+          }
+        }
+      }, 5000);
     }
 
     // Cleanup

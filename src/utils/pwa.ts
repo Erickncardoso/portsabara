@@ -126,7 +126,7 @@ export const clearOldCaches = async (): Promise<void> => {
   try {
     const cacheNames = await caches.keys();
     const oldCaches = cacheNames.filter(name => 
-      name.startsWith('hospital-sabara-') && 
+      (name.startsWith('hospital-sabara-') || name.startsWith('portall-')) && 
       !name.includes('v1.0.0')
     );
 

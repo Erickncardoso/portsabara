@@ -183,6 +183,7 @@ const TipoCadastro: React.FC = () => {
         </div>
       </div>
 
+      {/* Modal de seleção de tipo */}
       <TipoModal 
         isOpen={modalData.isOpen}
         onClose={closeModal}
