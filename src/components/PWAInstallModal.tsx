@@ -52,6 +52,17 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
     }
   }, [isInstalled, isOpen, onClose]);
 
+  // Função para marcar como instalado manualmente (iOS)
+  const markAsInstalled = () => {
+    localStorage.setItem('pwa-manually-installed', 'true');
+    console.log('✅ PWA marcada como instalada manualmente');
+    onClose();
+    // Recarregar para aplicar a detecção
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
+
   if (isInstalled) {
     return null;
   }
@@ -197,10 +208,10 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
               Voltar
             </Button>
             <Button
-              onClick={onClose}
-              className="flex-1 bg-blue-600 hover:bg-blue-700"
+              onClick={markAsInstalled}
+              className="flex-1 bg-green-600 hover:bg-green-700"
             >
-              Entendi
+              ✅ Já Instalei
             </Button>
           </div>
 

@@ -26,16 +26,65 @@ export const usePWA = (): UsePWAReturn => {
   const [deferredPrompt, setDeferredPrompt] = useState<PWAInstallPrompt | null>(null);
 
   useEffect(() => {
-    // Verificar se já está instalado
+    // Verificar se já está instalado - MELHORADA para iOS
     const checkIfInstalled = () => {
+      // Método 1: display-mode standalone (funciona na maioria dos casos)
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-      const isInWebAppiOS = (window.navigator as any).standalone === true;
-      const isInWebAppChrome = window.matchMedia('(display-mode: standalone)').matches;
       
-      setIsInstalled(isStandalone || isInWebAppiOS || isInWebAppChrome);
+      // Método 2: iOS Safari específico
+      const isInWebAppiOS = (window.navigator as any).standalone === true;
+      
+      // Método 3: Verificar se foi adicionado à tela inicial (iOS)
+      const isIOSHomeScreen = window.matchMedia('(display-mode: standalone)').matches && 
+                             /iPad|iPhone|iPod/.test(navigator.userAgent);
+      
+      // Método 4: Verificar URL parameters que indicam instalação
+      const urlParams = new URLSearchParams(window.location.search);
+      const isFromHomeScreen = urlParams.has('homescreen') || urlParams.has('standalone');
+      
+      // Método 5: Verificar se está em fullscreen (pode indicar PWA instalada)
+      const isFullscreen = window.innerHeight === screen.height;
+      
+      // Método 6: Verificar localStorage para instalação manual
+      const wasManuallyInstalled = localStorage.getItem('pwa-manually-installed') === 'true';
+      
+      // Método 7: Verificar se não tem barra de endereços (iOS PWA)
+      const hasNoAddressBar = window.navigator.userAgent.includes('iPhone') && 
+                             window.innerHeight > window.outerHeight * 0.9;
+      
+      const isInstalled = isStandalone || 
+                         isInWebAppiOS || 
+                         isIOSHomeScreen || 
+                         isFromHomeScreen || 
+                         wasManuallyInstalled ||
+                         hasNoAddressBar;
+      
+      console.log('🔍 Verificação de instalação PWA:');
+      console.log('  📱 Standalone mode:', isStandalone);
+      console.log('  🍎 iOS standalone:', isInWebAppiOS);
+      console.log('  🏠 iOS home screen:', isIOSHomeScreen);
+      console.log('  🔗 From home screen URL:', isFromHomeScreen);
+      console.log('  📱 Fullscreen:', isFullscreen);
+      console.log('  💾 Manually installed:', wasManuallyInstalled);
+      console.log('  📏 No address bar (iOS):', hasNoAddressBar);
+      console.log('  ✅ RESULTADO FINAL - Instalado:', isInstalled);
+      
+      setIsInstalled(isInstalled);
+      
+      // Se detectou instalação, limpar flags do modal
+      if (isInstalled) {
+        localStorage.removeItem('pwa-install-dont-show');
+        console.log('✅ PWA detectada como instalada - Modal de instalação desabilitado');
+      }
     };
 
     checkIfInstalled();
+
+    // Verificar novamente após um delay (para casos onde a detecção inicial falha)
+    const recheckTimer = setTimeout(() => {
+      console.log('🔄 Reverificando instalação PWA após delay...');
+      checkIfInstalled();
+    }, 2000);
 
     // GARANTIR que o Service Worker seja registrado imediatamente
     const ensureServiceWorkerRegistered = async () => {
@@ -89,7 +138,42 @@ export const usePWA = (): UsePWAReturn => {
       setIsInstalled(true);
       setIsInstallable(false);
       setShowInstallPrompt(false);
-      console.log('PWA foi instalada');
+      localStorage.setItem('pwa-manually-installed', 'true');
+      console.log('✅ PWA foi instalada via evento appinstalled');
+    };
+
+    // Listener para detectar mudanças no display mode (iOS)
+    const handleDisplayModeChange = () => {
+      console.log('🔄 Display mode mudou - reverificando instalação...');
+      setTimeout(() => {
+        checkIfInstalled();
+      }, 500);
+    };
+
+    // Listener para mudanças de orientação (pode indicar instalação no iOS)
+    const handleOrientationChange = () => {
+      console.log('🔄 Orientação mudou - reverificando instalação...');
+      setTimeout(() => {
+        checkIfInstalled();
+      }, 1000);
+    };
+
+    // Listener para mudanças de visibilidade (quando volta do processo de instalação)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log('🔄 Página ficou visível - reverificando instalação...');
+        setTimeout(() => {
+          checkIfInstalled();
+        }, 1000);
+      }
+    };
+
+    // Listener para mudanças de foco (quando volta do processo de instalação)
+    const handleFocus = () => {
+      console.log('🔄 Página recebeu foco - reverificando instalação...');
+      setTimeout(() => {
+        checkIfInstalled();
+      }, 500);
     };
 
     // Registrar listeners
@@ -97,37 +181,21 @@ export const usePWA = (): UsePWAReturn => {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
     window.addEventListener('appinstalled', handleAppInstalled);
+    window.addEventListener('orientationchange', handleOrientationChange);
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // Em desenvolvimento, simular disponibilidade após um tempo se os critérios forem atendidos
-    if (import.meta.env.DEV) {
-      setTimeout(async () => {
-        if (!deferredPrompt && !isInstalled) {
-          const canInstall = await checkInstallCriteria();
-          if (canInstall) {
-            console.log('🔧 DEV MODE: Simulando disponibilidade de instalação PWA');
-            setIsInstallable(true);
-          }
-        }
-      }, 3000);
-    } else {
-      // Em produção, verificar critérios mesmo sem o evento beforeinstallprompt
-      setTimeout(async () => {
-        if (!deferredPrompt && !isInstalled) {
-          const canInstall = await checkInstallCriteria();
-          if (canInstall) {
-            console.log('🌐 PROD MODE: PWA instalável detectada');
-            setIsInstallable(true);
-            
-            // Mostrar prompt após mais tempo em produção se não houve evento nativo
-            setTimeout(() => {
-              if (!isInstalled && !deferredPrompt) {
-                setShowInstallPrompt(true);
-              }
-            }, 10000);
-          }
-        }
-      }, 5000);
-    }
+    // Listener específico para iOS - detectar mudanças no standalone
+    const mediaQuery = window.matchMedia('(display-mode: standalone)');
+    mediaQuery.addListener(handleDisplayModeChange);
+
+    // Verificação periódica para casos onde os eventos não funcionam
+    const periodicCheck = setInterval(() => {
+      if (!isInstalled) {
+        console.log('🔄 Verificação periódica de instalação...');
+        checkIfInstalled();
+      }
+    }, 10000); // A cada 10 segundos
 
     // Cleanup
     return () => {
@@ -135,6 +203,11 @@ export const usePWA = (): UsePWAReturn => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
       window.removeEventListener('appinstalled', handleAppInstalled);
+      window.removeEventListener('orientationchange', handleOrientationChange);
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      mediaQuery.removeListener(handleDisplayModeChange);
+      clearInterval(periodicCheck);
     };
   }, [isInstalled]);
 
@@ -472,13 +545,46 @@ export const clearOldCaches = async (): Promise<void> => {
   }
 };
 
-// Função para verificar se o app está rodando como PWA
+// Função para verificar se o app está rodando como PWA - MELHORADA
 export const isPWAInstalled = (): boolean => {
+  // Método 1: display-mode standalone (funciona na maioria dos casos)
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-  const isInWebAppiOS = (window.navigator as any).standalone === true;
-  const isInWebAppChrome = window.matchMedia('(display-mode: standalone)').matches;
   
-  return isStandalone || isInWebAppiOS || isInWebAppChrome;
+  // Método 2: iOS Safari específico
+  const isInWebAppiOS = (window.navigator as any).standalone === true;
+  
+  // Método 3: Verificar se foi adicionado à tela inicial (iOS)
+  const isIOSHomeScreen = window.matchMedia('(display-mode: standalone)').matches && 
+                         /iPad|iPhone|iPod/.test(navigator.userAgent);
+  
+  // Método 4: Verificar URL parameters que indicam instalação
+  const urlParams = new URLSearchParams(window.location.search);
+  const isFromHomeScreen = urlParams.has('homescreen') || urlParams.has('standalone');
+  
+  // Método 5: Verificar localStorage para instalação manual
+  const wasManuallyInstalled = localStorage.getItem('pwa-manually-installed') === 'true';
+  
+  // Método 6: Verificar se não tem barra de endereços (iOS PWA)
+  const hasNoAddressBar = window.navigator.userAgent.includes('iPhone') && 
+                         window.innerHeight > window.outerHeight * 0.9;
+  
+  const isInstalled = isStandalone || 
+                     isInWebAppiOS || 
+                     isIOSHomeScreen || 
+                     isFromHomeScreen || 
+                     wasManuallyInstalled ||
+                     hasNoAddressBar;
+  
+  console.log('🔍 isPWAInstalled() - Verificação detalhada:');
+  console.log('  📱 Standalone mode:', isStandalone);
+  console.log('  🍎 iOS standalone:', isInWebAppiOS);
+  console.log('  🏠 iOS home screen:', isIOSHomeScreen);
+  console.log('  🔗 From home screen URL:', isFromHomeScreen);
+  console.log('  💾 Manually installed:', wasManuallyInstalled);
+  console.log('  📏 No address bar (iOS):', hasNoAddressBar);
+  console.log('  ✅ RESULTADO:', isInstalled);
+  
+  return isInstalled;
 };
 
 // Função para obter informações do cache
