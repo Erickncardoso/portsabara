@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Cabecalho from '../components/Cabecalho';
 import Rodape from '../components/Rodape';
@@ -12,7 +11,7 @@ const Dores: React.FC = () => {
       
       <main className="flex-grow">
         <Banner 
-          titulo="Dores do Hospital Sabará"
+          titulo="Dores do PortAll"
           descricao="Conheça os desafios que enfrentamos no dia a dia do hospital e como trabalhamos para superá-los."
         />
         

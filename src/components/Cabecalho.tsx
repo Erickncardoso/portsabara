@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { getLogoUrl } from '../services/logoService';
@@ -15,7 +14,7 @@ const Cabecalho: React.FC = () => {
         <Link to="/" className="flex items-center">
           <img 
             src={logoUrl}
-            alt="Logo Hospital Sabará" 
+            alt="Logo PortAll" 
             className="h-8 md:h-12 object-contain" 
           />
         </Link>

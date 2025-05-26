@@ -170,7 +170,7 @@ MÉTODO 1 - DevTools:
 4. Clique em "Install" ou "Add to homescreen"
 
 MÉTODO 2 - Menu do navegador:
-• Chrome: Menu ⋮ → "Instalar Hospital Sabará..."
+• Chrome: Menu ⋮ → "Instalar PortAll..."
 • Firefox: Menu ☰ → "Instalar esta página"
 • Edge: Menu ⋯ → "Aplicativos" → "Instalar este site"
 

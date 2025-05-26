@@ -14,7 +14,7 @@ const Solucao: React.FC = () => {
       <main className="flex-grow">
         <Banner 
           titulo="Nossa Solução"
-          descricao="Conheça como o Portal Interno resolve os principais desafios do Hospital Sabará."
+          descricao="Conheça como o Portal Interno resolve os principais desafios do PortAll."
         />
         
         <section className="py-16">

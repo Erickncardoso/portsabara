@@ -72,7 +72,7 @@ export const PWADebugPanel: React.FC = () => {
     try {
       await requestNotificationPermission();
       sendNotification('Teste PWA', {
-        body: 'Esta é uma notificação de teste do Hospital Sabará',
+        body: 'Esta é uma notificação de teste do PortAll',
         icon: '/icons/icon-192x192.png'
       });
     } catch (error) {

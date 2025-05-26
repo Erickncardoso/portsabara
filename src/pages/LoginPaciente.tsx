@@ -35,7 +35,7 @@ const LoginPaciente: React.FC = () => {
     setTimeout(() => {
       toast({
         title: "Login realizado com sucesso!",
-        description: "Bem-vindo ao portal do Hospital Sabará.",
+        description: "Bem-vindo ao portal do PortAll.",
       });
       setIsSubmitting(false);
       navigate('/home-paciente'); // Navegação para a home do paciente
@@ -68,7 +68,7 @@ const LoginPaciente: React.FC = () => {
                   <Link to="/">
                     <img 
                       src='/images/logo-sabara-branca.png' 
-                      alt="Logo Hospital Sabará" 
+                      alt="Logo PortAll" 
                       className="h-52 mb-10 cursor-pointer hover:opacity-80 transition-opacity"
                     />
                   </Link>

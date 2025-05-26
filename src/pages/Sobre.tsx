@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Cabecalho from '../components/Cabecalho';
 import Rodape from '../components/Rodape';
@@ -11,7 +10,7 @@ const Sobre: React.FC = () => {
       
       <main className="flex-grow">
         <Banner 
-          titulo="Sobre o Hospital Infantil Sabará"
+          titulo="Sobre o PortAll"
           descricao="Conheça nossa história e nossa missão de proporcionar saúde e bem-estar para as crianças."
         />
         
@@ -20,7 +19,7 @@ const Sobre: React.FC = () => {
             <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl font-bold mb-6">Nossa História</h2>
               <p className="text-gray-600 mb-6">
-                O Hospital Infantil Sabará tem uma longa tradição de excelência no atendimento pediátrico, 
+                O PortAll tem uma longa tradição de excelência no atendimento pediátrico, 
                 sendo referência nacional em cuidados com a saúde infantil. Fundado com o compromisso de 
                 oferecer atendimento humanizado e de alta qualidade, crescemos e nos desenvolvemos sempre 
                 com foco no bem-estar das crianças e suas famílias.
@@ -40,7 +39,7 @@ const Sobre: React.FC = () => {
               
               <h2 className="text-3xl font-bold mb-6">Nosso Portal Interno</h2>
               <p className="text-gray-600 mb-6">
-                O Portal Interno do Hospital Sabará foi desenvolvido para revolucionar a forma como 
+                O Portal Interno do PortAll foi desenvolvido para revolucionar a forma como 
                 gerenciamos nossos processos e atendemos nossos pacientes. Trata-se de uma plataforma 
                 intuitiva que conecta médicos, funcionários e pacientes, facilitando a comunicação e 
                 agilizando todos os processos hospitalares.

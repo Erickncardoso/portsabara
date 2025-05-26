@@ -46,7 +46,7 @@ export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
             
             <div className="flex-1 min-w-0">
               <h3 className="text-sm font-semibold text-gray-900 mb-1">
-                Instalar Hospital Sabará
+                Instalar PortAll
               </h3>
               <p className="text-xs text-gray-600 mb-3">
                 Instale nosso app para acesso rápido e funcionalidades offline

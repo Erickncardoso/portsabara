@@ -156,7 +156,7 @@ const Chat: React.FC<ChatProps> = ({ isOpen, onClose, currentUser }) => {
             </Button>
           )}
           <h2 className="font-semibold">
-            {selectedContact ? selectedContact.name : 'Chat Hospital Sabará'}
+            {selectedContact ? selectedContact.name : 'Chat PortAll'}
           </h2>
         </div>
         <Button variant="ghost" size="icon" onClick={onClose}>

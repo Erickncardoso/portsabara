@@ -107,7 +107,7 @@ const CadastroPaciente: React.FC = () => {
     setTimeout(() => {
       toast({
         title: "Cadastro realizado com sucesso!",
-        description: "Você já pode fazer login no portal do Hospital Sabará.",
+        description: "Você já pode fazer login no portal do PortAll.",
       });
       setIsSubmitting(false);
     }, 1500);
@@ -125,7 +125,7 @@ const CadastroPaciente: React.FC = () => {
                   <Link to="/">
                     <img 
                       src='/images/logo-sabara-branca.png' 
-                      alt="Logo Hospital Sabará" 
+                      alt="Logo PortAll" 
                       className="h-52 mb-8 cursor-pointer hover:opacity-80 transition-opacity"
                     />
                   </Link>

@@ -7,26 +7,35 @@
   </defs>
   
   <!-- Background -->
-  <rect width="390" height="844" fill="url(#bg-mobile)"/>
+  <rect width="390" height="844" fill="#f8fafc"/>
   
   <!-- Header -->
-  <rect x="0" y="0" width="390" height="100" fill="#ffffff" opacity="0.95"/>
-  <text x="195" y="40" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1e40af" text-anchor="middle">Hospital Sabará</text>
-  <text x="195" y="65" font-family="Arial, sans-serif" font-size="14" fill="#64748b" text-anchor="middle">Sistema de Gestão</text>
+  <rect width="390" height="80" fill="#3b82f6"/>
+  
+  <!-- Logo and title -->
+  <rect x="20" y="20" width="30" height="30" fill="#ffffff" rx="6"/>
+  <text x="195" y="40" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#ffffff" text-anchor="middle">PortAll</text>
+  <text x="195" y="65" font-family="Arial, sans-serif" font-size="14" fill="#e2e8f0" text-anchor="middle">Portal Interno</text>
   
   <!-- Main content -->
-  <rect x="20" y="130" width="350" height="680" fill="#ffffff" opacity="0.9" rx="12"/>
+  <rect x="20" y="100" width="350" height="700" fill="#ffffff" rx="12" stroke="#e2e8f0" stroke-width="1"/>
   
-  <!-- Mobile cards -->
-  <rect x="40" y="160" width="310" height="120" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="8"/>
-  <text x="195" y="190" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af" text-anchor="middle">Área Médica</text>
-  <text x="195" y="215" font-family="Arial, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Gestão de pacientes e prontuários</text>
+  <!-- Menu cards -->
+  <rect x="40" y="130" width="310" height="80" fill="#f1f5f9" rx="8"/>
+  <text x="195" y="175" font-family="Arial, sans-serif" font-size="16" fill="#1e40af" text-anchor="middle">Área Médica</text>
   
-  <rect x="40" y="300" width="310" height="120" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="8"/>
-  <text x="195" y="330" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af" text-anchor="middle">Farmácia</text>
-  <text x="195" y="355" font-family="Arial, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Controle de medicamentos</text>
+  <rect x="40" y="230" width="310" height="80" fill="#f1f5f9" rx="8"/>
+  <text x="195" y="275" font-family="Arial, sans-serif" font-size="16" fill="#1e40af" text-anchor="middle">Farmácia</text>
   
-  <rect x="40" y="440" width="310" height="120" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="8"/>
-  <text x="195" y="470" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af" text-anchor="middle">Enfermaria</text>
-  <text x="195" y="495" font-family="Arial, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Cuidados e monitoramento</text>
+  <rect x="40" y="330" width="310" height="80" fill="#f1f5f9" rx="8"/>
+  <text x="195" y="375" font-family="Arial, sans-serif" font-size="16" fill="#1e40af" text-anchor="middle">Enfermaria</text>
+  
+  <rect x="40" y="430" width="310" height="80" fill="#f1f5f9" rx="8"/>
+  <text x="195" y="475" font-family="Arial, sans-serif" font-size="16" fill="#1e40af" text-anchor="middle">Manutenção</text>
+  
+  <rect x="40" y="530" width="310" height="80" fill="#f1f5f9" rx="8"/>
+  <text x="195" y="575" font-family="Arial, sans-serif" font-size="16" fill="#1e40af" text-anchor="middle">Limpeza</text>
+  
+  <rect x="40" y="630" width="310" height="80" fill="#f1f5f9" rx="8"/>
+  <text x="195" y="675" font-family="Arial, sans-serif" font-size="16" fill="#1e40af" text-anchor="middle">Administração</text>
 </svg>

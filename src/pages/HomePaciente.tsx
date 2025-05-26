@@ -79,7 +79,7 @@ const HomePaciente: React.FC = () => {
           <div className="px-2 md:px-6 py-4 md:py-6">
             {/* Banner com espaçamento lateral */}
             <Banner 
-              titulo="Bem-vindo ao Hospital Sabará" 
+              titulo="Bem-vindo ao PortAll" 
               descricao="Confira seus agendamentos e resultados de exames. Aqui você encontra todas as informações sobre sua saúde."
               botoes={[
                 {

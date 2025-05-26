@@ -1,6 +1,6 @@
-const CACHE_NAME = 'hospital-sabara-v1.0.0';
-const STATIC_CACHE_NAME = 'hospital-sabara-static-v1.0.0';
-const DYNAMIC_CACHE_NAME = 'hospital-sabara-dynamic-v1.0.0';
+const CACHE_NAME = 'portall-v1.0.0';
+const STATIC_CACHE_NAME = 'portall-static-v1.0.0';
+const DYNAMIC_CACHE_NAME = 'portall-dynamic-v1.0.0';
 
 // Arquivos essenciais para cache estático (apenas os que existem)
 const STATIC_ASSETS = [
@@ -68,7 +68,7 @@ self.addEventListener('activate', (event) => {
           cacheNames.map((cacheName) => {
             if (cacheName !== STATIC_CACHE_NAME && 
                 cacheName !== DYNAMIC_CACHE_NAME &&
-                cacheName.startsWith('hospital-sabara-')) {
+                cacheName.startsWith('portall-')) {
               console.log('[SW] Deleting old cache:', cacheName);
               return caches.delete(cacheName);
             }
@@ -243,7 +243,7 @@ self.addEventListener('push', (event) => {
   console.log('[SW] Push received');
   
   const options = {
-    body: 'Você tem uma nova notificação do Hospital Sabará',
+    body: 'Você tem uma nova notificação do PortAll',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/icon-72x72.png',
     vibrate: [200, 100, 200],
@@ -268,11 +268,11 @@ self.addEventListener('push', (event) => {
   if (event.data) {
     const data = event.data.json();
     options.body = data.body || options.body;
-    options.title = data.title || 'Hospital Sabará';
+    options.title = data.title || 'PortAll';
   }
   
   event.waitUntil(
-    self.registration.showNotification('Hospital Sabará', options)
+    self.registration.showNotification('PortAll', options)
   );
 });
 
