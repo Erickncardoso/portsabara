@@ -1,0 +1,32 @@
+<svg width="390" height="844" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-mobile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="390" height="844" fill="url(#bg-mobile)"/>
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="390" height="100" fill="#ffffff" opacity="0.95"/>
+  <text x="195" y="40" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1e40af" text-anchor="middle">Hospital Sabará</text>
+  <text x="195" y="65" font-family="Arial, sans-serif" font-size="14" fill="#64748b" text-anchor="middle">Sistema de Gestão</text>
+  
+  <!-- Main content -->
+  <rect x="20" y="130" width="350" height="680" fill="#ffffff" opacity="0.9" rx="12"/>
+  
+  <!-- Mobile cards -->
+  <rect x="40" y="160" width="310" height="120" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="8"/>
+  <text x="195" y="190" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af" text-anchor="middle">Área Médica</text>
+  <text x="195" y="215" font-family="Arial, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Gestão de pacientes e prontuários</text>
+  
+  <rect x="40" y="300" width="310" height="120" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="8"/>
+  <text x="195" y="330" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af" text-anchor="middle">Farmácia</text>
+  <text x="195" y="355" font-family="Arial, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Controle de medicamentos</text>
+  
+  <rect x="40" y="440" width="310" height="120" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="8"/>
+  <text x="195" y="470" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af" text-anchor="middle">Enfermaria</text>
+  <text x="195" y="495" font-family="Arial, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Cuidados e monitoramento</text>
+</svg>

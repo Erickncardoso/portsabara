@@ -12,6 +12,12 @@
   "categories": ["medical", "healthcare", "productivity"],
   "icons": [
     {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon",
+      "purpose": "any"
+    },
+    {
       "src": "/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
@@ -33,7 +39,7 @@
       "src": "/icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/icon-152x152.png",
@@ -69,7 +75,8 @@
       "icons": [
         {
           "src": "/icons/shortcut-medico.png",
-          "sizes": "96x96"
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
@@ -81,7 +88,8 @@
       "icons": [
         {
           "src": "/icons/shortcut-farmacia.png",
-          "sizes": "96x96"
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
@@ -93,7 +101,8 @@
       "icons": [
         {
           "src": "/icons/shortcut-enfermaria.png",
-          "sizes": "96x96"
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     }
@@ -102,14 +111,14 @@
     {
       "src": "/screenshots/desktop-home.png",
       "sizes": "1280x720",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "form_factor": "wide",
       "label": "Tela inicial do sistema"
     },
     {
       "src": "/screenshots/mobile-home.png",
       "sizes": "390x844",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "form_factor": "narrow",
       "label": "Tela inicial mobile"
     }

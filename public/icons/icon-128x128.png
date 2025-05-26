@@ -1,6 +1,27 @@
-<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg">
-    <rect width="128" height="128" rx="16" fill="#3b82f6"/>
-    <rect x="51" y="32" width="26" height="64" rx="2" fill="white"/>
-    <rect x="32" y="51" width="64" height="26" rx="2" fill="white"/>
-    <circle cx="64" cy="45" r="10" fill="#ef4444"/>
-  </svg>
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg-128" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+    </linearGradient>
+    
+  </defs>
+  
+  <!-- Background  -->
+  <rect width="128" height="128" fill="url(#bg-128)" rx="12.8"/>
+  
+  <!-- Hospital cross icon -->
+  <g transform="translate(32, 32)">
+    <!-- Vertical bar of cross -->
+    <rect x="19.2" y="6.4" width="25.6" height="51.2" fill="white" rx="2.56"/>
+    <!-- Horizontal bar of cross -->
+    <rect x="6.4" y="19.2" width="51.2" height="25.6" fill="white" rx="2.56"/>
+  </g>
+  
+  <!-- Hospital text (only for larger icons) -->
+  
+  <text x="64" y="108.8" font-family="Arial, sans-serif" font-size="10.24" font-weight="bold" fill="white" text-anchor="middle">HOSPITAL</text>
+  
+  
+  
+</svg>

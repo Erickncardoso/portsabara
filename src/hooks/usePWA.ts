@@ -15,6 +15,7 @@ interface UsePWAReturn {
   requestNotificationPermission: () => Promise<NotificationPermission>;
   sendNotification: (title: string, options?: NotificationOptions) => void;
   registerForPushNotifications: () => Promise<PushSubscription | null>;
+  forceInstallPrompt: () => void;
 }
 
 export const usePWA = (): UsePWAReturn => {
@@ -83,6 +84,19 @@ export const usePWA = (): UsePWAReturn => {
     window.addEventListener('offline', handleOffline);
     window.addEventListener('appinstalled', handleAppInstalled);
 
+    // Em desenvolvimento, simular disponibilidade após um tempo se os critérios forem atendidos
+    if (import.meta.env.DEV) {
+      setTimeout(async () => {
+        if (!deferredPrompt && !isInstalled) {
+          const canInstall = await checkInstallCriteria();
+          if (canInstall) {
+            console.log('🔧 DEV MODE: Simulando disponibilidade de instalação PWA');
+            setIsInstallable(true);
+          }
+        }
+      }, 3000);
+    }
+
     // Cleanup
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -92,29 +106,91 @@ export const usePWA = (): UsePWAReturn => {
     };
   }, [isInstalled]);
 
+  // Função para verificar critérios de instalação
+  const checkInstallCriteria = async (): Promise<boolean> => {
+    try {
+      // Verificar HTTPS ou localhost
+      const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+      if (!isSecure) return false;
+
+      // Verificar manifest
+      const manifestResponse = await fetch('/manifest.json');
+      if (!manifestResponse.ok) return false;
+      
+      const manifest = await manifestResponse.json();
+      if (!manifest.start_url || !manifest.icons || manifest.icons.length === 0) return false;
+
+      // Verificar Service Worker
+      if (!('serviceWorker' in navigator)) return false;
+      
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (!registration) return false;
+
+      return true;
+    } catch (error) {
+      console.error('Erro ao verificar critérios de instalação:', error);
+      return false;
+    }
+  };
+
   // Função para instalar o app
   const installApp = async (): Promise<void> => {
-    if (!deferredPrompt) {
-      throw new Error('Install prompt not available');
+    // Se temos o prompt nativo, usar ele
+    if (deferredPrompt) {
+      try {
+        await deferredPrompt.prompt();
+        const choiceResult = await deferredPrompt.userChoice;
+        
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+          setIsInstalled(true);
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        
+        setDeferredPrompt(null);
+        setIsInstallable(false);
+        setShowInstallPrompt(false);
+        return;
+      } catch (error) {
+        console.error('Error during app installation:', error);
+        throw error;
+      }
     }
 
-    try {
-      await deferredPrompt.prompt();
-      const choiceResult = await deferredPrompt.userChoice;
+    // Em desenvolvimento ou quando não há prompt nativo, dar instruções
+    if (import.meta.env.DEV || !deferredPrompt) {
+      const instructions = `
+🔧 MODO DEBUG - Como instalar a PWA:
+
+MÉTODO 1 - DevTools:
+1. Abra DevTools (F12)
+2. Vá para Application
+3. Clique em Manifest
+4. Clique em "Install" ou "Add to homescreen"
+
+MÉTODO 2 - Menu do navegador:
+• Chrome: Menu ⋮ → "Instalar Hospital Sabará..."
+• Firefox: Menu ☰ → "Instalar esta página"
+• Edge: Menu ⋯ → "Aplicativos" → "Instalar este site"
+
+MÉTODO 3 - Barra de endereços:
+• Procure pelo ícone de instalação (+) na barra de endereços
+      `;
       
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-        setIsInstalled(true);
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-      
-      setDeferredPrompt(null);
-      setIsInstallable(false);
-      setShowInstallPrompt(false);
-    } catch (error) {
-      console.error('Error during app installation:', error);
-      throw error;
+      console.log(instructions);
+      alert(instructions);
+      return;
+    }
+
+    throw new Error('Install prompt not available');
+  };
+
+  // Função para forçar prompt de instalação (debug)
+  const forceInstallPrompt = (): void => {
+    if (import.meta.env.DEV) {
+      console.log('🔧 DEV MODE: Forçando prompt de instalação');
+      setShowInstallPrompt(true);
     }
   };
 
@@ -198,7 +274,8 @@ export const usePWA = (): UsePWAReturn => {
     dismissInstallPrompt,
     requestNotificationPermission,
     sendNotification,
-    registerForPushNotifications
+    registerForPushNotifications,
+    forceInstallPrompt
   };
 };
 
