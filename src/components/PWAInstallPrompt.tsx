@@ -1,8 +1,8 @@
-import React from 'react';
-import { X, Download, Smartphone } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { usePWA } from '@/hooks/usePWA';
+import React from "react";
+import { X, Download, Smartphone } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { usePWA } from "@/hooks/usePWA";
 
 interface PWAInstallPromptProps {
   onInstall?: () => void;
@@ -11,7 +11,7 @@ interface PWAInstallPromptProps {
 
 export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
   onInstall,
-  onDismiss
+  onDismiss,
 }) => {
   const { installApp, dismissInstallPrompt, showInstallPrompt } = usePWA();
 
@@ -20,7 +20,7 @@ export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
       await installApp();
       onInstall?.();
     } catch (error) {
-      console.error('Erro ao instalar PWA:', error);
+      console.error("Erro ao instalar PWA:", error);
     }
   };
 
@@ -43,15 +43,15 @@ export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
                 <Smartphone className="w-5 h-5 text-blue-600" />
               </div>
             </div>
-            
+
             <div className="flex-1 min-w-0">
               <h3 className="text-sm font-semibold text-gray-900 mb-1">
-                Instalar PortAll
+                Instalar HospitAll
               </h3>
               <p className="text-xs text-gray-600 mb-3">
                 Instale nosso app para acesso rápido e funcionalidades offline
               </p>
-              
+
               <div className="flex gap-2">
                 <Button
                   size="sm"
@@ -71,7 +71,7 @@ export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
                 </Button>
               </div>
             </div>
-            
+
             <button
               onClick={handleDismiss}
               className="flex-shrink-0 p-1 text-gray-400 hover:text-gray-600 transition-colors"
@@ -85,4 +85,4 @@ export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
   );
 };
 
-export default PWAInstallPrompt; 
+export default PWAInstallPrompt;

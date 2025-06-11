@@ -58,14 +58,14 @@ const HistoricoManutencao = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <SidebarManutencao
-        isOpen={isSidebarOpen}
+      <SidebarManutencao 
+        isOpen={isSidebarOpen} 
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
       />
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderManutencao
+        <HeaderManutencao 
           titulo="HISTÓRICO"
           nome="ROBERT SILVA"
           tipo="MANUTENÇÃO"

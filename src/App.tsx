@@ -57,7 +57,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import LoginAdmin from "./pages/LoginAdmin";
 import LoginFarmacia from "./pages/LoginFarmacia";
 import CadastroFarmacia from "./pages/CadastroFarmacia";
-import PacientesFarmacia from "./pages/PacientesFarmacia";
+
 import MedicamentosFarmacia from "./pages/MedicamentosFarmacia";
 import InternacaoFarmacia from "./pages/InternacaoFarmacia";
 import PerfilFarmacia from "./pages/PerfilFarmacia";
@@ -166,10 +166,6 @@ const App: React.FC = () => {
               <Route path="/login-farmacia" element={<LoginFarmacia />} />
               <Route path="/cadastro-farmacia" element={<CadastroFarmacia />} />
               <Route path="/receitas-farmacia" element={<ReceitasFarmacia />} />
-              <Route
-                path="/pacientes-farmacia"
-                element={<PacientesFarmacia />}
-              />
               <Route
                 path="/medicamentos-farmacia"
                 element={<MedicamentosFarmacia />}

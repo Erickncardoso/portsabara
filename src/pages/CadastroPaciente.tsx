@@ -1,113 +1,123 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, User, Lock, Mail, Phone, CreditCard, Home, Hash } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent } from '@/components/ui/card';
-import { toast } from '@/components/ui/use-toast';
-import { getLogoUrl } from '../services/logoService';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Eye,
+  EyeOff,
+  User,
+  Lock,
+  Mail,
+  Phone,
+  CreditCard,
+  Home,
+  Hash,
+} from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "@/components/ui/use-toast";
+import { getLogoUrl } from "../services/logoService";
 
 const CadastroPaciente: React.FC = () => {
   const [formData, setFormData] = useState({
-    nome: '',
-    cpf: '',
-    rg: '',
-    telefone: '',
-    email: '',
-    senha: '',
-    confirmarSenha: '',
-    endereco: '',
-    numero: '',
-    aceitaTermos: false
+    nome: "",
+    cpf: "",
+    rg: "",
+    telefone: "",
+    email: "",
+    senha: "",
+    confirmarSenha: "",
+    endereco: "",
+    numero: "",
+    aceitaTermos: false,
   });
-  
+
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const logoUrl = getLogoUrl();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
-    if (name === 'cpf') {
-      setFormData({...formData, [name]: formatarCPF(value)});
-    } else if (name === 'telefone') {
-      setFormData({...formData, [name]: formatarTelefone(value)});
+
+    if (name === "cpf") {
+      setFormData({ ...formData, [name]: formatarCPF(value) });
+    } else if (name === "telefone") {
+      setFormData({ ...formData, [name]: formatarTelefone(value) });
     } else {
-      setFormData({...formData, [name]: value});
+      setFormData({ ...formData, [name]: value });
     }
   };
 
   const handleCheckboxChange = (checked: boolean) => {
-    setFormData({...formData, aceitaTermos: checked});
+    setFormData({ ...formData, aceitaTermos: checked });
   };
 
   const formatarCPF = (valor: string) => {
-    valor = valor.replace(/\D/g, ''); 
+    valor = valor.replace(/\D/g, "");
     if (valor.length > 11) valor = valor.substring(0, 11);
-    
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    
+
+    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+    valor = valor.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
     return valor;
   };
 
   const formatarTelefone = (valor: string) => {
-    valor = valor.replace(/\D/g, '');
+    valor = valor.replace(/\D/g, "");
     if (valor.length > 11) valor = valor.substring(0, 11);
-    
+
     if (valor.length > 10) {
-      valor = valor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+      valor = valor.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
     } else if (valor.length > 5) {
-      valor = valor.replace(/(\d{2})(\d{4})(\d+)/, '($1) $2-$3');
+      valor = valor.replace(/(\d{2})(\d{4})(\d+)/, "($1) $2-$3");
     } else if (valor.length > 2) {
-      valor = valor.replace(/(\d{2})(\d+)/, '($1) $2');
+      valor = valor.replace(/(\d{2})(\d+)/, "($1) $2");
     }
-    
+
     return valor;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validações básicas
     if (!formData.nome || !formData.cpf || !formData.email || !formData.senha) {
       toast({
         title: "Campos obrigatórios",
         description: "Por favor, preencha todos os campos obrigatórios.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-    
+
     if (formData.senha !== formData.confirmarSenha) {
       toast({
         title: "Senhas diferentes",
         description: "As senhas não conferem. Por favor, verifique.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-    
+
     if (!formData.aceitaTermos) {
       toast({
         title: "Termos de uso",
         description: "É necessário aceitar os termos de uso para continuar.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     // Simulação de cadastro
     setTimeout(() => {
       toast({
         title: "Cadastro realizado com sucesso!",
-        description: "Você já pode fazer login no portal do PortAll.",
+        description: "Você já pode fazer login no portal do HospitAll.",
       });
       setIsSubmitting(false);
     }, 1500);
@@ -123,26 +133,33 @@ const CadastroPaciente: React.FC = () => {
                 {/* Lado esquerdo azul com mensagem de boas vindas */}
                 <div className="w-full md:w-2/5 bg-sabara-blue text-white p-8 flex flex-col justify-center items-center text-center">
                   <Link to="/">
-                    <img 
-                      src='/images/logo-sabara-branca.png' 
-                      alt="Logo PortAll" 
+                    <img
+                      src="/images/logo-sabara-branca.png"
+                      alt="Logo HospitAll"
                       className="h-52 mb-8 cursor-pointer hover:opacity-80 transition-opacity"
                     />
                   </Link>
                   <h2 className="text-3xl font-bold mb-4">Bem-vindo</h2>
-                  <p className="text-lg mb-4">Preencha seus dados para realizar o cadastro no portal.</p>
+                  <p className="text-lg mb-4">
+                    Preencha seus dados para realizar o cadastro no portal.
+                  </p>
                 </div>
-                
+
                 {/* Lado direito com formulário de cadastro */}
                 <div className="w-full md:w-3/5 p-8">
                   <div className="mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800">Cadastro Paciente</h2>
+                    <h2 className="text-2xl font-bold text-gray-800">
+                      Cadastro Paciente
+                    </h2>
                   </div>
-                  
+
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-4">
                       <div>
-                        <label htmlFor="nome" className="block text-gray-700 font-medium">
+                        <label
+                          htmlFor="nome"
+                          className="block text-gray-700 font-medium"
+                        >
                           Nome Completo
                         </label>
                         <Input
@@ -155,10 +172,13 @@ const CadastroPaciente: React.FC = () => {
                           required
                         />
                       </div>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="cpf" className="block text-gray-700 font-medium">
+                          <label
+                            htmlFor="cpf"
+                            className="block text-gray-700 font-medium"
+                          >
                             CPF
                           </label>
                           <div className="relative">
@@ -176,9 +196,12 @@ const CadastroPaciente: React.FC = () => {
                             />
                           </div>
                         </div>
-                        
+
                         <div>
-                          <label htmlFor="rg" className="block text-gray-700 font-medium">
+                          <label
+                            htmlFor="rg"
+                            className="block text-gray-700 font-medium"
+                          >
                             RG
                           </label>
                           <div className="relative">
@@ -196,10 +219,13 @@ const CadastroPaciente: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="telefone" className="block text-gray-700 font-medium">
+                          <label
+                            htmlFor="telefone"
+                            className="block text-gray-700 font-medium"
+                          >
                             Telefone
                           </label>
                           <div className="relative">
@@ -217,9 +243,12 @@ const CadastroPaciente: React.FC = () => {
                             />
                           </div>
                         </div>
-                        
+
                         <div>
-                          <label htmlFor="email" className="block text-gray-700 font-medium">
+                          <label
+                            htmlFor="email"
+                            className="block text-gray-700 font-medium"
+                          >
                             Email
                           </label>
                           <div className="relative">
@@ -239,10 +268,13 @@ const CadastroPaciente: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="senha" className="block text-gray-700 font-medium">
+                          <label
+                            htmlFor="senha"
+                            className="block text-gray-700 font-medium"
+                          >
                             Senha
                           </label>
                           <div className="relative">
@@ -259,17 +291,24 @@ const CadastroPaciente: React.FC = () => {
                               className="pl-10 pr-10 rounded-xl border-gray-300"
                               required
                             />
-                            <div 
+                            <div
                               className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer text-gray-500"
                               onClick={() => setMostrarSenha(!mostrarSenha)}
                             >
-                              {mostrarSenha ? <EyeOff size={18} /> : <Eye size={18} />}
+                              {mostrarSenha ? (
+                                <EyeOff size={18} />
+                              ) : (
+                                <Eye size={18} />
+                              )}
                             </div>
                           </div>
                         </div>
-                        
+
                         <div>
-                          <label htmlFor="confirmarSenha" className="block text-gray-700 font-medium">
+                          <label
+                            htmlFor="confirmarSenha"
+                            className="block text-gray-700 font-medium"
+                          >
                             Confirmar Senha
                           </label>
                           <div className="relative">
@@ -286,19 +325,28 @@ const CadastroPaciente: React.FC = () => {
                               className="pl-10 pr-10 rounded-xl border-gray-300"
                               required
                             />
-                            <div 
+                            <div
                               className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer text-gray-500"
-                              onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}
+                              onClick={() =>
+                                setMostrarConfirmarSenha(!mostrarConfirmarSenha)
+                              }
                             >
-                              {mostrarConfirmarSenha ? <EyeOff size={18} /> : <Eye size={18} />}
+                              {mostrarConfirmarSenha ? (
+                                <EyeOff size={18} />
+                              ) : (
+                                <Eye size={18} />
+                              )}
                             </div>
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="endereco" className="block text-gray-700 font-medium">
+                          <label
+                            htmlFor="endereco"
+                            className="block text-gray-700 font-medium"
+                          >
                             Endereço
                           </label>
                           <div className="relative">
@@ -315,9 +363,12 @@ const CadastroPaciente: React.FC = () => {
                             />
                           </div>
                         </div>
-                        
+
                         <div>
-                          <label htmlFor="numero" className="block text-gray-700 font-medium">
+                          <label
+                            htmlFor="numero"
+                            className="block text-gray-700 font-medium"
+                          >
                             Número
                           </label>
                           <div className="relative">
@@ -336,33 +387,46 @@ const CadastroPaciente: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="termos" 
+                      <Checkbox
+                        id="termos"
                         checked={formData.aceitaTermos}
                         onCheckedChange={handleCheckboxChange}
                       />
-                      <label 
-                        htmlFor="termos" 
-                        className="text-sm text-gray-600"
-                      >
-                        Concordo com os <a href="#" className="text-sabara-blue hover:underline">Termos de Uso</a> e <a href="#" className="text-sabara-blue hover:underline">Política de Privacidade</a>
+                      <label htmlFor="termos" className="text-sm text-gray-600">
+                        Concordo com os{" "}
+                        <a
+                          href="#"
+                          className="text-sabara-blue hover:underline"
+                        >
+                          Termos de Uso
+                        </a>{" "}
+                        e{" "}
+                        <a
+                          href="#"
+                          className="text-sabara-blue hover:underline"
+                        >
+                          Política de Privacidade
+                        </a>
                       </label>
                     </div>
-                    
+
                     <Button
                       type="submit"
                       className="w-full bg-sabara-blue hover:bg-blue-600 rounded-xl py-6 text-base"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? 'Cadastrando...' : 'Salvar'}
+                      {isSubmitting ? "Cadastrando..." : "Salvar"}
                     </Button>
-                    
+
                     <div className="text-center">
                       <p className="text-gray-600">
                         Já possui uma conta?{" "}
-                        <Link to="/login-paciente" className="text-sabara-blue hover:underline">
+                        <Link
+                          to="/login-paciente"
+                          className="text-sabara-blue hover:underline"
+                        >
                           Faça login
                         </Link>
                       </p>

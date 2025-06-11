@@ -1,6 +1,6 @@
 {
-  "name": "PortAll",
-  "short_name": "PortAll",
+  "name": "HospitAll",
+  "short_name": "HospitAll",
   "description": "Sistema completo de gestão hospitalar para médicos, enfermeiros, farmacêuticos, manutenção e limpeza",
   "start_url": "/",
   "display": "standalone",
@@ -72,33 +72,39 @@
       "short_name": "Médico",
       "description": "Acesso rápido à área médica",
       "url": "/login-medico",
-      "icons": [{ 
-        "src": "/icons/shortcut-medico.png", 
-        "sizes": "96x96",
-        "type": "image/png"
-      }]
+      "icons": [
+        {
+          "src": "/icons/shortcut-medico.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Farmácia",
       "short_name": "Farmácia",
       "description": "Acesso rápido à farmácia",
       "url": "/login-farmacia",
-      "icons": [{ 
-        "src": "/icons/shortcut-farmacia.png", 
-        "sizes": "96x96",
-        "type": "image/png"
-      }]
+      "icons": [
+        {
+          "src": "/icons/shortcut-farmacia.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Enfermaria",
       "short_name": "Enfermaria",
       "description": "Acesso rápido à enfermaria",
       "url": "/login-enfermeiro",
-      "icons": [{ 
-        "src": "/icons/shortcut-enfermaria.png", 
-        "sizes": "96x96",
-        "type": "image/png"
-      }]
+      "icons": [
+        {
+          "src": "/icons/shortcut-enfermaria.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     }
   ],
   "screenshots": [
@@ -117,4 +123,4 @@
       "label": "Versão mobile"
     }
   ]
-} 
+}
