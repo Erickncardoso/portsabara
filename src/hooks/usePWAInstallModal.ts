@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { usePWA } from './usePWA';
+import { useState, useEffect } from "react";
+import { usePWA } from "./usePWA";
 
 interface UsePWAInstallModalReturn {
   showModal: boolean;
@@ -14,104 +14,165 @@ export const usePWAInstallModal = (): UsePWAInstallModalReturn => {
   const [showModal, setShowModal] = useState(false);
 
   // Chaves do localStorage
-  const DONT_SHOW_KEY = 'pwa-install-dont-show';
-  const LAST_SHOWN_KEY = 'pwa-install-last-shown';
+  const DONT_SHOW_KEY = "pwa-install-dont-show";
+  const LAST_CLOSED_KEY = "pwa-install-last-closed"; // Para o X (3 min)
+  const LAST_DISMISSED_KEY = "pwa-install-last-dismissed"; // Para "agora não" (5 min)
+  const PERMANENT_DISMISS_KEY = "pwa-install-permanent-dismiss"; // Para "não mostrar mais"
+
+  // Intervalos em millisegundos
+  const CLOSE_COOLDOWN = 3 * 60 * 1000; // 3 minutos para X
+  const DISMISS_COOLDOWN = 5 * 60 * 1000; // 5 minutos para "agora não"
 
   // Verificar se deve mostrar o modal
   const shouldShow = (): boolean => {
     // Não mostrar se já está instalado
     if (isInstalled) return false;
 
-    // Verificar se usuário escolheu "não mostrar mais"
-    const dontShow = localStorage.getItem(DONT_SHOW_KEY);
-    if (dontShow === 'true') return false;
+    // Verificar se usuário escolheu "não mostrar mais" permanentemente
+    const permanentDismiss = localStorage.getItem(PERMANENT_DISMISS_KEY);
+    if (permanentDismiss === "true") return false;
 
-    // SEMPRE MOSTRAR se não está instalado e usuário não escolheu "não mostrar mais"
+    const now = Date.now();
+
+    // Verificar cooldown do X (3 minutos)
+    const lastClosed = localStorage.getItem(LAST_CLOSED_KEY);
+    if (lastClosed) {
+      const lastClosedTime = parseInt(lastClosed);
+      if (now - lastClosedTime < CLOSE_COOLDOWN) {
+        console.log(
+          `⏱️ Modal PWA: Aguardando ${Math.ceil(
+            (CLOSE_COOLDOWN - (now - lastClosedTime)) / 60000
+          )} min para mostrar novamente (fechado com X)`
+        );
+        return false;
+      }
+    }
+
+    // Verificar cooldown do "agora não" (5 minutos)
+    const lastDismissed = localStorage.getItem(LAST_DISMISSED_KEY);
+    if (lastDismissed) {
+      const lastDismissedTime = parseInt(lastDismissed);
+      if (now - lastDismissedTime < DISMISS_COOLDOWN) {
+        console.log(
+          `⏱️ Modal PWA: Aguardando ${Math.ceil(
+            (DISMISS_COOLDOWN - (now - lastDismissedTime)) / 60000
+          )} min para mostrar novamente (agora não)`
+        );
+        return false;
+      }
+    }
+
     return true;
   };
 
   // Verificar se deve mostrar em uma página específica
   const shouldShowOnPage = (pageName: string): boolean => {
-    if (!shouldShow()) return false;
-
-    // REMOVER verificação de intervalo de 5 minutos
-    // O modal deve aparecer sempre ao recarregar, independente do tempo
-
-    // MOSTRAR EM TODAS AS PÁGINAS sempre que recarregar
-    // Apenas respeitando se usuário escolheu "não mostrar mais"
-    return true;
+    return shouldShow();
   };
 
   // Abrir modal
   const openModal = (): void => {
     if (shouldShow()) {
       setShowModal(true);
-      // Registrar quando foi mostrado (para analytics, se necessário)
-      localStorage.setItem(LAST_SHOWN_KEY, Date.now().toString());
-      console.log('📱 Modal PWA aberto - aparece sempre ao recarregar');
+      console.log("📱 Modal PWA aberto");
     }
   };
 
-  // Fechar modal (NÃO impede de aparecer novamente)
+  // Fechar modal com X (cooldown de 3 minutos)
   const closeModal = (): void => {
     setShowModal(false);
-    console.log('❌ Modal PWA fechado - aparecerá novamente ao recarregar');
+    localStorage.setItem(LAST_CLOSED_KEY, Date.now().toString());
+    console.log(
+      "❌ Modal PWA fechado com X - aparecerá novamente em 3 minutos"
+    );
   };
 
-  // Não mostrar mais (ÚNICA forma de impedir o modal)
-  const dontShowAgain = (): void => {
-    localStorage.setItem(DONT_SHOW_KEY, 'true');
+  // "Agora não" (cooldown de 5 minutos)
+  const dismissForNow = (): void => {
     setShowModal(false);
+    localStorage.setItem(LAST_DISMISSED_KEY, Date.now().toString());
+    console.log('⏭️ Modal PWA: "Agora não" - aparecerá novamente em 5 minutos');
+  };
+
+  // Não mostrar mais (permanente)
+  const dontShowAgain = (): void => {
+    localStorage.setItem(PERMANENT_DISMISS_KEY, "true");
+    setShowModal(false);
+    // Limpar outros timers
+    localStorage.removeItem(LAST_CLOSED_KEY);
+    localStorage.removeItem(LAST_DISMISSED_KEY);
     console.log('🚫 Modal PWA: "Não mostrar mais" - não aparecerá mais');
   };
 
-  // Limpar configurações se o app for desinstalado
+  // Limpar configurações se o app for instalado
   useEffect(() => {
-    if (!isInstalled) {
-      // Se o app não está instalado, limpar a flag "não mostrar mais"
-      // para permitir que o modal apareça novamente
-      const dontShow = localStorage.getItem(DONT_SHOW_KEY);
-      if (dontShow === 'true') {
-        // Verificar se realmente não está instalado há um tempo
-        const lastShown = localStorage.getItem(LAST_SHOWN_KEY);
-        if (lastShown) {
-          const lastShownTime = parseInt(lastShown);
-          const oneDay = 24 * 60 * 60 * 1000; // 1 dia em ms
-          
-          // Se passou mais de 1 dia, permitir mostrar novamente
-          if (Date.now() - lastShownTime > oneDay) {
-            localStorage.removeItem(DONT_SHOW_KEY);
-            console.log('🔄 PWA: Resetando "não mostrar mais" após 1 dia sem instalação');
-          }
+    if (isInstalled) {
+      setShowModal(false);
+      // Limpar todas as configurações quando instalado
+      localStorage.removeItem(DONT_SHOW_KEY);
+      localStorage.removeItem(LAST_CLOSED_KEY);
+      localStorage.removeItem(LAST_DISMISSED_KEY);
+      localStorage.removeItem(PERMANENT_DISMISS_KEY);
+      console.log(
+        "✅ PWA instalada - Modal de instalação desabilitado e configurações limpas"
+      );
+    }
+  }, [isInstalled]);
+
+  // Configurar timers automáticos para reexibir o modal
+  useEffect(() => {
+    if (!showModal && !isInstalled) {
+      const now = Date.now();
+      let nextShowTime = null;
+
+      // Verificar qual timer deve ser aplicado
+      const lastClosed = localStorage.getItem(LAST_CLOSED_KEY);
+      const lastDismissed = localStorage.getItem(LAST_DISMISSED_KEY);
+
+      if (lastClosed) {
+        const lastClosedTime = parseInt(lastClosed);
+        const closeShowTime = lastClosedTime + CLOSE_COOLDOWN;
+        if (closeShowTime > now) {
+          nextShowTime = closeShowTime;
         }
       }
-    } else {
-      // Se está instalado, não mostrar o modal
-      setShowModal(false);
-      console.log('✅ PWA instalada - Modal de instalação desabilitado');
-    }
-  }, [isInstalled]);
 
-  // Auto-mostrar em desenvolvimento para testes
-  useEffect(() => {
-    if (import.meta.env.DEV && !isInstalled) {
-      // Em desenvolvimento, mostrar após 3 segundos para testes
-      const timer = setTimeout(() => {
-        if (shouldShow()) {
-          console.log('🔧 DEV MODE: Modal de instalação PWA disponível para teste');
-          console.log('🔄 NOVO COMPORTAMENTO: Modal aparece sempre ao recarregar (exceto "não mostrar mais")');
+      if (lastDismissed) {
+        const lastDismissedTime = parseInt(lastDismissed);
+        const dismissShowTime = lastDismissedTime + DISMISS_COOLDOWN;
+        if (
+          dismissShowTime > now &&
+          (!nextShowTime || dismissShowTime > nextShowTime)
+        ) {
+          nextShowTime = dismissShowTime;
         }
-      }, 3000);
+      }
 
-      return () => clearTimeout(timer);
+      // Configurar timer para o próximo show
+      if (nextShowTime && shouldShow()) {
+        const delay = nextShowTime - now;
+        console.log(
+          `⏰ Timer configurado para mostrar modal PWA em ${Math.ceil(
+            delay / 60000
+          )} minutos`
+        );
+
+        const timer = setTimeout(() => {
+          if (shouldShow()) {
+            openModal();
+          }
+        }, delay);
+
+        return () => clearTimeout(timer);
+      }
     }
-  }, [isInstalled]);
+  }, [showModal, isInstalled]);
 
   return {
     showModal,
     openModal,
-    closeModal,
-    dontShowAgain,
-    shouldShowOnPage
+    closeModal, // Fecha com X (3 min cooldown)
+    dontShowAgain: dismissForNow, // Renomeado para ser mais claro - "agora não" (5 min cooldown)
+    shouldShowOnPage,
   };
-}; 
+};
