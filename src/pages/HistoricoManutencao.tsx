@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import SidebarManutencao from '../components/SidebarManutencao';
-import { HeaderManutencao } from '../components/HeaderManutencao';
-import { cn, getMainContentClasses } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { CheckCircle, AlertCircle } from 'lucide-react';
-import FloatingChat from '../components/FloatingChat';
+import React, { useState, useEffect } from "react";
+import SidebarManutencao from "../components/SidebarManutencao";
+import { HeaderManutencao } from "../components/HeaderManutencao";
+import { cn, getMainContentClasses } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@/components/ui/table";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { StatusIcon } from "@/components/ui/status-icon";
+import FloatingChat from "../components/FloatingChat";
 
 const HistoricoManutencao = () => {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [currentUser] = useState({
-    id: 'manutencao-1',
-    name: 'Robert Silva',
-    role: 'Manutenção',
+    id: "manutencao-1",
+    name: "Robert Silva",
+    role: "Manutenção",
   });
 
   useEffect(() => {
@@ -37,7 +44,7 @@ const HistoricoManutencao = () => {
       equipamento: "Tomógrafo",
       tipo: "Manutenção Preventiva",
       tecnico: "Robert Silva",
-      resultado: "Sucesso"
+      resultado: "Sucesso",
     },
     {
       id: 2,
@@ -45,27 +52,25 @@ const HistoricoManutencao = () => {
       equipamento: "Raio-X",
       tipo: "Manutenção Corretiva",
       tecnico: "Robert Silva",
-      resultado: "Falha"
-    }
+      resultado: "Falha",
+    },
   ];
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <SidebarManutencao 
-        isOpen={isSidebarOpen} 
+      <SidebarManutencao
+        isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
       />
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderManutencao 
+        <HeaderManutencao
           titulo="HISTÓRICO"
           nome="ROBERT SILVA"
           tipo="MANUTENÇÃO"
           onMenuClick={handleMenuClick}
-          className={cn(
-            "sticky top-0 z-30"
-          )}
+          className={cn("sticky top-0 z-30")}
         />
         <main className="flex-1 p-3 sm:p-6 bg-gray-50">
           <Card>
@@ -86,24 +91,14 @@ const HistoricoManutencao = () => {
                 <TableBody>
                   {historico.map((item) => (
                     <TableRow key={item.id}>
-                      <TableCell>{new Date(item.data).toLocaleDateString()}</TableCell>
+                      <TableCell>
+                        {new Date(item.data).toLocaleDateString()}
+                      </TableCell>
                       <TableCell>{item.equipamento}</TableCell>
                       <TableCell>{item.tipo}</TableCell>
                       <TableCell>{item.tecnico}</TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
-                          {item.resultado === "Sucesso" ? (
-                            <>
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span className="text-green-500">Sucesso</span>
-                            </>
-                          ) : (
-                            <>
-                              <AlertCircle className="h-4 w-4 text-red-500" />
-                              <span className="text-red-500">Falha</span>
-                            </>
-                          )}
-                        </div>
+                        <StatusIcon status={item.resultado} size="sm" />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -117,7 +112,7 @@ const HistoricoManutencao = () => {
         currentUser={{
           id: currentUser.id,
           name: currentUser.name,
-          role: currentUser.role
+          role: currentUser.role,
         }}
       />
     </div>

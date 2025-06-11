@@ -1,8 +1,8 @@
-
-import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import React from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { StatusIcon } from "@/components/ui/status-icon";
 
 interface Limpeza {
   id: string;
@@ -13,50 +13,52 @@ interface Limpeza {
   };
   quarto: string;
   data: string;
-  status: 'aprovado' | 'rejeitado';
+  status: "aprovado" | "rejeitado";
 }
 
 export const TabelaHistoricoLimpezas: React.FC = () => {
   const limpezas: Limpeza[] = [
     {
-      id: '1',
+      id: "1",
       medico: {
-        nome: 'Shyam Khanna',
-        imagem: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ShyamKhanna',
-        especialidade: 'Heart Disease',
+        nome: "Shyam Khanna",
+        imagem: "https://api.dicebear.com/7.x/avataaars/svg?seed=ShyamKhanna",
+        especialidade: "Heart Disease",
       },
-      quarto: '301',
-      data: '27/12',
-      status: 'aprovado'
+      quarto: "301",
+      data: "27/12",
+      status: "aprovado",
     },
     {
-      id: '2',
+      id: "2",
       medico: {
-        nome: 'Jean Lee Lin',
-        imagem: 'https://api.dicebear.com/7.x/avataaars/svg?seed=JeanLeeLin',
-        especialidade: 'Heart Disease',
+        nome: "Jean Lee Lin",
+        imagem: "https://api.dicebear.com/7.x/avataaars/svg?seed=JeanLeeLin",
+        especialidade: "Heart Disease",
       },
-      quarto: '302',
-      data: '27/12',
-      status: 'aprovado'
+      quarto: "302",
+      data: "27/12",
+      status: "aprovado",
     },
     {
-      id: '3',
+      id: "3",
       medico: {
-        nome: 'Clara Brook',
-        imagem: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ClaraBrook',
-        especialidade: 'Heart Disease',
+        nome: "Clara Brook",
+        imagem: "https://api.dicebear.com/7.x/avataaars/svg?seed=ClaraBrook",
+        especialidade: "Heart Disease",
       },
-      quarto: '303',
-      data: '27/12',
-      status: 'rejeitado'
-    }
+      quarto: "303",
+      data: "27/12",
+      status: "rejeitado",
+    },
   ];
 
   return (
     <Card className="shadow-sm border">
       <CardHeader className="bg-white pb-0">
-        <CardTitle className="text-xl font-semibold">Histórico de Limpezas</CardTitle>
+        <CardTitle className="text-xl font-semibold">
+          Histórico de Limpezas
+        </CardTitle>
       </CardHeader>
       <CardContent className="pt-4">
         <div className="overflow-x-auto">
@@ -75,32 +77,26 @@ export const TabelaHistoricoLimpezas: React.FC = () => {
                   <td className="py-3">
                     <div className="flex items-center gap-2">
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src={limpeza.medico.imagem} alt={limpeza.medico.nome} />
-                        <AvatarFallback>{limpeza.medico.nome.substring(0, 2)}</AvatarFallback>
+                        <AvatarImage
+                          src={limpeza.medico.imagem}
+                          alt={limpeza.medico.nome}
+                        />
+                        <AvatarFallback>
+                          {limpeza.medico.nome.substring(0, 2)}
+                        </AvatarFallback>
                       </Avatar>
                       <div>
                         <p className="font-medium">{limpeza.medico.nome}</p>
-                        <p className="text-xs text-gray-500">{limpeza.medico.especialidade}</p>
+                        <p className="text-xs text-gray-500">
+                          {limpeza.medico.especialidade}
+                        </p>
                       </div>
                     </div>
                   </td>
                   <td className="py-3">{limpeza.quarto}</td>
                   <td className="py-3">{limpeza.data}</td>
                   <td className="py-3">
-                    {limpeza.status === 'aprovado' ? (
-                      <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M20 6 9 17l-5-5"></path>
-                        </svg>
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M18 6 6 18"></path>
-                          <path d="m6 6 12 12"></path>
-                        </svg>
-                      </span>
-                    )}
+                    <StatusIcon status={limpeza.status} size="md" />
                   </td>
                 </tr>
               ))}
@@ -108,7 +104,11 @@ export const TabelaHistoricoLimpezas: React.FC = () => {
           </table>
         </div>
         <div className="flex justify-end mt-3">
-          <Button variant="ghost" size="sm" className="text-blue-500 hover:text-blue-700 hover:bg-blue-50">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-blue-500 hover:text-blue-700 hover:bg-blue-50"
+          >
             Ver mais...
           </Button>
         </div>

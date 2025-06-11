@@ -1,133 +1,377 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import SidebarEnfermaria from "../components/SidebarEnfermaria";
+import HeaderEnfermaria from "../components/HeaderEnfermaria";
+import FloatingChat from "@/components/FloatingChat";
+import { cn, getMainContentClasses } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  User,
+  Mail,
+  Phone,
+  Calendar,
+  MapPin,
+  Shield,
+  Key,
+  Bell,
+  FileText,
+  AlertCircle,
+  Heart,
+  Award,
+  BookOpen,
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-import React, { useState } from 'react';
-import SidebarEnfermaria from '../components/SidebarEnfermaria';
-import HeaderEnfermaria from '../components/HeaderEnfermaria';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { User, Mail, Phone, Award, Calendar } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import FloatingChat from '../components/FloatingChat';
+const PerfilEnfermeiro: React.FC = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("dados-pessoais");
 
-const PerfilEnfermeiro = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
-  const enfermeiro = {
-    nome: "Ana Silva",
-    email: "ana.silva@hospital.com",
-    telefone: "(11) 98765-4321",
-    coren: "COREN-SP 123456",
-    experiencia: "5 anos",
-    especialidade: "UTI",
-    turno: "Manhã",
-    setor: "UTI Adulto"
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setIsSheetOpen(true);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
+
+  const currentUser = {
+    id: "4",
+    name: "Ana Clara Santos",
+    email: "ana.santos@hospital.com",
+    role: "Enfermeiro(a)",
+    avatar: "/images/avatar-enfermeiro.png",
+    dataNascimento: "20/08/1988",
+    telefone: "(11) 97777-6666",
+    cpf: "345.678.901-22",
+    endereco: {
+      rua: "Rua dos Enfermeiros",
+      numero: "321",
+      complemento: "Casa 15",
+      bairro: "Vila Saúde",
+      cidade: "São Paulo",
+      estado: "SP",
+      cep: "06789-012",
+    },
+    dadosProfissionais: {
+      coren: "COREN-123456",
+      especialidade: "Enfermagem Intensiva",
+      experiencia: "8 anos",
+      formacao: "Enfermagem - UNIFESP",
+      especializacao: "UTI Pediátrica",
+      certificacoes: [
+        "Enfermagem Intensiva",
+        "UTI Pediátrica",
+        "Primeiros Socorros",
+        "PALS",
+      ],
+    },
+  };
+
+  const handleNotificacoesClick = () => {
+    toast({
+      title: "Notificações",
+      description: "Funcionalidade em desenvolvimento",
+    });
+  };
+
+  const handlePerfilClick = () => {
+    navigate("/perfil-enfermeiro");
+  };
+
+  const handleSalvarAlteracoes = () => {
+    toast({
+      title: "Sucesso",
+      description: "Alterações salvas com sucesso!",
+    });
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <SidebarEnfermaria 
-        isOpen={isSidebarOpen} 
-        onToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
+    <div className="min-h-screen bg-gray-50">
+      <SidebarEnfermaria
+        isOpen={isSidebarOpen}
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSheetOpen={isSheetOpen}
+        onSheetOpenChange={setIsSheetOpen}
       />
-      
-      <div className={cn(
-        "transition-all duration-300 ease-in-out",
-        isSidebarOpen ? "ml-64" : "ml-16"
-      )}>
-        <HeaderEnfermaria />
-        
-        <main className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="shadow-md">
-              <CardHeader className="bg-gradient-to-r from-red-500 to-red-600">
-                <div className="flex items-center gap-2">
-                  <User className="h-6 w-6 text-white" />
-                  <CardTitle className="text-xl font-bold text-white">Informações Pessoais</CardTitle>
+
+      <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
+        <HeaderEnfermaria
+          titulo="MEU PERFIL"
+          nome={currentUser.name}
+          tipo={currentUser.role}
+          onMenuClick={handleMenuClick}
+        />
+
+        <FloatingChat currentUser={currentUser} />
+
+        <main className="flex-1 pt-8 px-4 pb-6">
+          <div className="max-w-4xl mx-auto space-y-6">
+            <Card className="bg-white shadow-sm">
+              <CardHeader>
+                <div className="flex flex-col items-center space-y-4">
+                  <Avatar className="h-24 w-24">
+                    <AvatarImage src={currentUser.avatar} />
+                    <AvatarFallback>AC</AvatarFallback>
+                  </Avatar>
+                  <div className="text-center">
+                    <CardTitle className="text-2xl font-semibold">
+                      {currentUser.name}
+                    </CardTitle>
+                    <CardDescription>{currentUser.email}</CardDescription>
+                    <div className="flex items-center justify-center gap-2 mt-2">
+                      <Badge variant="secondary">
+                        {currentUser.dadosProfissionais.especialidade}
+                      </Badge>
+                      <Badge variant="outline">
+                        {currentUser.dadosProfissionais.coren}
+                      </Badge>
+                    </div>
+                  </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-6 space-y-4">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <User className="h-5 w-5 text-gray-500" />
-                    <div>
-                      <p className="font-medium">Nome</p>
-                      <p className="text-gray-600">{enfermeiro.nome}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Mail className="h-5 w-5 text-gray-500" />
-                    <div>
-                      <p className="font-medium">E-mail</p>
-                      <p className="text-gray-600">{enfermeiro.email}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Phone className="h-5 w-5 text-gray-500" />
-                    <div>
-                      <p className="font-medium">Telefone</p>
-                      <p className="text-gray-600">{enfermeiro.telefone}</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
             </Card>
 
-            <Card className="shadow-md">
-              <CardHeader className="bg-gradient-to-r from-red-500 to-red-600">
-                <div className="flex items-center gap-2">
-                  <Award className="h-6 w-6 text-white" />
-                  <CardTitle className="text-xl font-bold text-white">Informações Profissionais</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="p-6 space-y-4">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Award className="h-5 w-5 text-gray-500" />
-                    <div>
-                      <p className="font-medium">COREN</p>
-                      <p className="text-gray-600">{enfermeiro.coren}</p>
+            <Card className="bg-white shadow-sm">
+              <CardContent className="pt-6">
+                <Tabs value={activeTab} onValueChange={setActiveTab}>
+                  <TabsList className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <TabsTrigger
+                      value="dados-pessoais"
+                      className="flex items-center gap-2"
+                    >
+                      <User className="h-4 w-4" />
+                      <span>Dados Pessoais</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="endereco"
+                      className="flex items-center gap-2"
+                    >
+                      <MapPin className="h-4 w-4" />
+                      <span>Endereço</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="dados-profissionais"
+                      className="flex items-center gap-2"
+                    >
+                      <Heart className="h-4 w-4" />
+                      <span>Dados Profissionais</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="seguranca"
+                      className="flex items-center gap-2"
+                    >
+                      <Key className="h-4 w-4" />
+                      <span>Segurança</span>
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <div className="mt-6 space-y-6">
+                    <TabsContent value="dados-pessoais" className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="nome">Nome Completo</Label>
+                          <Input id="nome" value={currentUser.name} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="email">E-mail</Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            value={currentUser.email}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="telefone">Telefone</Label>
+                          <Input id="telefone" value={currentUser.telefone} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="cpf">CPF</Label>
+                          <Input id="cpf" value={currentUser.cpf} disabled />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="dataNascimento">
+                            Data de Nascimento
+                          </Label>
+                          <Input
+                            id="dataNascimento"
+                            value={currentUser.dataNascimento}
+                          />
+                        </div>
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="endereco" className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="rua">Rua</Label>
+                          <Input id="rua" value={currentUser.endereco.rua} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="numero">Número</Label>
+                          <Input
+                            id="numero"
+                            value={currentUser.endereco.numero}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="complemento">Complemento</Label>
+                          <Input
+                            id="complemento"
+                            value={currentUser.endereco.complemento}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="bairro">Bairro</Label>
+                          <Input
+                            id="bairro"
+                            value={currentUser.endereco.bairro}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="cidade">Cidade</Label>
+                          <Input
+                            id="cidade"
+                            value={currentUser.endereco.cidade}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="estado">Estado</Label>
+                          <Select defaultValue={currentUser.endereco.estado}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecione o estado" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="SP">São Paulo</SelectItem>
+                              <SelectItem value="RJ">Rio de Janeiro</SelectItem>
+                              <SelectItem value="MG">Minas Gerais</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="cep">CEP</Label>
+                          <Input id="cep" value={currentUser.endereco.cep} />
+                        </div>
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent
+                      value="dados-profissionais"
+                      className="space-y-4"
+                    >
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="coren">COREN</Label>
+                          <Input
+                            id="coren"
+                            value={currentUser.dadosProfissionais.coren}
+                            disabled
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="especialidade">Especialidade</Label>
+                          <Input
+                            id="especialidade"
+                            value={currentUser.dadosProfissionais.especialidade}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="experiencia">Experiência</Label>
+                          <Input
+                            id="experiencia"
+                            value={currentUser.dadosProfissionais.experiencia}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="formacao">Formação</Label>
+                          <Input
+                            id="formacao"
+                            value={currentUser.dadosProfissionais.formacao}
+                          />
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
+                          <Label htmlFor="especializacao">Especialização</Label>
+                          <Input
+                            id="especializacao"
+                            value={
+                              currentUser.dadosProfissionais.especializacao
+                            }
+                          />
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
+                          <Label>Certificações</Label>
+                          <div className="flex flex-wrap gap-2">
+                            {currentUser.dadosProfissionais.certificacoes.map(
+                              (cert, index) => (
+                                <Badge key={index} variant="secondary">
+                                  {cert}
+                                </Badge>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="seguranca" className="space-y-4">
+                      <div className="grid grid-cols-1 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="senha-atual">Senha Atual</Label>
+                          <Input id="senha-atual" type="password" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="nova-senha">Nova Senha</Label>
+                          <Input id="nova-senha" type="password" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="confirmar-senha">
+                            Confirmar Nova Senha
+                          </Label>
+                          <Input id="confirmar-senha" type="password" />
+                        </div>
+                      </div>
+                    </TabsContent>
+
+                    <div className="flex justify-end gap-4 pt-4">
+                      <Button variant="outline">Cancelar</Button>
+                      <Button onClick={handleSalvarAlteracoes}>
+                        Salvar Alterações
+                      </Button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-gray-500" />
-                    <div>
-                      <p className="font-medium">Experiência</p>
-                      <p className="text-gray-600">{enfermeiro.experiencia}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Award className="h-5 w-5 text-gray-500" />
-                    <div>
-                      <p className="font-medium">Especialidade</p>
-                      <p className="text-gray-600">{enfermeiro.especialidade}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-gray-500" />
-                    <div>
-                      <p className="font-medium">Turno</p>
-                      <p className="text-gray-600">{enfermeiro.turno}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Award className="h-5 w-5 text-gray-500" />
-                    <div>
-                      <p className="font-medium">Setor</p>
-                      <p className="text-gray-600">{enfermeiro.setor}</p>
-                    </div>
-                  </div>
-                </div>
+                </Tabs>
               </CardContent>
             </Card>
           </div>
         </main>
       </div>
-
-      <FloatingChat
-        currentUser={{
-          id: "nurse-1",
-          name: "Ana Silva",
-          role: "Enfermeiro"
-        }}
-      />
     </div>
   );
 };

@@ -1,8 +1,7 @@
-
-import React from 'react';
-import { Check } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { User } from 'lucide-react';
+import React from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User } from "lucide-react";
+import { StatusIcon } from "@/components/ui/status-icon";
 import {
   Table,
   TableBody,
@@ -10,7 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 
 interface Exame {
   medico: string;
@@ -23,11 +22,13 @@ interface TabelaHistoricoExamesProps {
   exames: Exame[];
 }
 
-const TabelaHistoricoExames: React.FC<TabelaHistoricoExamesProps> = ({ exames }) => {
+const TabelaHistoricoExames: React.FC<TabelaHistoricoExamesProps> = ({
+  exames,
+}) => {
   return (
     <div className="bg-white rounded-lg p-6">
       <h2 className="text-xl font-bold mb-6">Histórico de Exames</h2>
-      
+
       <Table>
         <TableHeader>
           <TableRow>
@@ -43,7 +44,10 @@ const TabelaHistoricoExames: React.FC<TabelaHistoricoExamesProps> = ({ exames })
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${exame.medico}`} alt={exame.medico} />
+                    <AvatarImage
+                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${exame.medico}`}
+                      alt={exame.medico}
+                    />
                     <AvatarFallback>
                       <User className="h-4 w-4" />
                     </AvatarFallback>
@@ -54,18 +58,20 @@ const TabelaHistoricoExames: React.FC<TabelaHistoricoExamesProps> = ({ exames })
               <TableCell>{exame.tipoExame}</TableCell>
               <TableCell>{exame.data}</TableCell>
               <TableCell>
-                {exame.resultado ? 
-                  <Check className="h-5 w-5 text-green-500" /> : 
-                  <span className="h-5 w-5 text-red-500">✗</span>
-                }
+                <StatusIcon
+                  status={exame.resultado ? "success" : "error"}
+                  size="md"
+                />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      
+
       <div className="text-right mt-4">
-        <button className="text-gray-500 hover:text-gray-700 text-sm">Ver mais...</button>
+        <button className="text-gray-500 hover:text-gray-700 text-sm">
+          Ver mais...
+        </button>
       </div>
     </div>
   );

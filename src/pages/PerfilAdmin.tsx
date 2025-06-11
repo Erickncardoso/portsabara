@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { SidebarLimpeza } from "../components/SidebarLimpeza";
-import { HeaderLimpeza } from "../components/HeaderLimpeza";
+import SidebarAdmin from "../components/SidebarAdmin";
+import HeaderAdmin from "../components/HeaderAdmin";
 import FloatingChat from "@/components/FloatingChat";
 import { cn, getMainContentClasses } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
@@ -29,7 +29,7 @@ import {
   Bell,
   FileText,
   AlertCircle,
-  Sparkles,
+  Settings,
   Award,
   BookOpen,
 } from "lucide-react";
@@ -42,7 +42,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const PerfilLimpeza: React.FC = () => {
+const PerfilAdmin: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const isMobile = useIsMobile();
@@ -63,34 +63,34 @@ const PerfilLimpeza: React.FC = () => {
   };
 
   const currentUser = {
-    id: "6",
-    name: "Maria Conceição Santos",
-    email: "maria.conceicao@hospital.com",
-    role: "Auxiliar de Limpeza",
-    avatar: "/images/avatar-limpeza.png",
-    dataNascimento: "25/03/1975",
-    telefone: "(11) 95555-4444",
-    cpf: "567.890.123-44",
+    id: "7",
+    name: "Roberto Administrador",
+    email: "roberto.admin@hospital.com",
+    role: "Administrador",
+    avatar: "/images/avatar-admin.png",
+    dataNascimento: "05/01/1970",
+    telefone: "(11) 94444-3333",
+    cpf: "678.901.234-55",
     endereco: {
-      rua: "Rua da Limpeza",
-      numero: "987",
-      complemento: "Fundos",
-      bairro: "Vila Serviços",
+      rua: "Rua da Administração",
+      numero: "123",
+      complemento: "Sala 101",
+      bairro: "Centro Administrativo",
       cidade: "São Paulo",
       estado: "SP",
-      cep: "08901-234",
+      cep: "01234-567",
     },
     dadosProfissionais: {
-      registro: "AL-56789",
-      especialidade: "Limpeza Hospitalar",
-      experiencia: "15 anos",
-      formacao: "Ensino Médio Completo",
-      especializacao: "Higienização em Ambiente Hospitalar",
+      registro: "ADM-98765",
+      especialidade: "Gestão Hospitalar",
+      experiencia: "20 anos",
+      formacao: "Administração de Empresas - FGV",
+      especializacao: "Gestão em Saúde",
       certificacoes: [
-        "NR-32",
-        "Controle de Infecção",
-        "Manuseio de EPIs",
-        "Limpeza Terminal",
+        "MBA em Gestão da Saúde",
+        "Administração Hospitalar",
+        "Gestão de Qualidade",
+        "Liderança Executiva",
       ],
     },
   };
@@ -103,7 +103,7 @@ const PerfilLimpeza: React.FC = () => {
   };
 
   const handlePerfilClick = () => {
-    navigate("/perfil-limpeza");
+    navigate("/perfil-admin");
   };
 
   const handleSalvarAlteracoes = () => {
@@ -115,7 +115,7 @@ const PerfilLimpeza: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SidebarLimpeza
+      <SidebarAdmin
         isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
@@ -123,12 +123,7 @@ const PerfilLimpeza: React.FC = () => {
       />
 
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderLimpeza
-          titulo="MEU PERFIL"
-          nome={currentUser.name}
-          tipo={currentUser.role}
-          onMenuClick={handleMenuClick}
-        />
+        <HeaderAdmin onMenuClick={handleMenuClick} />
 
         <FloatingChat currentUser={currentUser} />
 
@@ -139,7 +134,7 @@ const PerfilLimpeza: React.FC = () => {
                 <div className="flex flex-col items-center space-y-4">
                   <Avatar className="h-24 w-24">
                     <AvatarImage src={currentUser.avatar} />
-                    <AvatarFallback>MC</AvatarFallback>
+                    <AvatarFallback>RA</AvatarFallback>
                   </Avatar>
                   <div className="text-center">
                     <CardTitle className="text-2xl font-semibold">
@@ -181,7 +176,7 @@ const PerfilLimpeza: React.FC = () => {
                       value="dados-profissionais"
                       className="flex items-center gap-2"
                     >
-                      <Sparkles className="h-4 w-4" />
+                      <Settings className="h-4 w-4" />
                       <span>Dados Profissionais</span>
                     </TabsTrigger>
                     <TabsTrigger
@@ -376,4 +371,4 @@ const PerfilLimpeza: React.FC = () => {
   );
 };
 
-export default PerfilLimpeza;
+export default PerfilAdmin;

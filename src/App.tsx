@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PWAInstallProvider from "@/components/PWAInstallProvider";
 import OfflineIndicator from "@/components/OfflineIndicator";
-import PWADebugPanel from "@/components/PWADebugPanel";
 import NotFound from "./pages/NotFound";
 import Cadastro from "./pages/Cadastro";
 import TipoCadastro from "./pages/TipoCadastro";
@@ -63,6 +62,7 @@ import MedicamentosFarmacia from "./pages/MedicamentosFarmacia";
 import InternacaoFarmacia from "./pages/InternacaoFarmacia";
 import PerfilFarmacia from "./pages/PerfilFarmacia";
 import ReceitasFarmacia from "./pages/ReceitasFarmacia";
+import PerfilAdmin from "./pages/PerfilAdmin";
 
 const queryClient = new QueryClient();
 
@@ -73,7 +73,6 @@ const App: React.FC = () => {
         <Toaster />
         <Sonner />
         <OfflineIndicator />
-        <PWADebugPanel />
         <BrowserRouter>
           <PWAInstallProvider>
             <Routes>
@@ -84,9 +83,15 @@ const App: React.FC = () => {
               <Route path="/login-medico" element={<LoginMedico />} />
               <Route path="/cadastro-medico" element={<CadastroMedico />} />
               <Route path="/login-enfermeiro" element={<LoginEnfermeiro />} />
-              <Route path="/cadastro-enfermeiro" element={<CadastroEnfermeiro />} />
+              <Route
+                path="/cadastro-enfermeiro"
+                element={<CadastroEnfermeiro />}
+              />
               <Route path="/login-manutencao" element={<LoginManutencao />} />
-              <Route path="/cadastro-manutencao" element={<CadastroManutencao />} />
+              <Route
+                path="/cadastro-manutencao"
+                element={<CadastroManutencao />}
+              />
               <Route path="/login-limpeza" element={<LoginLimpeza />} />
               <Route path="/cadastro-limpeza" element={<CadastroLimpeza />} />
               <Route path="/esqueci-senha" element={<EsqueciSenha />} />
@@ -101,37 +106,80 @@ const App: React.FC = () => {
               <Route path="/login-admin" element={<LoginAdmin />} />
               <Route path="/exames-paciente" element={<ExamesPaciente />} />
               <Route path="/exames-medico" element={<ExamesMedico />} />
-              <Route path="/consultas-paciente" element={<ConsultasPaciente />} />
+              <Route
+                path="/consultas-paciente"
+                element={<ConsultasPaciente />}
+              />
               <Route path="/consultas-medico" element={<ConsultasMedico />} />
               <Route path="/receitas-medico" element={<ReceitasMedico />} />
               <Route path="/internacao-medico" element={<InternacaoMedico />} />
               <Route path="/receitas-paciente" element={<ReceitasPaciente />} />
-              <Route path="/internacao-paciente" element={<InternacaoPaciente />} />
-              <Route path="/dicas-saude-paciente" element={<DicasSaudePaciente />} />
+              <Route
+                path="/internacao-paciente"
+                element={<InternacaoPaciente />}
+              />
+              <Route
+                path="/dicas-saude-paciente"
+                element={<DicasSaudePaciente />}
+              />
               <Route path="/perfil-paciente" element={<PerfilPaciente />} />
               <Route path="/perfil-medico" element={<PerfilMedico />} />
               <Route path="/leitos-enfermaria" element={<LeitosEnfermaria />} />
-              <Route path="/prescricoes-enfermaria" element={<PrescricoesEnfermaria />} />
-              <Route path="/procedimentos-enfermaria" element={<ProcedimentosEnfermaria />} />
+              <Route
+                path="/prescricoes-enfermaria"
+                element={<PrescricoesEnfermaria />}
+              />
+              <Route
+                path="/procedimentos-enfermaria"
+                element={<ProcedimentosEnfermaria />}
+              />
               <Route path="/agenda-enfermaria" element={<AgendaEnfermaria />} />
               <Route path="/perfil-enfermeiro" element={<PerfilEnfermeiro />} />
-              <Route path="/tarefas-manutencao" element={<TarefasManutencao />} />
-              <Route path="/historico-manutencao" element={<HistoricoManutencao />} />
-              <Route path="/inventario-manutencao" element={<InventarioManutencao />} />
-              <Route path="/protocolos-manutencao" element={<ProtocolosManutencao />} />
+              <Route
+                path="/tarefas-manutencao"
+                element={<TarefasManutencao />}
+              />
+              <Route
+                path="/historico-manutencao"
+                element={<HistoricoManutencao />}
+              />
+              <Route
+                path="/inventario-manutencao"
+                element={<InventarioManutencao />}
+              />
+              <Route
+                path="/protocolos-manutencao"
+                element={<ProtocolosManutencao />}
+              />
               <Route path="/perfil-manutencao" element={<PerfilManutencao />} />
               <Route path="/quartos-limpeza" element={<QuartosLimpeza />} />
               <Route path="/historico-limpeza" element={<HistoricoLimpeza />} />
-              <Route path="/solicitacoes-limpeza" element={<SolicitacoesLimpeza />} />
-              <Route path="/protocolos-limpeza" element={<ProtocolosLimpeza />} />
+              <Route
+                path="/solicitacoes-limpeza"
+                element={<SolicitacoesLimpeza />}
+              />
+              <Route
+                path="/protocolos-limpeza"
+                element={<ProtocolosLimpeza />}
+              />
               <Route path="/perfil-limpeza" element={<PerfilLimpeza />} />
               <Route path="/login-farmacia" element={<LoginFarmacia />} />
               <Route path="/cadastro-farmacia" element={<CadastroFarmacia />} />
               <Route path="/receitas-farmacia" element={<ReceitasFarmacia />} />
-              <Route path="/pacientes-farmacia" element={<PacientesFarmacia />} />
-              <Route path="/medicamentos-farmacia" element={<MedicamentosFarmacia />} />
-              <Route path="/internacao-farmacia" element={<InternacaoFarmacia />} />
+              <Route
+                path="/pacientes-farmacia"
+                element={<PacientesFarmacia />}
+              />
+              <Route
+                path="/medicamentos-farmacia"
+                element={<MedicamentosFarmacia />}
+              />
+              <Route
+                path="/internacao-farmacia"
+                element={<InternacaoFarmacia />}
+              />
               <Route path="/perfil-farmacia" element={<PerfilFarmacia />} />
+              <Route path="/perfil-admin" element={<PerfilAdmin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </PWAInstallProvider>
