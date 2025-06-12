@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import SidebarFarmacia from "../components/SidebarFarmacia";
-import HeaderFarmacia from "../components/HeaderFarmacia";
+import SidebarFarmaciaFixed from "../components/SidebarFarmaciaFixed";
+import HeaderFarmaciaFixed from "../components/HeaderFarmaciaFixed";
 import {
   Search,
   Filter,
@@ -177,7 +177,7 @@ const InternacaoFarmacia: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SidebarFarmacia
+      <SidebarFarmaciaFixed
         isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
@@ -185,8 +185,12 @@ const InternacaoFarmacia: React.FC = () => {
         nome="MARIA SANTOS"
         tipo="FARMACÊUTICO"
       />
+
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderFarmacia titulo="INTERNAÇÕES" onMenuClick={handleMenuClick} />
+        <HeaderFarmaciaFixed
+          titulo="INTERNAÇÕES"
+          onMenuClick={handleMenuClick}
+        />
         <main className="flex-1 p-6">
           <div className="px-3 sm:px-6 py-3 sm:py-4">
             {/* Cards de Estatísticas */}

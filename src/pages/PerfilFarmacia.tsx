@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import SidebarFarmacia from "../components/SidebarFarmacia";
-import HeaderFarmacia from "../components/HeaderFarmacia";
+import SidebarFarmaciaFixed from "../components/SidebarFarmaciaFixed";
+import HeaderFarmaciaFixed from "../components/HeaderFarmaciaFixed";
 import FloatingChat from "@/components/FloatingChat";
 import { cn, getMainContentClasses } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
@@ -114,17 +114,21 @@ const PerfilFarmacia: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SidebarFarmacia
+      {/* Sidebar Temporariamente Simplificada */}
+      <SidebarFarmaciaFixed
         isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
-        nome={currentUser.name}
-        tipo={currentUser.role}
+        nome="MARIA SANTOS"
+        tipo="FARMACÊUTICO"
       />
 
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderFarmacia titulo="MEU PERFIL" onMenuClick={handleMenuClick} />
+        <HeaderFarmaciaFixed
+          titulo="MEU PERFIL"
+          onMenuClick={handleMenuClick}
+        />
 
         <FloatingChat currentUser={currentUser} />
 

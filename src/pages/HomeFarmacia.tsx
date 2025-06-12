@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import SidebarFarmacia from "../components/SidebarFarmacia";
-import HeaderFarmacia from "../components/HeaderFarmacia";
+import SidebarFarmaciaFixed from "../components/SidebarFarmaciaFixed";
+import HeaderFarmaciaFixed from "../components/HeaderFarmaciaFixed";
 import {
   Pill,
   Users,
@@ -198,7 +198,7 @@ const HomeFarmacia: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SidebarFarmacia
+      <SidebarFarmaciaFixed
         isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
@@ -207,7 +207,7 @@ const HomeFarmacia: React.FC = () => {
         tipo="FARMACÊUTICO"
       />
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderFarmacia titulo="HOME" onMenuClick={handleMenuClick} />
+        <HeaderFarmaciaFixed titulo="HOME" onMenuClick={handleMenuClick} />
         <main className="flex-1 p-6">
           <div className="space-y-6">
             {/* Boas-vindas */}

@@ -12,8 +12,8 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import SidebarFarmacia from "../components/SidebarFarmacia";
-import HeaderFarmacia from "../components/HeaderFarmacia";
+import SidebarFarmaciaFixed from "../components/SidebarFarmaciaFixed";
+import HeaderFarmaciaFixed from "../components/HeaderFarmaciaFixed";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getMainContentClasses } from "@/lib/utils";
 
@@ -153,7 +153,7 @@ const ReceitasFarmacia: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SidebarFarmacia
+      <SidebarFarmaciaFixed
         isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
@@ -161,8 +161,9 @@ const ReceitasFarmacia: React.FC = () => {
         nome="MARIA SANTOS"
         tipo="FARMACÊUTICO"
       />
+
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderFarmacia titulo="RECEITAS" onMenuClick={handleMenuClick} />
+        <HeaderFarmaciaFixed titulo="RECEITAS" onMenuClick={handleMenuClick} />
         <main className="flex-1 p-6">
           <div className="px-3 sm:px-6 py-3 sm:py-4">
             <div className="bg-white rounded-xl shadow p-6 overflow-x-auto">
