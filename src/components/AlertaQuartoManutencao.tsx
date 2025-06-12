@@ -1,17 +1,19 @@
-
-import React from 'react';
-import { Calendar } from 'lucide-react';
+import React from "react";
+import { Calendar } from "lucide-react";
+import { RoomStatus } from "./ui/room-status";
 
 interface AlertaQuartoManutencaoProps {
   numeroQuarto: string;
   especialidade: string;
   nomeMedico: string;
+  status?: "Aguardando" | "Em Andamento" | "Finalizado";
 }
 
-export const AlertaQuartoManutencao: React.FC<AlertaQuartoManutencaoProps> = ({ 
-  numeroQuarto, 
-  especialidade, 
-  nomeMedico 
+export const AlertaQuartoManutencao: React.FC<AlertaQuartoManutencaoProps> = ({
+  numeroQuarto,
+  especialidade,
+  nomeMedico,
+  status = "Aguardando",
 }) => {
   return (
     <div className="border border-gray-200 rounded-lg p-4 bg-white">
@@ -22,15 +24,14 @@ export const AlertaQuartoManutencao: React.FC<AlertaQuartoManutencaoProps> = ({
           </div>
           <div>
             <span className="font-medium text-gray-800">
-              Alerta quarto {numeroQuarto} <span className="text-blue-500">{especialidade}</span>
+              Alerta quarto {numeroQuarto}{" "}
+              <span className="text-blue-500">{especialidade}</span>
             </span>
-            <div className="text-sm text-gray-500">
-              {nomeMedico}
-            </div>
+            <div className="text-sm text-gray-500">{nomeMedico}</div>
           </div>
         </div>
-        <div className="text-sm">
-          <span className="font-medium">Status:</span> <span className="text-green-500">Pendente</span>
+        <div>
+          <RoomStatus status={status} size="sm" />
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SidebarPaciente from '../components/SidebarPaciente';
-import HeaderPaciente from '../components/HeaderPaciente';
-import FloatingChat from '@/components/FloatingChat';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import SidebarPaciente from "../components/SidebarPaciente";
+import HeaderPaciente from "../components/HeaderPaciente";
+import FloatingChat from "@/components/FloatingChat";
 import { cn, getMainContentClasses } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Card,
   CardContent,
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, Calendar, Clock, MapPin } from 'lucide-react';
+import { Search, Calendar, Clock, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -31,9 +31,9 @@ const InternacaoPaciente: React.FC = () => {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filtroStatus, setFiltroStatus] = useState('todos');
-  
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filtroStatus, setFiltroStatus] = useState("todos");
+
   useEffect(() => {
     setIsSidebarOpen(!isMobile);
   }, [isMobile]);
@@ -47,10 +47,10 @@ const InternacaoPaciente: React.FC = () => {
   };
 
   const currentUser = {
-    id: '1',
-    name: 'João Silva',
-    role: 'Paciente',
-    avatar: '/images/avatar.png'
+    id: "1",
+    name: "João Silva",
+    role: "Paciente",
+    avatar: "/images/avatar.png",
   };
 
   const internacoes = [
@@ -63,7 +63,7 @@ const InternacaoPaciente: React.FC = () => {
       dataPrevista: "28/04/2025",
       quarto: "204",
       ala: "Cirúrgica",
-      status: "Em andamento"
+      status: "Em andamento",
     },
     {
       id: 2,
@@ -74,7 +74,7 @@ const InternacaoPaciente: React.FC = () => {
       dataSaida: "25/03/2025",
       quarto: "305",
       ala: "Clínica",
-      status: "Concluída"
+      status: "Concluída",
     },
     {
       id: 3,
@@ -85,8 +85,8 @@ const InternacaoPaciente: React.FC = () => {
       dataSaida: "20/02/2025",
       quarto: "102",
       ala: "Ortopédica",
-      status: "Concluída"
-    }
+      status: "Concluída",
+    },
   ];
 
   const handleNotificacoesClick = () => {
@@ -97,33 +97,34 @@ const InternacaoPaciente: React.FC = () => {
   };
 
   const handlePerfilClick = () => {
-    navigate('/perfil-paciente');
+    navigate("/perfil-paciente");
   };
 
-  const internacoesFiltradas = internacoes.filter(internacao => {
-    const matchesSearch = 
+  const internacoesFiltradas = internacoes.filter((internacao) => {
+    const matchesSearch =
       internacao.motivo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       internacao.medico.toLowerCase().includes(searchTerm.toLowerCase()) ||
       internacao.quarto.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = 
-      filtroStatus === 'todos' || 
-      internacao.status.toLowerCase() === filtroStatus.toLowerCase().replace('-', ' ');
+
+    const matchesStatus =
+      filtroStatus === "todos" ||
+      internacao.status.toLowerCase() ===
+        filtroStatus.toLowerCase().replace("-", " ");
 
     return matchesSearch && matchesStatus;
   });
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SidebarPaciente 
-        isOpen={isSidebarOpen} 
+      <SidebarPaciente
+        isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
       />
-      
+
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderPaciente 
+        <HeaderPaciente
           titulo="INTERNAÇÃO"
           nome={currentUser.name}
           tipo={currentUser.role}
@@ -141,8 +142,12 @@ const InternacaoPaciente: React.FC = () => {
               <CardHeader className="pb-0">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                   <div>
-                    <CardTitle className="text-lg font-semibold">Histórico de Internações</CardTitle>
-                    <CardDescription>Acompanhe suas internações e histórico hospitalar</CardDescription>
+                    <CardTitle className="text-lg font-semibold">
+                      Histórico de Internações
+                    </CardTitle>
+                    <CardDescription>
+                      Acompanhe suas internações e histórico hospitalar
+                    </CardDescription>
                   </div>
                   <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full md:w-auto">
                     <div className="relative flex-1 md:w-64">
@@ -155,13 +160,18 @@ const InternacaoPaciente: React.FC = () => {
                         className="pl-9"
                       />
                     </div>
-                    <Select value={filtroStatus} onValueChange={setFiltroStatus}>
+                    <Select
+                      value={filtroStatus}
+                      onValueChange={setFiltroStatus}
+                    >
                       <SelectTrigger className="w-full md:w-40">
                         <SelectValue placeholder="Status" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="todos">Todos</SelectItem>
-                        <SelectItem value="em-andamento">Em andamento</SelectItem>
+                        <SelectItem value="em-andamento">
+                          Em andamento
+                        </SelectItem>
                         <SelectItem value="concluída">Concluídas</SelectItem>
                       </SelectContent>
                     </Select>
@@ -176,13 +186,18 @@ const InternacaoPaciente: React.FC = () => {
                     </div>
                   ) : (
                     internacoesFiltradas.map((internacao) => (
-                      <div key={internacao.id} className="border rounded-lg p-4 hover:shadow-sm transition-shadow">
+                      <div
+                        key={internacao.id}
+                        className="border rounded-lg p-4 hover:shadow-sm transition-shadow"
+                      >
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                           <div className="space-y-2">
                             <div className="flex items-center gap-2">
-                              <h3 className="font-medium">{internacao.motivo}</h3>
-                              <Badge 
-                                variant="outline" 
+                              <h3 className="font-medium">
+                                {internacao.motivo}
+                              </h3>
+                              <Badge
+                                variant="outline"
                                 className={cn(
                                   internacao.status === "Em andamento"
                                     ? "bg-blue-50 text-blue-700 border-blue-200"
@@ -192,7 +207,9 @@ const InternacaoPaciente: React.FC = () => {
                                 {internacao.status}
                               </Badge>
                             </div>
-                            <p className="text-sm text-gray-500">{internacao.medico} - {internacao.especialidade}</p>
+                            <p className="text-sm text-gray-500">
+                              {internacao.medico} - {internacao.especialidade}
+                            </p>
                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-500">
                               <div className="flex items-center gap-1">
                                 <Calendar className="h-4 w-4" />
@@ -203,20 +220,38 @@ const InternacaoPaciente: React.FC = () => {
                                   <Clock className="h-4 w-4" />
                                   <span>Saída: {internacao.dataSaida}</span>
                                 </div>
-                              ) : internacao.dataPrevista && (
-                                <div className="flex items-center gap-1">
-                                  <Clock className="h-4 w-4" />
-                                  <span>Previsão de saída: {internacao.dataPrevista}</span>
-                                </div>
+                              ) : (
+                                internacao.dataPrevista && (
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="h-4 w-4" />
+                                    <span>
+                                      Previsão de saída:{" "}
+                                      {internacao.dataPrevista}
+                                    </span>
+                                  </div>
+                                )
                               )}
                               <div className="flex items-center gap-1">
                                 <MapPin className="h-4 w-4" />
-                                <span>Quarto {internacao.quarto} - Ala {internacao.ala}</span>
+                                <span>
+                                  Quarto {internacao.quarto} - Ala{" "}
+                                  {internacao.ala}
+                                </span>
                               </div>
                             </div>
                           </div>
                           <div className="flex flex-col md:items-end gap-2">
-                            <Button variant="outline" size="sm" onClick={() => navigate(`/internacao/${internacao.id}`)}>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                toast({
+                                  title: "Detalhes da Internação",
+                                  description:
+                                    "Funcionalidade em desenvolvimento",
+                                })
+                              }
+                            >
                               Ver detalhes
                             </Button>
                           </div>

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SidebarPaciente from '../components/SidebarPaciente';
-import HeaderPaciente from '../components/HeaderPaciente';
-import FloatingChat from '@/components/FloatingChat';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import SidebarPaciente from "../components/SidebarPaciente";
+import HeaderPaciente from "../components/HeaderPaciente";
+import FloatingChat from "@/components/FloatingChat";
 import { cn, getMainContentClasses } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Card,
   CardContent,
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, FileText, Download } from 'lucide-react';
+import { Search, FileText, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -31,9 +31,9 @@ const ExamesPaciente: React.FC = () => {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filtroStatus, setFiltroStatus] = useState('todos');
-  
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filtroStatus, setFiltroStatus] = useState("todos");
+
   useEffect(() => {
     setIsSidebarOpen(!isMobile);
   }, [isMobile]);
@@ -47,10 +47,16 @@ const ExamesPaciente: React.FC = () => {
   };
 
   const currentUser = {
-    id: '1',
-    name: 'João Silva',
-    role: 'Paciente',
-    avatar: '/images/avatar.png'
+    id: "1",
+    name: "João Silva",
+    role: "Paciente",
+    avatar: "/images/avatar.png",
+  };
+
+  // Informações do usuário para header e sidebar
+  const usuarioInfo = {
+    nome: "JOÃO SILVA",
+    tipo: "PACIENTE",
   };
 
   const exames = [
@@ -62,7 +68,7 @@ const ExamesPaciente: React.FC = () => {
       data: "28/04/2025",
       dataResultado: "29/04/2025",
       status: "Concluído",
-      resultado: "https://exemplo.com/resultado1.pdf"
+      resultado: "https://exemplo.com/resultado1.pdf",
     },
     {
       id: 2,
@@ -70,7 +76,7 @@ const ExamesPaciente: React.FC = () => {
       medico: "Dr. Carlos Silva",
       especialidade: "Pneumologista",
       data: "30/04/2025",
-      status: "Agendado"
+      status: "Agendado",
     },
     {
       id: 3,
@@ -80,8 +86,8 @@ const ExamesPaciente: React.FC = () => {
       data: "25/04/2025",
       dataResultado: "26/04/2025",
       status: "Concluído",
-      resultado: "https://exemplo.com/resultado2.pdf"
-    }
+      resultado: "https://exemplo.com/resultado2.pdf",
+    },
   ];
 
   const handleNotificacoesClick = () => {
@@ -92,7 +98,7 @@ const ExamesPaciente: React.FC = () => {
   };
 
   const handlePerfilClick = () => {
-    navigate('/perfil-paciente');
+    navigate("/perfil-paciente");
   };
 
   const handleDownload = (exame: any) => {
@@ -102,13 +108,13 @@ const ExamesPaciente: React.FC = () => {
     });
   };
 
-  const examesFiltrados = exames.filter(exame => {
-    const matchesSearch = 
+  const examesFiltrados = exames.filter((exame) => {
+    const matchesSearch =
       exame.tipo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       exame.medico.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = 
-      filtroStatus === 'todos' || 
+
+    const matchesStatus =
+      filtroStatus === "todos" ||
       exame.status.toLowerCase() === filtroStatus.toLowerCase();
 
     return matchesSearch && matchesStatus;
@@ -116,20 +122,20 @@ const ExamesPaciente: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SidebarPaciente 
-        isOpen={isSidebarOpen} 
+      <SidebarPaciente
+        isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
+        nome={usuarioInfo.nome}
+        tipo={usuarioInfo.tipo}
       />
-      
+
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderPaciente 
+        <HeaderPaciente
           titulo="EXAMES"
-          nome={currentUser.name}
-          tipo={currentUser.role}
-          notificacoes={2}
-          onNotificacoesClick={handleNotificacoesClick}
+          nome={usuarioInfo.nome}
+          tipo={usuarioInfo.tipo}
           onPerfilClick={handlePerfilClick}
           onMenuClick={handleMenuClick}
         />
@@ -142,8 +148,12 @@ const ExamesPaciente: React.FC = () => {
               <CardHeader className="pb-0">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                   <div>
-                    <CardTitle className="text-lg font-semibold">Meus Exames</CardTitle>
-                    <CardDescription>Visualize e acompanhe seus exames</CardDescription>
+                    <CardTitle className="text-lg font-semibold">
+                      Meus Exames
+                    </CardTitle>
+                    <CardDescription>
+                      Visualize e acompanhe seus exames
+                    </CardDescription>
                   </div>
                   <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full md:w-auto">
                     <div className="relative flex-1 md:w-64">
@@ -156,7 +166,10 @@ const ExamesPaciente: React.FC = () => {
                         className="pl-9"
                       />
                     </div>
-                    <Select value={filtroStatus} onValueChange={setFiltroStatus}>
+                    <Select
+                      value={filtroStatus}
+                      onValueChange={setFiltroStatus}
+                    >
                       <SelectTrigger className="w-full md:w-40">
                         <SelectValue placeholder="Status" />
                       </SelectTrigger>
@@ -166,7 +179,15 @@ const ExamesPaciente: React.FC = () => {
                         <SelectItem value="concluído">Concluídos</SelectItem>
                       </SelectContent>
                     </Select>
-                    <Button variant="outline" onClick={() => navigate('/agendar-exame')}>
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        toast({
+                          title: "Agendar Exame",
+                          description: "Funcionalidade em desenvolvimento",
+                        })
+                      }
+                    >
                       Agendar Exame
                     </Button>
                   </div>
@@ -180,15 +201,18 @@ const ExamesPaciente: React.FC = () => {
                     </div>
                   ) : (
                     examesFiltrados.map((exame) => (
-                      <div key={exame.id} className="border rounded-lg p-4 hover:shadow-sm transition-shadow">
+                      <div
+                        key={exame.id}
+                        className="border rounded-lg p-4 hover:shadow-sm transition-shadow"
+                      >
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                           <div className="space-y-2">
                             <div className="flex items-center gap-2">
                               <h3 className="font-medium">{exame.tipo}</h3>
-                              <Badge 
-                                variant="outline" 
+                              <Badge
+                                variant="outline"
                                 className={cn(
-                                  exame.status === "Concluído" 
+                                  exame.status === "Concluído"
                                     ? "bg-green-50 text-green-700 border-green-200"
                                     : "bg-blue-50 text-blue-700 border-blue-200"
                                 )}
@@ -196,7 +220,9 @@ const ExamesPaciente: React.FC = () => {
                                 {exame.status}
                               </Badge>
                             </div>
-                            <p className="text-sm text-gray-500">{exame.medico} - {exame.especialidade}</p>
+                            <p className="text-sm text-gray-500">
+                              {exame.medico} - {exame.especialidade}
+                            </p>
                             <div className="flex items-center gap-2 text-sm text-gray-500">
                               <span>Data: {exame.data}</span>
                               {exame.dataResultado && (
@@ -208,13 +234,23 @@ const ExamesPaciente: React.FC = () => {
                             </div>
                           </div>
                           <div className="flex flex-col md:items-end gap-2">
-                            <Button variant="outline" size="sm" onClick={() => navigate(`/exame/${exame.id}`)}>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                toast({
+                                  title: "Detalhes do Exame",
+                                  description:
+                                    "Funcionalidade em desenvolvimento",
+                                })
+                              }
+                            >
                               Ver detalhes
                             </Button>
                             {exame.resultado && (
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
+                              <Button
+                                variant="ghost"
+                                size="sm"
                                 className="gap-2"
                                 onClick={() => handleDownload(exame)}
                               >

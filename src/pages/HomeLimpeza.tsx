@@ -9,6 +9,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import FloatingChat from "@/components/FloatingChat";
 import { StatusIcon } from "@/components/ui/status-icon";
+import { AlertaQuarto } from "@/components/AlertaQuarto";
 
 export default function HomeLimpeza() {
   const isMobile = useIsMobile();
@@ -20,32 +21,41 @@ export default function HomeLimpeza() {
     role: "Limpeza",
   });
 
+  // Informações do usuário para header e sidebar
+  const usuarioInfo = {
+    nome: "MARIA SILVA",
+    tipo: "LIMPEZA",
+  };
+
   const historicoLimpezas = [
     {
       id: "1",
-      nome: "Shyam Khanna",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=ShyamKhanna",
-      iniciais: "SK",
-      exame: "Heart Disease",
+      nome: "Maria Silva",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=MariaSilva",
+      iniciais: "MS",
+      quarto: "501",
+      especialidade: "UTI",
       data: "27/12",
       resultado: "Sucesso",
     },
     {
       id: "2",
-      nome: "Jean Lee Un",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=JeanLeeLin",
-      iniciais: "JL",
-      exame: "Heart Disease",
-      data: "27/12",
+      nome: "João Santos",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=JoaoSantos",
+      iniciais: "JS",
+      quarto: "303",
+      especialidade: "Pediatria",
+      data: "26/12",
       resultado: "Sucesso",
     },
     {
       id: "3",
-      nome: "Clara Brook",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=ClaraBrook",
-      iniciais: "CB",
-      exame: "Heart Disease",
-      data: "27/12",
+      nome: "Ana Costa",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=AnaCosta",
+      iniciais: "AC",
+      quarto: "205",
+      especialidade: "Cardiologia",
+      data: "25/12",
       resultado: "Falha",
     },
   ];
@@ -69,36 +79,41 @@ export default function HomeLimpeza() {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
+        nome={usuarioInfo.nome}
+        tipo={usuarioInfo.tipo}
       />
 
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
         <HeaderLimpeza
           titulo="INÍCIO"
-          nome="MARIA SILVA"
-          tipo="LIMPEZA"
+          nome={usuarioInfo.nome}
+          tipo={usuarioInfo.tipo}
           onMenuClick={handleMenuClick}
           className={cn("sticky top-0 z-30")}
         />
 
         <main className="flex-1 p-3 sm:p-6 bg-gray-50">
-          {/* Alerta Quarto */}
-          <Card className="mb-8 border border-yellow-200 bg-yellow-50">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <Calendar className="h-8 w-8 text-yellow-600" />
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-lg font-semibold">Alerta quarto 190</h2>
-                    <span className="text-blue-600">Dermatologista</span>
-                  </div>
-                  <p className="text-gray-600">Nome do Médico(a)</p>
-                </div>
-                <div className="ml-auto">
-                  <span className="text-gray-600">Status</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Alertas de Quartos */}
+          <div className="mb-8 space-y-4">
+            <AlertaQuarto
+              numeroQuarto="190"
+              especialidade="Dermatologista"
+              nomeMedico="Dr. João Silva"
+              status="Em Andamento"
+            />
+            <AlertaQuarto
+              numeroQuarto="205"
+              especialidade="Cardiologista"
+              nomeMedico="Dra. Maria Santos"
+              status="Aguardando"
+            />
+            <AlertaQuarto
+              numeroQuarto="178"
+              especialidade="Pediatra"
+              nomeMedico="Dr. Carlos Lima"
+              status="Finalizado"
+            />
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Solicitações */}
@@ -163,8 +178,8 @@ export default function HomeLimpeza() {
                 <table className="w-full">
                   <thead>
                     <tr className="text-left border-b">
-                      <th className="pb-2">Médico</th>
-                      <th className="pb-2">Exame</th>
+                      <th className="pb-2">Funcionário</th>
+                      <th className="pb-2">Quarto</th>
                       <th className="pb-2">Data</th>
                       <th className="pb-2">Resultado</th>
                     </tr>
@@ -180,13 +195,18 @@ export default function HomeLimpeza() {
                             </Avatar>
                             <div>
                               <p className="font-medium">{item.nome}</p>
-                              <p className="text-sm text-gray-500">
-                                {item.exame}
-                              </p>
+                              <p className="text-sm text-gray-500">Limpeza</p>
                             </div>
                           </div>
                         </td>
-                        <td className="py-3">{item.exame}</td>
+                        <td className="py-3">
+                          <div>
+                            <p className="font-medium">Quarto {item.quarto}</p>
+                            <p className="text-sm text-gray-500">
+                              {item.especialidade}
+                            </p>
+                          </div>
+                        </td>
                         <td className="py-3">{item.data}</td>
                         <td className="py-3">
                           <StatusIcon status={item.resultado} size="md" />

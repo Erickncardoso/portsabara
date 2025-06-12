@@ -1,10 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FileText, Pill, Activity, MessageCircle, BookOpen, User, LogOut, Phone, ChevronFirst, ChevronLast, Heart, Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import {
+  FileText,
+  Pill,
+  Activity,
+  MessageCircle,
+  BookOpen,
+  User,
+  LogOut,
+  Phone,
+  ChevronFirst,
+  ChevronLast,
+  Heart,
+  Menu,
+  X,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 interface SidebarPacienteProps {
   className?: string;
@@ -12,117 +26,225 @@ interface SidebarPacienteProps {
   onToggle: () => void;
   isSheetOpen?: boolean;
   onSheetOpenChange?: (open: boolean) => void;
+  nome?: string;
+  tipo?: string;
 }
 
-const SidebarPaciente: React.FC<SidebarPacienteProps> = ({ 
-  className, 
-  isOpen, 
-  onToggle, 
-  isSheetOpen = false, 
-  onSheetOpenChange 
+// Função para extrair as iniciais do nome
+const getInitials = (name: string): string => {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+};
+
+const SidebarPaciente: React.FC<SidebarPacienteProps> = ({
+  className,
+  isOpen,
+  onToggle,
+  isSheetOpen = false,
+  onSheetOpenChange,
+  nome = "JOÃO SILVA",
+  tipo = "PACIENTE",
 }) => {
   const isMobile = useIsMobile();
 
   // Conteúdo do menu para ser reutilizado
   const MenuItems = () => (
     <>
+      {/* Seção de Perfil */}
+      <div
+        className={cn(
+          "px-4 py-4 border-b border-gray-100",
+          isMobile ? "block" : isOpen ? "block" : "hidden"
+        )}
+      >
+        <div className="flex items-center gap-3">
+          <div className="h-12 w-12 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold border border-gray-200">
+            {getInitials(nome)}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-gray-900 truncate">
+              {nome}
+            </p>
+            <p className="text-xs text-purple-600 font-medium">{tipo}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Avatar compacto quando fechado */}
+      <div
+        className={cn(
+          "px-2 py-4 border-b border-gray-100 flex justify-center",
+          isMobile ? "hidden" : isOpen ? "hidden" : "block"
+        )}
+      >
+        <div className="h-10 w-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold border border-gray-200">
+          {getInitials(nome)}
+        </div>
+      </div>
+
       <nav className="flex-1 py-6 px-2 space-y-2">
-        <Link 
-          to="/consultas-paciente" 
+        <Link
+          to="/consultas-paciente"
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
           onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <FileText size={20} className="min-w-[20px]" />
-          <span className={cn(
-            "ml-3",
-            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-          )}>Consultas</span>
+          <span
+            className={cn(
+              "ml-3",
+              isMobile
+                ? "opacity-100 inline"
+                : isOpen
+                ? "opacity-100 inline"
+                : "opacity-0 hidden"
+            )}
+          >
+            Consultas
+          </span>
         </Link>
-        
-        <Link 
-          to="/receitas-paciente" 
+
+        <Link
+          to="/receitas-paciente"
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
           onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <Pill size={20} className="min-w-[20px]" />
-          <span className={cn(
-            "ml-3",
-            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-          )}>Receitas</span>
+          <span
+            className={cn(
+              "ml-3",
+              isMobile
+                ? "opacity-100 inline"
+                : isOpen
+                ? "opacity-100 inline"
+                : "opacity-0 hidden"
+            )}
+          >
+            Receitas
+          </span>
         </Link>
-        
-        <Link 
-          to="/exames-paciente" 
+
+        <Link
+          to="/exames-paciente"
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
           onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <Activity size={20} className="min-w-[20px]" />
-          <span className={cn(
-            "ml-3",
-            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-          )}>Exames</span>
+          <span
+            className={cn(
+              "ml-3",
+              isMobile
+                ? "opacity-100 inline"
+                : isOpen
+                ? "opacity-100 inline"
+                : "opacity-0 hidden"
+            )}
+          >
+            Exames
+          </span>
         </Link>
-        
-        <Link 
-          to="/internacao-paciente" 
+
+        <Link
+          to="/internacao-paciente"
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
           onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <Heart size={20} className="min-w-[20px]" />
-          <span className={cn(
-            "ml-3",
-            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-          )}>Internação</span>
+          <span
+            className={cn(
+              "ml-3",
+              isMobile
+                ? "opacity-100 inline"
+                : isOpen
+                ? "opacity-100 inline"
+                : "opacity-0 hidden"
+            )}
+          >
+            Internação
+          </span>
         </Link>
 
-        <Link 
-          to="/dicas-saude-paciente" 
+        <Link
+          to="/dicas-saude-paciente"
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
           onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <BookOpen size={20} className="min-w-[20px]" />
-          <span className={cn(
-            "ml-3",
-            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-          )}>Dicas de Saúde</span>
+          <span
+            className={cn(
+              "ml-3",
+              isMobile
+                ? "opacity-100 inline"
+                : isOpen
+                ? "opacity-100 inline"
+                : "opacity-0 hidden"
+            )}
+          >
+            Dicas de Saúde
+          </span>
         </Link>
       </nav>
-      
+
       <div className="px-2 py-4">
-        <p className={cn(
-          "text-xs font-semibold text-gray-500 mb-4 px-3",
-          isMobile ? "block" : isOpen ? "block" : "hidden"
-        )}>CONTA</p>
-        
-        <Link 
-          to="/perfil-paciente" 
+        <p
+          className={cn(
+            "text-xs font-semibold text-gray-500 mb-4 px-3",
+            isMobile ? "block" : isOpen ? "block" : "hidden"
+          )}
+        >
+          CONTA
+        </p>
+
+        <Link
+          to="/perfil-paciente"
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
           onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <User size={20} className="min-w-[20px]" />
-          <span className={cn(
-            "ml-3",
-            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-          )}>Perfil</span>
+          <span
+            className={cn(
+              "ml-3",
+              isMobile
+                ? "opacity-100 inline"
+                : isOpen
+                ? "opacity-100 inline"
+                : "opacity-0 hidden"
+            )}
+          >
+            Perfil
+          </span>
         </Link>
-        
-        <Link 
-          to="/" 
+
+        <Link
+          to="/"
           className="flex items-center px-3 py-3 text-blue-600 hover:bg-gray-100 rounded-md"
           onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
           <LogOut size={20} className="min-w-[20px]" />
-          <span className={cn(
-            "ml-3",
-            isMobile ? "opacity-100 inline" : isOpen ? "opacity-100 inline" : "opacity-0 hidden"
-          )}>Sair</span>
+          <span
+            className={cn(
+              "ml-3",
+              isMobile
+                ? "opacity-100 inline"
+                : isOpen
+                ? "opacity-100 inline"
+                : "opacity-0 hidden"
+            )}
+          >
+            Sair
+          </span>
         </Link>
       </div>
-      
-      <div className={cn(
-        "px-6 py-4 border-t",
-        isMobile ? "block" : isOpen ? "block" : "hidden"
-      )}>
+
+      <div
+        className={cn(
+          "px-6 py-4 border-t",
+          isMobile ? "block" : isOpen ? "block" : "hidden"
+        )}
+      >
         <div className="flex items-center text-blue-600 text-sm">
           <Phone size={18} className="mr-2" />
           <div>
@@ -141,11 +263,14 @@ const SidebarPaciente: React.FC<SidebarPacienteProps> = ({
         <SheetContent side="left" className="p-0 w-[280px]">
           <div className="h-full flex flex-col">
             <div className="bg-white p-4 flex items-center justify-center">
-              <Link to="/home-paciente" onClick={() => onSheetOpenChange?.(false)}>
-                <img 
-                  src="/images/logo-sabara.png" 
-                  alt="Logo Hospital Sabará" 
-                  className="h-12 object-contain cursor-pointer hover:opacity-80 transition-opacity" 
+              <Link
+                to="/home-paciente"
+                onClick={() => onSheetOpenChange?.(false)}
+              >
+                <img
+                  src="/images/logo-sabara.png"
+                  alt="Logo Hospital Sabará"
+                  className="h-12 object-contain cursor-pointer hover:opacity-80 transition-opacity"
                 />
               </Link>
             </div>
@@ -183,26 +308,28 @@ const SidebarPaciente: React.FC<SidebarPacienteProps> = ({
         </div>
       </Button>
 
-      <div className={cn(
-        "fixed top-0 left-0 h-full z-40 bg-white shadow-lg transition-all duration-300 ease-in-out",
-        isOpen ? "w-64" : "w-16",
-        className
-      )}>
+      <div
+        className={cn(
+          "fixed top-0 left-0 h-full z-40 bg-white shadow-lg transition-all duration-300 ease-in-out",
+          isOpen ? "w-64" : "w-16",
+          className
+        )}
+      >
         <div className="h-full flex flex-col">
           <div className="bg-white p-4 flex items-center justify-center">
             <Link to="/home-paciente">
-              <img 
-                src="/images/logo-sabara.png" 
-                alt="Logo Hospital Sabará" 
+              <img
+                src="/images/logo-sabara.png"
+                alt="Logo Hospital Sabará"
                 className={cn(
                   "transition-all duration-300 cursor-pointer hover:opacity-80",
                   isOpen ? "h-12" : "h-8",
                   "object-contain"
-                )} 
+                )}
               />
             </Link>
           </div>
-          
+
           <MenuItems />
         </div>
       </div>

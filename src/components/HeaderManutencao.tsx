@@ -13,29 +13,19 @@ interface Notificacao {
 }
 
 interface HeaderManutencaoProps {
-  nome?: string;
-  tipo?: string;
   titulo?: string;
   className?: string;
   onMenuClick?: () => void;
+  nome?: string;
+  tipo?: string;
 }
 
-// Função para extrair as iniciais do nome
-const getInitials = (name: string): string => {
-  return name
-    .split(" ")
-    .map((word) => word.charAt(0))
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
-
 export const HeaderManutencao: React.FC<HeaderManutencaoProps> = ({
-  nome = "ROBERT SILVA",
-  tipo = "MANUTENÇÃO",
   titulo = "HOME",
   className,
   onMenuClick,
+  nome = "ROBERT SILVA",
+  tipo = "MANUTENÇÃO",
 }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notificacoesNaoLidas, setNotificacoesNaoLidas] = useState(0);
@@ -110,19 +100,6 @@ export const HeaderManutencao: React.FC<HeaderManutencaoProps> = ({
                       </span>
                     )}
                   </button>
-                </div>
-
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm border border-gray-200">
-                    {getInitials(nome)}
-                  </div>
-
-                  <div className="text-right">
-                    <p className="font-medium text-gray-900 text-sm sm:text-base">
-                      {nome}
-                    </p>
-                    <p className="text-xs sm:text-sm text-red-500">{tipo}</p>
-                  </div>
                 </div>
               </div>
             </div>

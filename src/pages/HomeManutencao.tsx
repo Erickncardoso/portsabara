@@ -5,6 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import FloatingChat from "@/components/FloatingChat";
 import { HeaderManutencao } from "../components/HeaderManutencao";
 import { StatusIcon } from "@/components/ui/status-icon";
+import { AlertaQuartoManutencao } from "../components/AlertaQuartoManutencao";
 
 const HomeManutencao: React.FC = () => {
   const isMobile = useIsMobile();
@@ -15,6 +16,12 @@ const HomeManutencao: React.FC = () => {
     name: "Robert Silva",
     role: "Manutenção",
   });
+
+  // Informações do usuário para header e sidebar
+  const usuarioInfo = {
+    nome: "ROBERT SILVA",
+    tipo: "MANUTENÇÃO",
+  };
 
   const historicoManutencoes = [
     {
@@ -65,66 +72,38 @@ const HomeManutencao: React.FC = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
+        nome={usuarioInfo.nome}
+        tipo={usuarioInfo.tipo}
       />
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
         <HeaderManutencao
           titulo="INÍCIO"
-          nome="ROBERT SILVA"
-          tipo="MANUTENÇÃO"
+          nome={usuarioInfo.nome}
+          tipo={usuarioInfo.tipo}
           onMenuClick={handleMenuClick}
           className={cn("sticky top-0 z-30")}
         />
         <main className="flex-1 p-3 sm:p-6 mt-0 bg-gray-50">
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <div className="flex items-center gap-4">
-              <div className="bg-green-100 p-2 rounded-lg">
-                <svg
-                  className="w-6 h-6 text-green-600"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M16 2V6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M8 2V6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M3 10H21"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-semibold">Alerta quarto 190</h2>
-                  <span className="text-blue-600">Dermatologista</span>
-                </div>
-                <p className="text-gray-600">Nome do Médico(a)</p>
-              </div>
-              <div className="ml-auto">
-                <span className="text-gray-600">Status</span>
-              </div>
-            </div>
+          {/* Alertas de Quartos */}
+          <div className="mb-6 space-y-4">
+            <AlertaQuartoManutencao
+              numeroQuarto="190"
+              especialidade="Dermatologista"
+              nomeMedico="Dr. João Silva"
+              status="Em Andamento"
+            />
+            <AlertaQuartoManutencao
+              numeroQuarto="205"
+              especialidade="Cardiologista"
+              nomeMedico="Dra. Maria Santos"
+              status="Aguardando"
+            />
+            <AlertaQuartoManutencao
+              numeroQuarto="178"
+              especialidade="Pneumologista"
+              nomeMedico="Dr. Carlos Lima"
+              status="Finalizado"
+            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

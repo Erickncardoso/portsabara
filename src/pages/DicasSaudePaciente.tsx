@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SidebarPaciente from '../components/SidebarPaciente';
-import HeaderPaciente from '../components/HeaderPaciente';
-import FloatingChat from '@/components/FloatingChat';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import SidebarPaciente from "../components/SidebarPaciente";
+import HeaderPaciente from "../components/HeaderPaciente";
+import FloatingChat from "@/components/FloatingChat";
 import { cn, getMainContentClasses } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Card,
   CardContent,
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, Heart, Brain, Apple, Dumbbell, BookOpen } from 'lucide-react';
+import { Search, Heart, Brain, Apple, Dumbbell, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -31,9 +31,9 @@ const DicasSaudePaciente: React.FC = () => {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filtroCategoria, setFiltroCategoria] = useState('todas');
-  
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filtroCategoria, setFiltroCategoria] = useState("todas");
+
   useEffect(() => {
     setIsSidebarOpen(!isMobile);
   }, [isMobile]);
@@ -47,57 +47,61 @@ const DicasSaudePaciente: React.FC = () => {
   };
 
   const currentUser = {
-    id: '1',
-    name: 'João Silva',
-    role: 'Paciente',
-    avatar: '/images/avatar.png'
+    id: "1",
+    name: "João Silva",
+    role: "Paciente",
+    avatar: "/images/avatar.png",
   };
 
   const dicasSaude = [
     {
       id: 1,
       titulo: "Alimentação Saudável",
-      descricao: "Mantenha uma dieta equilibrada com frutas, verduras e proteínas. Evite alimentos processados e reduza o consumo de açúcar.",
+      descricao:
+        "Mantenha uma dieta equilibrada com frutas, verduras e proteínas. Evite alimentos processados e reduza o consumo de açúcar.",
       categoria: "Nutrição",
       autor: "Dra. Maria Santos",
       especialidade: "Nutricionista",
       dataPublicacao: "25/04/2025",
       tempoLeitura: "5 min",
-      icone: Apple
+      icone: Apple,
     },
     {
       id: 2,
       titulo: "Exercícios para o Coração",
-      descricao: "Pratique pelo menos 30 minutos de exercícios aeróbicos por dia. Caminhada, corrida ou natação são excelentes opções.",
+      descricao:
+        "Pratique pelo menos 30 minutos de exercícios aeróbicos por dia. Caminhada, corrida ou natação são excelentes opções.",
       categoria: "Atividade Física",
       autor: "Dr. Carlos Silva",
       especialidade: "Cardiologista",
       dataPublicacao: "24/04/2025",
       tempoLeitura: "4 min",
-      icone: Heart
+      icone: Heart,
     },
     {
       id: 3,
       titulo: "Saúde Mental",
-      descricao: "Pratique meditação e mindfulness. Reserve um tempo para relaxar e fazer atividades que você gosta.",
+      descricao:
+        "Pratique meditação e mindfulness. Reserve um tempo para relaxar e fazer atividades que você gosta.",
       categoria: "Bem-estar",
       autor: "Dra. Ana Oliveira",
       especialidade: "Psicóloga",
       dataPublicacao: "23/04/2025",
       tempoLeitura: "6 min",
-      icone: Brain
+      icone: Brain,
     },
     {
       id: 4,
       titulo: "Treino em Casa",
-      descricao: "Exercícios simples que você pode fazer em casa para manter a forma, mesmo sem equipamentos.",
+      descricao:
+        "Exercícios simples que você pode fazer em casa para manter a forma, mesmo sem equipamentos.",
       categoria: "Atividade Física",
       autor: "Dr. Pedro Lima",
       especialidade: "Educador Físico",
       dataPublicacao: "22/04/2025",
       tempoLeitura: "8 min",
-      icone: Dumbbell
-    }
+      icone: Dumbbell,
+    },
   ];
 
   const handleNotificacoesClick = () => {
@@ -108,35 +112,35 @@ const DicasSaudePaciente: React.FC = () => {
   };
 
   const handlePerfilClick = () => {
-    navigate('/perfil-paciente');
+    navigate("/perfil-paciente");
   };
 
-  const dicasFiltradas = dicasSaude.filter(dica => {
-    const matchesSearch = 
+  const dicasFiltradas = dicasSaude.filter((dica) => {
+    const matchesSearch =
       dica.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       dica.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
       dica.autor.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesCategoria = 
-      filtroCategoria === 'todas' || 
+
+    const matchesCategoria =
+      filtroCategoria === "todas" ||
       dica.categoria.toLowerCase() === filtroCategoria.toLowerCase();
 
     return matchesSearch && matchesCategoria;
   });
 
-  const categorias = [...new Set(dicasSaude.map(dica => dica.categoria))];
+  const categorias = [...new Set(dicasSaude.map((dica) => dica.categoria))];
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SidebarPaciente 
-        isOpen={isSidebarOpen} 
+      <SidebarPaciente
+        isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
       />
-      
+
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderPaciente 
+        <HeaderPaciente
           titulo="DICAS DE SAÚDE"
           nome={currentUser.name}
           tipo={currentUser.role}
@@ -154,8 +158,12 @@ const DicasSaudePaciente: React.FC = () => {
               <CardHeader className="pb-0">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                   <div>
-                    <CardTitle className="text-lg font-semibold">Dicas e Recomendações</CardTitle>
-                    <CardDescription>Informações importantes para manter sua saúde em dia</CardDescription>
+                    <CardTitle className="text-lg font-semibold">
+                      Dicas e Recomendações
+                    </CardTitle>
+                    <CardDescription>
+                      Informações importantes para manter sua saúde em dia
+                    </CardDescription>
                   </div>
                   <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full md:w-auto">
                     <div className="relative flex-1 md:w-64">
@@ -168,14 +176,20 @@ const DicasSaudePaciente: React.FC = () => {
                         className="pl-9"
                       />
                     </div>
-                    <Select value={filtroCategoria} onValueChange={setFiltroCategoria}>
+                    <Select
+                      value={filtroCategoria}
+                      onValueChange={setFiltroCategoria}
+                    >
                       <SelectTrigger className="w-full md:w-40">
                         <SelectValue placeholder="Categoria" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="todas">Todas</SelectItem>
                         {categorias.map((categoria) => (
-                          <SelectItem key={categoria} value={categoria.toLowerCase()}>
+                          <SelectItem
+                            key={categoria}
+                            value={categoria.toLowerCase()}
+                          >
                             {categoria}
                           </SelectItem>
                         ))}
@@ -193,12 +207,15 @@ const DicasSaudePaciente: React.FC = () => {
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {dicasFiltradas.map((dica) => (
-                        <Card key={dica.id} className="hover:shadow-md transition-shadow">
+                        <Card
+                          key={dica.id}
+                          className="hover:shadow-md transition-shadow"
+                        >
                           <CardHeader className="pb-3">
                             <div className="flex items-start gap-3">
                               <div className="p-2 bg-blue-50 rounded-lg">
-                                {React.createElement(dica.icone, { 
-                                  className: "h-5 w-5 text-blue-500" 
+                                {React.createElement(dica.icone, {
+                                  className: "h-5 w-5 text-blue-500",
                                 })}
                               </div>
                               <div className="flex-1">
@@ -225,10 +242,16 @@ const DicasSaudePaciente: React.FC = () => {
                                 <BookOpen className="h-4 w-4" />
                                 <span>{dica.tempoLeitura} de leitura</span>
                               </div>
-                              <Button 
-                                variant="ghost" 
+                              <Button
+                                variant="ghost"
                                 size="sm"
-                                onClick={() => navigate(`/dica/${dica.id}`)}
+                                onClick={() =>
+                                  toast({
+                                    title: "Ler Dica",
+                                    description:
+                                      "Funcionalidade em desenvolvimento",
+                                  })
+                                }
                               >
                                 Ler mais
                               </Button>

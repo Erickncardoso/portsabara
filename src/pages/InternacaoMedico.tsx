@@ -30,34 +30,31 @@ export default function InternacaoMedico() {
 
   const internacoes = [
     {
-      id: "INT001",
-      paciente: "Maria Silva",
-      idade: "34",
-      quarto: "301",
-      leito: "A",
-      dataInternacao: "25 Abr 2025",
-      status: "Em tratamento",
-      diagnostico: "Pneumonia"
+      id: 1,
+      paciente: "João Silva",
+      idade: "7",
+      doenca: "Pneumonia",
+      dataInternacao: "2025-01-20",
+      medicoResponsavel: "Dr. Carlos Silva",
+      status: "estavel"
     },
     {
-      id: "INT002",
-      paciente: "João Santos",
-      idade: "45",
-      quarto: "302",
-      leito: "B",
-      dataInternacao: "26 Abr 2025",
-      status: "Estável",
-      diagnostico: "Pós-operatório"
+      id: 2,
+      paciente: "Maria Santos",
+      idade: "12",
+      doenca: "Apendicite",
+      dataInternacao: "2025-01-22",
+      medicoResponsavel: "Dra. Ana Costa",
+      status: "critico"
     },
     {
-      id: "INT003",
-      paciente: "Ana Oliveira",
-      idade: "28",
-      quarto: "303",
-      leito: "A",
-      dataInternacao: "27 Abr 2025",
-      status: "Em observação",
-      diagnostico: "Desidratação severa"
+      id: 3,
+      paciente: "Pedro Oliveira",
+      idade: "5",
+      doenca: "Asma Aguda",
+      dataInternacao: "2025-01-25",
+      medicoResponsavel: "Dr. João Costa",
+      status: "estavel"
     }
   ];
 
@@ -167,13 +164,10 @@ export default function InternacaoMedico() {
 
                 <div className="space-y-3 mb-4">
                   <div className="p-3 bg-blue-50 rounded-lg">
-                    <p className="text-sm font-medium text-blue-800 truncate">{internacao.diagnostico}</p>
+                    <p className="text-sm font-medium text-blue-800 truncate">{internacao.doenca}</p>
                     <div className="flex items-center justify-between mt-1">
                       <p className="text-xs text-blue-600">
-                        Quarto: {internacao.quarto}
-                      </p>
-                      <p className="text-xs text-blue-600">
-                        Leito: {internacao.leito}
+                        Medico Responsavel: {internacao.medicoResponsavel}
                       </p>
                     </div>
                   </div>
@@ -187,8 +181,7 @@ export default function InternacaoMedico() {
                     <span className="text-gray-500">Status</span>
                     <span className={cn(
                       "px-2 py-1 rounded-full text-xs font-medium",
-                      internacao.status === 'Estável' ? "bg-green-100 text-green-700" :
-                      internacao.status === 'Em observação' ? "bg-yellow-100 text-yellow-700" :
+                      internacao.status === 'estavel' ? "bg-green-100 text-green-700" :
                       "bg-blue-100 text-blue-700"
                     )}>
                       {internacao.status}

@@ -3,7 +3,7 @@ import SidebarPaciente from "../components/SidebarPaciente";
 import HeaderPaciente from "../components/HeaderPaciente";
 import LembreteConsulta from "../components/LembreteConsulta";
 import CardAcao from "../components/CardAcao";
-import TabelaHistoricoExames from "../components/TabelaHistoricoExames";
+import ListaExames from "../components/ListaExames";
 import Banner from "../components/Banner";
 import { Calendar, User, BookOpen, Monitor } from "lucide-react";
 import { cn, getMainContentClasses } from "@/lib/utils";
@@ -23,6 +23,12 @@ const HomePaciente: React.FC = () => {
     avatar: "/images/avatar.png",
   };
 
+  // Informações do usuário para header e sidebar
+  const usuarioInfo = {
+    nome: "JOÃO SILVA",
+    tipo: "PACIENTE",
+  };
+
   useEffect(() => {
     setIsSidebarOpen(!isMobile);
   }, [isMobile]);
@@ -38,22 +44,25 @@ const HomePaciente: React.FC = () => {
   // Dados simulados para os exames
   const examesHistorico = [
     {
-      medico: "Shyam Khanna",
-      tipoExame: "Heart Disease",
+      medico: "Dr. Carlos Silva",
+      iniciais: "CS",
+      tipoExame: "Hemograma Completo",
       data: "27/12",
       resultado: true,
     },
     {
-      medico: "Jean Lee Un",
-      tipoExame: "Heart Disease",
-      data: "27/12",
+      medico: "Dra. Maria Santos",
+      iniciais: "MS",
+      tipoExame: "Raio-X Tórax",
+      data: "26/12",
       resultado: true,
     },
     {
-      medico: "Clara Brook",
-      tipoExame: "Heart Disease",
-      data: "27/12",
-      resultado: true,
+      medico: "Dr. João Costa",
+      iniciais: "JC",
+      tipoExame: "Eletrocardiograma",
+      data: "25/12",
+      resultado: false,
     },
   ];
 
@@ -64,12 +73,18 @@ const HomePaciente: React.FC = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
+        nome={usuarioInfo.nome}
+        tipo={usuarioInfo.tipo}
       />
 
       {/* Conteúdo principal */}
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
         {/* Cabeçalho */}
-        <HeaderPaciente onMenuClick={handleMenuClick} />
+        <HeaderPaciente
+          onMenuClick={handleMenuClick}
+          nome={usuarioInfo.nome}
+          tipo={usuarioInfo.tipo}
+        />
 
         {/* Chat flutuante */}
         <FloatingChat currentUser={currentUser} />
@@ -79,7 +94,7 @@ const HomePaciente: React.FC = () => {
           <div className="px-2 md:px-6 py-4 md:py-6">
             {/* Banner com espaçamento lateral */}
             <Banner
-              titulo="Bem-vindo ao HospitAll"
+              titulo="BEM-VINDO AO HOSPITALL"
               descricao="Confira seus agendamentos e resultados de exames. Aqui você encontra todas as informações sobre sua saúde."
               botoes={[
                 {
@@ -100,47 +115,39 @@ const HomePaciente: React.FC = () => {
               />
             </div>
 
-            {/* Conteúdo principal - reorganizado para 2 colunas com cards à esquerda */}
-            <div className="flex flex-col md:flex-row gap-6">
-              {/* Grid de cards de ação - agora com largura ajustada */}
-              <div className="md:w-96 flex flex-col w-full">
-                <div className="grid grid-cols-2 gap-4 h-full">
-                  <div className="flex flex-col w-full">
-                    <CardAcao
-                      titulo="Agendar Exame"
-                      icon={<Calendar className="text-red-500" />}
-                      link="/exames-paciente"
-                    />
-                  </div>
+            {/* Conteúdo principal - reorganizado para responsividade */}
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* Grid de cards de ação - responsivo */}
+              <div className="w-full lg:w-96">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <CardAcao
+                    titulo="AGENDAR EXAME"
+                    icon={<Calendar className="text-red-500" />}
+                    link="/exames-paciente"
+                  />
 
-                  <div className="flex flex-col w-full">
-                    <CardAcao
-                      titulo="Agendar Consulta"
-                      icon={<User className="text-blue-500" />}
-                      link="/consultas-paciente"
-                    />
-                  </div>
+                  <CardAcao
+                    titulo="AGENDAR CONSULTA"
+                    icon={<User className="text-blue-500" />}
+                    link="/consultas-paciente"
+                  />
 
-                  <div className="flex flex-col w-full">
-                    <CardAcao
-                      titulo="Dicas de Saúde"
-                      icon={<BookOpen className="text-green-500" />}
-                      link="/dicas-saude-paciente"
-                    />
-                  </div>
+                  <CardAcao
+                    titulo="DICAS DE SAÚDE"
+                    icon={<BookOpen className="text-green-500" />}
+                    link="/dicas-saude-paciente"
+                  />
 
-                  <div className="flex flex-col w-full">
-                    <CardAcao
-                      titulo="Ver Resultado de Exame"
-                      icon={<Monitor className="text-purple-500" />}
-                      link="/exames-paciente"
-                    />
-                  </div>
+                  <CardAcao
+                    titulo="VER RESULTADO"
+                    icon={<Monitor className="text-purple-500" />}
+                    link="/exames-paciente"
+                  />
                 </div>
               </div>
 
-              {/* Tabela de histórico de exames - agora no lado direito */}
-              <div className="md:flex-1 mt-6 md:mt-0">
+              {/* Tabela de histórico de exames - responsiva */}
+              <div className="flex-1 mt-6 lg:mt-0">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-semibold">Histórico de Exames</h2>
                   <Link
@@ -150,7 +157,9 @@ const HomePaciente: React.FC = () => {
                     Ver mais
                   </Link>
                 </div>
-                <TabelaHistoricoExames exames={examesHistorico} />
+                <div className="bg-white rounded-lg p-4 sm:p-6">
+                  <ListaExames exames={examesHistorico} />
+                </div>
               </div>
             </div>
           </div>

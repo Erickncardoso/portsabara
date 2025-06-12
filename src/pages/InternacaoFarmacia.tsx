@@ -182,14 +182,11 @@ const InternacaoFarmacia: React.FC = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
+        nome="MARIA SANTOS"
+        tipo="FARMACÊUTICO"
       />
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderFarmacia
-          titulo="INTERNAÇÕES"
-          nome="MARIA SANTOS"
-          tipo="FARMACÊUTICO"
-          onMenuClick={handleMenuClick}
-        />
+        <HeaderFarmacia titulo="INTERNAÇÕES" onMenuClick={handleMenuClick} />
         <main className="flex-1 p-6">
           <div className="px-3 sm:px-6 py-3 sm:py-4">
             {/* Cards de Estatísticas */}

@@ -155,29 +155,29 @@ const TipoCadastro: React.FC = () => {
             <div>
               <TipoCard
                 icon={<User size={48} />}
-                titulo="Paciente"
+                titulo="PACIENTE"
                 onClick={() =>
-                  openModal("paciente", "Paciente", <User size={48} />)
+                  openModal("paciente", "PACIENTE", <User size={48} />)
                 }
               />
             </div>
             <div>
               <TipoCard
                 icon={<UserRound size={48} />}
-                titulo="Médico"
+                titulo="MÉDICO"
                 onClick={() =>
-                  openModal("medico", "Médico", <UserRound size={48} />)
+                  openModal("medico", "MÉDICO", <UserRound size={48} />)
                 }
               />
             </div>
             <div>
               <TipoCard
                 icon={<Hospital size={48} />}
-                titulo="Enfermeiro(a)"
+                titulo="ENFERMEIRO(A)"
                 onClick={() =>
                   openModal(
                     "enfermeiro",
-                    "Enfermeiro(a)",
+                    "ENFERMEIRO(A)",
                     <Hospital size={48} />
                   )
                 }
@@ -186,27 +186,27 @@ const TipoCadastro: React.FC = () => {
             <div>
               <TipoCard
                 icon={<Pill size={48} />}
-                titulo="Farmácia"
+                titulo="FARMÁCIA"
                 onClick={() =>
-                  openModal("farmacia", "Farmácia", <Pill size={48} />)
+                  openModal("farmacia", "FARMÁCIA", <Pill size={48} />)
                 }
               />
             </div>
             <div>
               <TipoCard
                 icon={<Wrench size={48} />}
-                titulo="Manutenção"
+                titulo="MANUTENÇÃO"
                 onClick={() =>
-                  openModal("manutencao", "Manutenção", <Wrench size={48} />)
+                  openModal("manutencao", "MANUTENÇÃO", <Wrench size={48} />)
                 }
               />
             </div>
             <div>
               <TipoCard
                 icon={<Trash2 size={48} />}
-                titulo="Limpeza"
+                titulo="LIMPEZA"
                 onClick={() =>
-                  openModal("limpeza", "Limpeza", <Trash2 size={48} />)
+                  openModal("limpeza", "LIMPEZA", <Trash2 size={48} />)
                 }
               />
             </div>

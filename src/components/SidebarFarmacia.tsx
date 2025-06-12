@@ -26,7 +26,19 @@ interface SidebarFarmaciaProps {
   onToggle: () => void;
   isSheetOpen?: boolean;
   onSheetOpenChange?: (open: boolean) => void;
+  nome?: string;
+  tipo?: string;
 }
+
+// Função para extrair as iniciais do nome
+const getInitials = (name: string): string => {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+};
 
 const SidebarFarmacia: React.FC<SidebarFarmaciaProps> = ({
   className,
@@ -34,13 +46,45 @@ const SidebarFarmacia: React.FC<SidebarFarmaciaProps> = ({
   onToggle,
   isSheetOpen = false,
   onSheetOpenChange,
+  nome = "MARIA SANTOS",
+  tipo = "FARMACÊUTICO",
 }) => {
   const isMobile = useIsMobile();
 
   // Conteúdo do menu para ser reutilizado
   const MenuItems = () => (
     <>
-      <nav className="flex-1 py-6 px-2 space-y-2">
+      {/* Seção do Perfil */}
+      <div
+        className={cn(
+          "px-4 py-4 border-b border-gray-200",
+          isMobile ? "block" : isOpen ? "block" : "hidden"
+        )}
+      >
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm border border-gray-200 flex-shrink-0">
+            {getInitials(nome)}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="font-medium text-gray-900 text-sm truncate">{nome}</p>
+            <p className="text-xs text-red-500 truncate">{tipo}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Avatar apenas quando sidebar fechada */}
+      <div
+        className={cn(
+          "px-2 py-4 flex justify-center",
+          isMobile ? "hidden" : isOpen ? "hidden" : "block"
+        )}
+      >
+        <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs border border-gray-200">
+          {getInitials(nome)}
+        </div>
+      </div>
+
+      <nav className="flex-1 py-2 px-2 space-y-2">
         <a
           href="https://6809855340a654000a294d2e.us-e1.tago.run/dashboards/info/68123217ed779e000ae66e2e?anonymousToken=00000000-6809-8553-40a6-54000a294d2e"
           target="_blank"

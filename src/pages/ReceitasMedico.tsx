@@ -1,80 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SidebarMedico from '@/components/SidebarMedico';
-import HeaderMedico from '@/components/HeaderMedico';
-import { cn, getMainContentClasses } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { Printer, FileText, Search, Plus } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/use-toast';
-import FloatingChat from '@/components/FloatingChat';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import SidebarMedico from "@/components/SidebarMedico";
+import HeaderMedico from "@/components/HeaderMedico";
+import { cn, getMainContentClasses } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Printer, FileText, Search, Plus } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
+import FloatingChat from "@/components/FloatingChat";
 
 export default function ReceitasMedico() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     setIsSidebarOpen(!isMobile);
   }, [isMobile]);
 
   const currentUser = {
-    id: '2',
-    name: 'Dr. João Silva',
-    role: 'Médico',
-    avatar: '/images/avatar-doctor.png'
+    id: "2",
+    name: "Dr. João Silva",
+    role: "Médico",
+    avatar: "/images/avatar-doctor.png",
   };
 
   const prescricoes = [
     {
-      id: "PRES10331",
-      nome: "Maria Silva",
-      idade: "34",
+      nome: "Sofia Lima",
+      idade: "9",
       sexo: "Feminino",
-      medicamento: "Amoxicilina 500mg",
-      dosagem: "8/8 horas",
-      duracao: "7 dias",
-      data: "27 Abr 2025"
-    },
-    {
-      id: "PRES10332",
-      nome: "João Santos",
-      idade: "45",
-      sexo: "Masculino",
-      medicamento: "Dipirona 500mg",
-      dosagem: "6/6 horas",
+      medicamento: "Paracetamol Infantil",
+      dosagem: "10ml de 6/6h",
       duracao: "5 dias",
-      data: "27 Abr 2025"
+      data: "27/01/2025",
     },
     {
-      id: "PRES10333",
-      nome: "Ana Oliveira",
-      idade: "28",
-      sexo: "Feminino",
-      medicamento: "Ibuprofeno 600mg",
-      dosagem: "12/12 horas",
-      duracao: "3 dias",
-      data: "27 Abr 2025"
-    },
-    {
-      id: "PRES10334",
-      nome: "Pedro Costa",
-      idade: "52",
+      nome: "Gabriel Santos",
+      idade: "11",
       sexo: "Masculino",
-      medicamento: "Omeprazol 20mg",
-      dosagem: "1x ao dia",
-      duracao: "30 dias",
-      data: "27 Abr 2025"
-    }
+      medicamento: "Antibiótico Amoxicilina",
+      dosagem: "250mg de 8/8h",
+      duracao: "7 dias",
+      data: "26/01/2025",
+    },
+    {
+      nome: "Isadora Costa",
+      idade: "4",
+      sexo: "Feminino",
+      medicamento: "Xarope para Tosse",
+      dosagem: "5ml de 12/12h",
+      duracao: "3 dias",
+      data: "25/01/2025",
+    },
+    {
+      nome: "Leonardo Silva",
+      idade: "14",
+      sexo: "Masculino",
+      medicamento: "Anti-inflamatório",
+      dosagem: "1 comp. de 12/12h",
+      duracao: "5 dias",
+      data: "24/01/2025",
+    },
   ];
 
-  const filteredPrescricoes = prescricoes.filter(prescricao =>
-    prescricao.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    prescricao.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    prescricao.medicamento.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPrescricoes = prescricoes.filter(
+    (prescricao) =>
+      prescricao.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      prescricao.idade.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      prescricao.medicamento.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleNovaReceita = () => {
@@ -92,7 +89,7 @@ export default function ReceitasMedico() {
   };
 
   const handlePerfilClick = () => {
-    navigate('/perfil-medico');
+    navigate("/perfil-medico");
   };
 
   const handleMenuClick = () => {
@@ -105,14 +102,14 @@ export default function ReceitasMedico() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SidebarMedico 
-        isOpen={isSidebarOpen} 
+      <SidebarMedico
+        isOpen={isSidebarOpen}
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
       />
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderMedico 
+        <HeaderMedico
           titulo="RECEITAS"
           nome={currentUser.name}
           tipo={currentUser.role}
@@ -126,7 +123,9 @@ export default function ReceitasMedico() {
           <header className="mb-6 bg-white rounded-lg shadow-sm p-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex items-center gap-2">
-                <h1 className="text-xl md:text-2xl font-bold text-gray-800">Receitas</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-gray-800">
+                  Receitas
+                </h1>
                 <div className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
                   {filteredPrescricoes.length} receitas
                 </div>
@@ -148,15 +147,17 @@ export default function ReceitasMedico() {
               </div>
             </div>
           </header>
-          <div className={cn(
-            "grid gap-4 transition-all duration-300",
-            "grid-cols-1 sm:grid-cols-2",
-            isSidebarOpen 
-              ? "lg:grid-cols-3 xl:grid-cols-4" 
-              : "lg:grid-cols-4 xl:grid-cols-5",
-            "auto-rows-fr"
-          )}>
-            <Card 
+          <div
+            className={cn(
+              "grid gap-4 transition-all duration-300",
+              "grid-cols-1 sm:grid-cols-2",
+              isSidebarOpen
+                ? "lg:grid-cols-3 xl:grid-cols-4"
+                : "lg:grid-cols-4 xl:grid-cols-5",
+              "auto-rows-fr"
+            )}
+          >
+            <Card
               onClick={handleNovaReceita}
               className="flex flex-col items-center justify-center gap-4 border-2 border-dashed border-blue-200 hover:border-blue-400 bg-white hover:bg-blue-50/50 transition-all cursor-pointer group p-4 min-h-[280px]"
             >
@@ -165,18 +166,25 @@ export default function ReceitasMedico() {
               </div>
               <div className="text-center">
                 <h3 className="font-medium text-blue-600 mb-1">Nova Receita</h3>
-                <p className="text-sm text-gray-500">Adicionar nova prescrição</p>
+                <p className="text-sm text-gray-500">
+                  Adicionar nova prescrição
+                </p>
               </div>
             </Card>
 
             {filteredPrescricoes.map((prescricao, index) => (
-              <Card key={index} className="bg-white hover:shadow-lg transition-all p-4">
+              <Card
+                key={index}
+                className="bg-white hover:shadow-lg transition-all p-4"
+              >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-medium text-lg shrink-0">
                     {prescricao.nome.charAt(0)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-gray-900 mb-1 truncate">{prescricao.nome}</h3>
+                    <h3 className="font-medium text-gray-900 mb-1 truncate">
+                      {prescricao.nome}
+                    </h3>
                     <div className="flex items-center gap-2">
                       <span className="text-sm text-gray-500 truncate">
                         {prescricao.idade} anos • {prescricao.sexo}
@@ -187,12 +195,14 @@ export default function ReceitasMedico() {
 
                 <div className="space-y-3 mb-4">
                   <div className="p-3 bg-blue-50 rounded-lg">
-                    <p className="text-sm font-medium text-blue-800 truncate">{prescricao.medicamento}</p>
+                    <p className="text-sm font-medium text-blue-800 truncate">
+                      {prescricao.medicamento}
+                    </p>
                     <p className="text-xs text-blue-600 mt-1">
                       {prescricao.dosagem} • {prescricao.duracao}
                     </p>
                   </div>
-                  
+
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-gray-500">Data da prescrição</span>
                     <span className="font-medium">{prescricao.data}</span>
@@ -201,7 +211,9 @@ export default function ReceitasMedico() {
 
                 <button className="w-full flex items-center justify-center gap-2 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors">
                   <FileText className="w-4 h-4" />
-                  <span className="text-sm font-medium">Visualizar Receita</span>
+                  <span className="text-sm font-medium">
+                    Visualizar Receita
+                  </span>
                 </button>
               </Card>
             ))}

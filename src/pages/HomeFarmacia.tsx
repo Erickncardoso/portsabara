@@ -104,21 +104,21 @@ const HomeFarmacia: React.FC = () => {
         {
           id: "RX001",
           paciente: "Maria Silva",
-          medicamento: "Paracetamol 500mg",
+          medicamento: "Paracetamol Infantil 100mg/ml",
           status: "Pendente",
           data: "2024-12-27",
         },
         {
           id: "RX002",
           paciente: "João Santos",
-          medicamento: "Ibuprofeno 600mg",
+          medicamento: "Xarope Ambroxol Infantil",
           status: "Pendente",
           data: "2024-12-27",
         },
         {
           id: "RX003",
           paciente: "Ana Costa",
-          medicamento: "Amoxicilina 500mg",
+          medicamento: "Amoxicilina Suspensão 250mg",
           status: "Dispensado",
           data: "2024-12-26",
         },
@@ -203,14 +203,11 @@ const HomeFarmacia: React.FC = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
+        nome="MARIA SANTOS"
+        tipo="FARMACÊUTICO"
       />
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderFarmacia
-          titulo="HOME"
-          nome="MARIA SANTOS"
-          tipo="FARMACÊUTICO"
-          onMenuClick={handleMenuClick}
-        />
+        <HeaderFarmacia titulo="HOME" onMenuClick={handleMenuClick} />
         <main className="flex-1 p-6">
           <div className="space-y-6">
             {/* Boas-vindas */}

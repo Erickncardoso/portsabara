@@ -119,15 +119,12 @@ const PerfilFarmacia: React.FC = () => {
         onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         isSheetOpen={isSheetOpen}
         onSheetOpenChange={setIsSheetOpen}
+        nome={currentUser.name}
+        tipo={currentUser.role}
       />
 
       <div className={getMainContentClasses(isSidebarOpen, isMobile)}>
-        <HeaderFarmacia
-          titulo="MEU PERFIL"
-          nome={currentUser.name}
-          tipo={currentUser.role}
-          onMenuClick={handleMenuClick}
-        />
+        <HeaderFarmacia titulo="MEU PERFIL" onMenuClick={handleMenuClick} />
 
         <FloatingChat currentUser={currentUser} />
 

@@ -15,8 +15,56 @@ import SidebarMedico from "@/components/SidebarMedico";
 import HeaderMedico from "@/components/HeaderMedico";
 import { cn, getMainContentClasses } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/hooks/use-toast";
 import FloatingChat from "@/components/FloatingChat";
+
+// Adicionar estilos customizados para campos de data/hora no mobile
+const customStyles = `
+  <style>
+    @media (max-width: 768px) {
+      /* Melhorar aparência de inputs date e time no mobile */
+      input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+      input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+        padding: 8px 12px;
+        font-size: 16px;
+        border-radius: 6px;
+      }
+      
+      input[type="date"]::-webkit-datetime-edit-text,
+      input[type="time"]::-webkit-datetime-edit-text {
+        color: #6b7280;
+      }
+      
+      input[type="date"]::-webkit-datetime-edit-month-field,
+      input[type="date"]::-webkit-datetime-edit-day-field,
+      input[type="date"]::-webkit-datetime-edit-year-field,
+      input[type="time"]::-webkit-datetime-edit-hour-field,
+      input[type="time"]::-webkit-datetime-edit-minute-field {
+        padding: 2px 4px;
+        color: #111827;
+        font-weight: 500;
+      }
+      
+      /* Estilização para o estado vazio */
+      input[type="date"]:invalid,
+      input[type="time"]:invalid {
+        color: #9ca3af;
+      }
+      
+      /* Melhoria para campos de formulário no mobile */
+      .mobile-form-field {
+        touch-action: manipulation;
+        -webkit-appearance: none;
+      }
+      
+      /* Melhoria para selects no mobile */
+      [data-radix-select-trigger] {
+        font-size: 16px !important;
+        min-height: 48px !important;
+      }
+    }
+  </style>
+`;
 
 export default function ConsultasMedico() {
   const navigate = useNavigate();
@@ -45,6 +93,22 @@ export default function ConsultasMedico() {
 
   useEffect(() => {
     setIsSidebarOpen(!isMobile);
+
+    // Injetar estilos customizados para mobile
+    if (isMobile) {
+      const styleElement = document.createElement("div");
+      styleElement.innerHTML = customStyles;
+      document.head.appendChild(styleElement.firstElementChild!);
+
+      return () => {
+        const existingStyle = document.head.querySelector(
+          "style[data-mobile-form]"
+        );
+        if (existingStyle) {
+          existingStyle.remove();
+        }
+      };
+    }
   }, [isMobile]);
 
   const handleMenuClick = () => {
@@ -159,114 +223,203 @@ export default function ConsultasMedico() {
             </div>
 
             {/* Formulário de Agendamento */}
-            <Card className="p-6">
-              <h2 className="text-2xl font-bold mb-6">Agendar Consulta</h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input
-                    placeholder="Nome do Paciente"
-                    value={formData.nome}
-                    onChange={(e) => handleInputChange("nome", e.target.value)}
-                    required
-                  />
+            <Card className="p-4 sm:p-6">
+              <h2 className="text-xl sm:text-2xl font-bold mb-6">
+                Agendar Consulta
+              </h2>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Nome e Gênero */}
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Nome do Paciente *
+                    </label>
+                    <Input
+                      placeholder="Digite o nome completo"
+                      value={formData.nome}
+                      onChange={(e) =>
+                        handleInputChange("nome", e.target.value)
+                      }
+                      required
+                      className={`h-12 ${isMobile ? "text-base" : ""}`}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Gênero *
+                    </label>
+                    <Select
+                      value={formData.genero}
+                      onValueChange={(value) =>
+                        handleInputChange("genero", value)
+                      }
+                    >
+                      <SelectTrigger
+                        className={`h-12 ${isMobile ? "text-base" : ""}`}
+                      >
+                        <SelectValue placeholder="Selecione o gênero" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="masculino">Masculino</SelectItem>
+                        <SelectItem value="feminino">Feminino</SelectItem>
+                        <SelectItem value="outro">Outro</SelectItem>
+                        <SelectItem value="nao-informar">
+                          Prefiro não informar
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {/* Email e Telefone */}
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Email *
+                    </label>
+                    <Input
+                      type="email"
+                      placeholder="exemplo@email.com"
+                      value={formData.email}
+                      onChange={(e) =>
+                        handleInputChange("email", e.target.value)
+                      }
+                      required
+                      className={`h-12 ${isMobile ? "text-base" : ""}`}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Telefone
+                    </label>
+                    <Input
+                      type="tel"
+                      placeholder="(11) 99999-9999"
+                      value={formData.telefone}
+                      onChange={(e) =>
+                        handleInputChange("telefone", e.target.value)
+                      }
+                      className={`h-12 ${isMobile ? "text-base" : ""}`}
+                    />
+                  </div>
+                </div>
+
+                {/* Data e Horário */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Data da Consulta *
+                    </label>
+                    <div className="relative">
+                      <Input
+                        type="date"
+                        value={formData.data}
+                        onChange={(e) =>
+                          handleInputChange("data", e.target.value)
+                        }
+                        required
+                        className={`h-12 ${isMobile ? "text-base" : ""}`}
+                        min={new Date().toISOString().split("T")[0]}
+                      />
+                      {!formData.data && isMobile && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          Toque para selecionar a data
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Horário *
+                    </label>
+                    <div className="relative">
+                      <Input
+                        type="time"
+                        value={formData.horario}
+                        onChange={(e) =>
+                          handleInputChange("horario", e.target.value)
+                        }
+                        required
+                        className={`h-12 ${isMobile ? "text-base" : ""}`}
+                        min="07:00"
+                        max="18:00"
+                      />
+                      {!formData.horario && isMobile && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          Horários: 07:00 às 18:00
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Médico */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Médico *
+                  </label>
                   <Select
-                    value={formData.genero}
+                    value={formData.medico}
                     onValueChange={(value) =>
-                      handleInputChange("genero", value)
+                      handleInputChange("medico", value)
                     }
                   >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o gênero" />
+                    <SelectTrigger
+                      className={`h-12 ${isMobile ? "text-base" : ""}`}
+                    >
+                      <SelectValue placeholder="Selecione o médico" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="masculino">Masculino</SelectItem>
-                      <SelectItem value="feminino">Feminino</SelectItem>
-                      <SelectItem value="outro">Outro</SelectItem>
-                      <SelectItem value="nao-informar">
-                        Prefiro não informar
+                      <SelectItem value="dr-joao">
+                        Dr. João Silva - Cardiologia Pediátrica
+                      </SelectItem>
+                      <SelectItem value="dra-maria">
+                        Dra. Maria Santos - Dermatologia Pediátrica
+                      </SelectItem>
+                      <SelectItem value="dr-carlos">
+                        Dr. Carlos Lima - Ortopedia Pediátrica
+                      </SelectItem>
+                      <SelectItem value="dra-ana">
+                        Dra. Ana Costa - Pediatria Geral
+                      </SelectItem>
+                      <SelectItem value="dr-pedro">
+                        Dr. Pedro Oliveira - Neurologia Pediátrica
                       </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value)}
-                    required
-                  />
-                  <Input
-                    type="tel"
-                    placeholder="Telefone"
-                    value={formData.telefone}
+                {/* Observações */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Observações
+                  </label>
+                  <Textarea
+                    placeholder="Informações adicionais, sintomas ou observações importantes..."
+                    rows={4}
+                    value={formData.observacoes}
                     onChange={(e) =>
-                      handleInputChange("telefone", e.target.value)
+                      handleInputChange("observacoes", e.target.value)
                     }
+                    className="resize-none"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input
-                    type="date"
-                    placeholder="Data da Consulta"
-                    value={formData.data}
-                    onChange={(e) => handleInputChange("data", e.target.value)}
-                    required
-                  />
-                  <Input
-                    type="time"
-                    placeholder="Horário"
-                    value={formData.horario}
-                    onChange={(e) =>
-                      handleInputChange("horario", e.target.value)
-                    }
-                    required
-                  />
-                </div>
-
-                <Select
-                  value={formData.medico}
-                  onValueChange={(value) => handleInputChange("medico", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione o Médico" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="dr-joao">
-                      Dr. João Silva - Cardiologista
-                    </SelectItem>
-                    <SelectItem value="dra-maria">
-                      Dra. Maria Santos - Dermatologista
-                    </SelectItem>
-                    <SelectItem value="dr-carlos">
-                      Dr. Carlos Lima - Ortopedista
-                    </SelectItem>
-                    <SelectItem value="dra-ana">
-                      Dra. Ana Costa - Pediatra
-                    </SelectItem>
-                    <SelectItem value="dr-pedro">
-                      Dr. Pedro Oliveira - Neurologista
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Textarea
-                  placeholder="Mensagem/Observações"
-                  rows={4}
-                  value={formData.observacoes}
-                  onChange={(e) =>
-                    handleInputChange("observacoes", e.target.value)
-                  }
-                />
-
+                {/* Botão de Submit */}
                 <Button
                   type="submit"
-                  className="w-full bg-red-500 hover:bg-red-600"
+                  className="w-full bg-red-500 hover:bg-red-600 h-12 text-base font-medium"
                 >
                   Agendar Consulta
                 </Button>
+
+                {/* Informação sobre campos obrigatórios */}
+                <p className="text-xs text-gray-500 text-center">
+                  * Campos obrigatórios
+                </p>
               </form>
             </Card>
           </div>
