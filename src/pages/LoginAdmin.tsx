@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
-import { getLogoUrl } from '../services/logoService';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { getLogoUrl } from "../services/logoService";
 
 const LoginAdmin: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
   const logoUrl = getLogoUrl();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Simulando verificação de credenciais
-    if (email === 'admin@hospital.com' && senha === 'admin123') {
-      localStorage.setItem('adminLoggedIn', 'true');
-      navigate('/admin-dashboard');
+    if (email === "admin@hospital.com" && senha === "admin123") {
+      localStorage.setItem("adminLoggedIn", "true");
+      navigate("/admin-dashboard");
       toast({
         title: "Login realizado com sucesso",
         description: "Bem-vindo ao painel administrativo",
@@ -41,19 +41,23 @@ const LoginAdmin: React.FC = () => {
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
             <Link to="/">
-              <img 
-                src='/images/logo-sabara-branca.png' 
-                alt="Logo Hospital Sabará" 
-                className="h-52 cursor-pointer hover:opacity-80 transition-opacity"
+              <img
+                src="/images/logo-sabara.png"
+                alt="Logo Hospital Sabará"
+                className="h-20 cursor-pointer hover:opacity-80 transition-opacity"
               />
             </Link>
           </div>
-          <CardTitle className="text-2xl font-bold">Login Administrativo</CardTitle>
+          <CardTitle className="text-2xl font-bold">
+            Login Administrativo
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">Email</label>
+              <label htmlFor="email" className="text-sm font-medium">
+                Email
+              </label>
               <Input
                 id="email"
                 type="email"
@@ -64,7 +68,9 @@ const LoginAdmin: React.FC = () => {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="senha" className="text-sm font-medium">Senha</label>
+              <label htmlFor="senha" className="text-sm font-medium">
+                Senha
+              </label>
               <Input
                 id="senha"
                 type="password"
