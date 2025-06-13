@@ -49,8 +49,6 @@ import InventarioManutencao from "./pages/InventarioManutencao";
 import ProtocolosManutencao from "./pages/ProtocolosManutencao";
 import PerfilManutencao from "./pages/PerfilManutencao";
 import QuartosLimpeza from "./pages/QuartosLimpeza";
-import HistoricoLimpeza from "./pages/HistoricoLimpeza";
-import SolicitacoesLimpeza from "./pages/SolicitacoesLimpeza";
 import ProtocolosLimpeza from "./pages/ProtocolosLimpeza";
 import PerfilLimpeza from "./pages/PerfilLimpeza";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -153,11 +151,6 @@ const App: React.FC = () => {
               />
               <Route path="/perfil-manutencao" element={<PerfilManutencao />} />
               <Route path="/quartos-limpeza" element={<QuartosLimpeza />} />
-              <Route path="/historico-limpeza" element={<HistoricoLimpeza />} />
-              <Route
-                path="/solicitacoes-limpeza"
-                element={<SolicitacoesLimpeza />}
-              />
               <Route
                 path="/protocolos-limpeza"
                 element={<ProtocolosLimpeza />}

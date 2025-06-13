@@ -5,7 +5,7 @@ import { cn, getMainContentClasses } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+
 import { Button } from "@/components/ui/button";
 import FloatingChat from "@/components/FloatingChat";
 import { StatusIcon } from "@/components/ui/status-icon";
@@ -32,8 +32,8 @@ export default function HomeLimpeza() {
     {
       id: "1",
       nome: "Maria Silva",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=MariaSilva",
       iniciais: "MS",
+      avatarColor: "bg-orange-500",
       quarto: "501",
       especialidade: "UTI",
       data: "27/12",
@@ -42,8 +42,8 @@ export default function HomeLimpeza() {
     {
       id: "2",
       nome: "João Santos",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=JoaoSantos",
       iniciais: "JS",
+      avatarColor: "bg-blue-500",
       quarto: "303",
       especialidade: "Pediatria",
       data: "26/12",
@@ -52,8 +52,8 @@ export default function HomeLimpeza() {
     {
       id: "3",
       nome: "Ana Costa",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=AnaCosta",
       iniciais: "AC",
+      avatarColor: "bg-purple-500",
       quarto: "205",
       especialidade: "Cardiologia",
       data: "25/12",
@@ -182,7 +182,7 @@ export default function HomeLimpeza() {
                       <th className="pb-2">Funcionário</th>
                       <th className="pb-2">Quarto</th>
                       <th className="pb-2">Data</th>
-                      <th className="pb-2">Resultado</th>
+                      <th className="pb-2 text-center">Resultado</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -190,13 +190,13 @@ export default function HomeLimpeza() {
                       <tr key={item.id} className="border-b last:border-0">
                         <td className="py-3">
                           <div className="flex items-center gap-2">
-                            <Avatar className="h-8 w-8">
-                              <AvatarImage src={item.avatar} />
-                              <AvatarFallback>{item.iniciais}</AvatarFallback>
-                            </Avatar>
+                            <div
+                              className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold text-xs ${item.avatarColor}`}
+                            >
+                              {item.iniciais}
+                            </div>
                             <div>
                               <p className="font-medium">{item.nome}</p>
-                              <p className="text-sm text-gray-500">Limpeza</p>
                             </div>
                           </div>
                         </td>
@@ -209,8 +209,10 @@ export default function HomeLimpeza() {
                           </div>
                         </td>
                         <td className="py-3">{item.data}</td>
-                        <td className="py-3">
-                          <StatusIcon status={item.resultado} size="md" />
+                        <td className="py-3 text-center">
+                          <div className="flex justify-center">
+                            <StatusIcon status={item.resultado} size="md" />
+                          </div>
                         </td>
                       </tr>
                     ))}

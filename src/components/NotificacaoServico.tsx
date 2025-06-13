@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, CheckCircle, X, Clock } from "lucide-react";
+import { AlertTriangle, CheckCircle, X, Clock, XCircle } from "lucide-react";
 
 interface NotificacaoServicoProps {
   userType: "manutencao" | "limpeza";
@@ -181,27 +181,17 @@ const NotificacaoServico: React.FC<NotificacaoServicoProps> = ({
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md border-2 border-orange-200">
           <DialogHeader>
-            <div className="flex items-center justify-between">
-              <DialogTitle className="flex items-center gap-2 text-lg font-semibold text-orange-700">
-                <AlertTriangle className="h-5 w-5 text-orange-500" />
-                {getIconeServico()} Novo Serviço Disponível
-              </DialogTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsOpen(false)}
-                className="h-6 w-6 p-0 hover:bg-gray-100"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold text-orange-700">
+              <AlertTriangle className="h-5 w-5 text-orange-500" />
+              Novo Serviço Disponível
+            </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             {/* Título do serviço */}
             <div className="text-center bg-gray-50 p-4 rounded-lg">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {servicoAtual.titulo}
+                {getIconeServico()} {servicoAtual.titulo}
               </h3>
               <p className="text-gray-600 text-sm flex items-center justify-center gap-1">
                 📍 {servicoAtual.local}
@@ -215,7 +205,7 @@ const NotificacaoServico: React.FC<NotificacaoServicoProps> = ({
                   servicoAtual.prioridade
                 )}`}
               >
-                🚨 Prioridade: {servicoAtual.prioridade}
+                Prioridade: {servicoAtual.prioridade}
               </span>
             </div>
 
@@ -235,23 +225,17 @@ const NotificacaoServico: React.FC<NotificacaoServicoProps> = ({
                 onClick={handleAceitar}
                 className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 text-base shadow-lg hover:shadow-xl transition-all"
               >
-                <CheckCircle className="h-5 w-5 mr-2" />✅ Aceitar
+                <CheckCircle className="h-5 w-5 mr-2" />
+                Aceitar
               </Button>
               <Button
                 onClick={handleRejeitar}
                 variant="destructive"
                 className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 text-base shadow-lg hover:shadow-xl transition-all"
               >
-                <X className="h-5 w-5 mr-2" />❌ Rejeitar
+                <XCircle className="h-5 w-5 mr-2" />
+                Rejeitar
               </Button>
-            </div>
-
-            {/* Nota */}
-            <div className="text-center border-t pt-3">
-              <p className="text-xs text-gray-500">
-                💡 Notificações automáticas a cada minuto • Tipo:{" "}
-                {userType === "manutencao" ? "Manutenção" : "Limpeza"}
-              </p>
             </div>
           </div>
         </DialogContent>

@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Bed,
-  History,
-  ListTodo,
   FileText,
   User,
   LogOut,
@@ -11,6 +9,7 @@ import {
   ChevronFirst,
   ChevronLast,
   Menu,
+  Home,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -108,7 +107,7 @@ export function SidebarLimpeza({
           className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
           onClick={() => isMobile && onSheetOpenChange?.(false)}
         >
-          <Bed size={20} className="min-w-[20px]" />
+          <Home size={20} className="min-w-[20px]" />
           <span
             className={cn(
               "ml-3",
@@ -120,46 +119,6 @@ export function SidebarLimpeza({
             )}
           >
             Quartos
-          </span>
-        </Link>
-
-        <Link
-          to="/historico-limpeza"
-          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && onSheetOpenChange?.(false)}
-        >
-          <History size={20} className="min-w-[20px]" />
-          <span
-            className={cn(
-              "ml-3",
-              isMobile
-                ? "opacity-100 inline"
-                : isOpen
-                ? "opacity-100 inline"
-                : "opacity-0 hidden"
-            )}
-          >
-            Histórico
-          </span>
-        </Link>
-
-        <Link
-          to="/solicitacoes-limpeza"
-          className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() => isMobile && onSheetOpenChange?.(false)}
-        >
-          <ListTodo size={20} className="min-w-[20px]" />
-          <span
-            className={cn(
-              "ml-3",
-              isMobile
-                ? "opacity-100 inline"
-                : isOpen
-                ? "opacity-100 inline"
-                : "opacity-0 hidden"
-            )}
-          >
-            Solicitações
           </span>
         </Link>
 

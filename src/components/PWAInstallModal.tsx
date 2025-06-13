@@ -78,13 +78,6 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
         <DialogContent className="sm:max-w-md rounded-2xl border-none shadow-2xl bg-gradient-to-br from-blue-50 to-indigo-100 p-0 overflow-hidden">
           {/* Header com gradiente */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white relative">
-            <button
-              onClick={onClose}
-              className="absolute right-4 top-4 text-white/80 hover:text-white transition-colors p-1"
-            >
-              <X size={20} />
-            </button>
-
             <div className="flex items-center gap-3 mb-3">
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                 <Sparkles className="w-6 h-6" />
