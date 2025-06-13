@@ -4,22 +4,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import NotificationsModal from "./NotificationsModal";
 
-// Função para extrair as iniciais do nome
-const getInitials = (name: string): string => {
-  return name
-    .split(" ")
-    .map((word) => word.charAt(0))
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
-
 interface HeaderAdminProps {
   onMenuClick?: () => void;
 }
 
 export const HeaderAdmin: React.FC<HeaderAdminProps> = ({ onMenuClick }) => {
-  const nome = "ROBERTO";
   const isMobile = useIsMobile();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notificacoesNaoLidas, setNotificacoesNaoLidas] = useState(0);
@@ -74,7 +63,7 @@ export const HeaderAdmin: React.FC<HeaderAdminProps> = ({ onMenuClick }) => {
 
           <div className="flex items-center gap-4">
             <button
-              className="relative p-1 rounded-full hover:bg-gray-100 transition-colors"
+              className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
               onClick={() => setShowNotifications(true)}
             >
               <Bell size={20} className="text-gray-500" />
@@ -84,16 +73,6 @@ export const HeaderAdmin: React.FC<HeaderAdminProps> = ({ onMenuClick }) => {
                 </span>
               )}
             </button>
-
-            <div className="flex items-center gap-3">
-              <div className="text-right hidden sm:block">
-                <p className="text-sm font-medium text-gray-900">{nome}</p>
-                <p className="text-xs text-gray-500">ADMIN</p>
-              </div>
-              <div className="h-10 w-10 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold text-sm">
-                {getInitials(nome)}
-              </div>
-            </div>
           </div>
         </div>
       </header>
