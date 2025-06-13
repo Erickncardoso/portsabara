@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import FloatingChat from "@/components/FloatingChat";
 import { StatusIcon } from "@/components/ui/status-icon";
 import { AlertaQuarto } from "@/components/AlertaQuarto";
+import NotificacaoServico from "@/components/NotificacaoServico";
 
 export default function HomeLimpeza() {
   const isMobile = useIsMobile();
@@ -233,6 +234,9 @@ export default function HomeLimpeza() {
           role: currentUser.role,
         }}
       />
+
+      {/* Componente de Notificação de Serviços */}
+      <NotificacaoServico userType="limpeza" />
     </div>
   );
 }

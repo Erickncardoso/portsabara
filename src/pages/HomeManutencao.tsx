@@ -6,6 +6,7 @@ import FloatingChat from "@/components/FloatingChat";
 import { HeaderManutencao } from "../components/HeaderManutencao";
 import { StatusIcon } from "@/components/ui/status-icon";
 import { AlertaQuartoManutencao } from "../components/AlertaQuartoManutencao";
+import NotificacaoServico from "@/components/NotificacaoServico";
 
 const HomeManutencao: React.FC = () => {
   const isMobile = useIsMobile();
@@ -237,6 +238,8 @@ const HomeManutencao: React.FC = () => {
           role: currentUser.role,
         }}
       />
+      {/* Componente de Notificação de Serviços */}
+      <NotificacaoServico userType="manutencao" />
     </div>
   );
 };

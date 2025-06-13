@@ -8,6 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { CheckCircle, Clock, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FloatingChat from "@/components/FloatingChat";
+import NotificacaoServico from "@/components/NotificacaoServico";
 
 const TarefasManutencao = () => {
   const isMobile = useIsMobile();
@@ -184,6 +185,9 @@ const TarefasManutencao = () => {
           role: currentUser.role,
         }}
       />
+
+      {/* Componente de Notificação de Serviços */}
+      <NotificacaoServico userType="manutencao" />
     </div>
   );
 };
